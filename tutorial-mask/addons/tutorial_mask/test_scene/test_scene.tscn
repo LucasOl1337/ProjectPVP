@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbktqp7o5ovhc"]
+
+[ext_resource type="Script" uid="uid://bysqtk0r7kdp7" path="res://addons/tutorial_mask/tutorial_mask.gd" id="1_ay48d"]
+[ext_resource type="Script" uid="uid://cxmi3y0up31eb" path="res://addons/tutorial_mask/test_scene/test_scene.gd" id="1_su2i7"]
+
+[sub_resource type="Gradient" id="Gradient_4ma7p"]
+offsets = PackedFloat32Array(0, 0.5133333, 1)
+colors = PackedColorArray(1, 0.92156863, 0.23137255, 1, 0.9843137, 0.7529412, 0.1764706, 1, 0.9764706, 0.65882355, 0.14509805, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ay48d"]
+gradient = SubResource("Gradient_4ma7p")
+
+[node name="TestScene" type="Node2D"]
+script = ExtResource("1_su2i7")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Background" type="TextureRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_ay48d")
+
+[node name="TutorialMask" type="CanvasLayer" parent="."]
+script = ExtResource("1_ay48d")
+metadata/_custom_type_script = "uid://bysqtk0r7kdp7"

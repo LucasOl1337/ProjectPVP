@@ -1,0 +1,234 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/maps/backgrounds/background1.png" id="2"]
+[ext_resource type="Theme" path="res://assets/themes/menu_theme.tres" id="3"]
+[ext_resource type="Font" path="res://assets/fonts/bebas_title_font.tres" id="4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_background_card"]
+bg_color = Color(0.06, 0.07, 0.11, 0.94)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_left = 24
+corner_radius_bottom_right = 24
+border_width_all = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.1, 0.12, 0.16, 0.92)
+border_color = Color(0.28, 0.32, 0.4, 0.9)
+border_width_all = 1
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_left = 18
+corner_radius_bottom_right = 18
+content_margin_left = 20
+content_margin_top = 18
+content_margin_right = 20
+content_margin_bottom = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
+bg_color = Color(0.93, 0.34, 0.18, 1)
+border_color = Color(0.98, 0.62, 0.38, 1)
+border_width_all = 2
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+content_margin_left = 22
+content_margin_top = 12
+content_margin_right = 22
+content_margin_bottom = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.98, 0.42, 0.2, 1)
+border_color = Color(1, 0.7, 0.42, 1)
+border_width_all = 2
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+content_margin_left = 22
+content_margin_top = 12
+content_margin_right = 22
+content_margin_bottom = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.78, 0.26, 0.12, 1)
+border_color = Color(0.9, 0.5, 0.28, 1)
+border_width_all = 2
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+content_margin_left = 22
+content_margin_top = 12
+content_margin_right = 22
+content_margin_bottom = 12
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+theme = ExtResource("3")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.04, 0.05, 0.08, 1)
+
+[node name="BackgroundImage" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("2")
+modulate = Color(0.32, 0.32, 0.36, 1)
+stretch_mode = 7
+mouse_filter = 2
+
+[node name="Vignette" type="ColorRect" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="Content" type="MarginContainer" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_left = 140
+custom_constants/margin_top = 80
+custom_constants/margin_right = 140
+custom_constants/margin_bottom = 80
+
+[node name="Layout" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+custom_constants/separation = 64
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HeroCard" type="Panel" parent="Content/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(520, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_background_card")
+
+[node name="Hero" type="VBoxContainer" parent="Content/Layout/HeroCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="Content/Layout/HeroCard/Hero"]
+layout_mode = 2
+text = "PROJECT PVP"
+theme_override_fonts/font = ExtResource("4")
+theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(0.95, 0.96, 1, 1)
+
+[node name="SubtitleLabel" type="Label" parent="Content/Layout/HeroCard/Hero"]
+layout_mode = 2
+text = "Arena PvP precisa • Local e Online P2P"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.7, 0.76, 0.86, 1)
+name_in_owner = "SubtitleLabel"
+
+[node name="ModeLabel" type="Label" parent="Content/Layout/HeroCard/Hero"]
+layout_mode = 2
+text = "1v1 / 2v2 • Rollback P2P"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.58, 0.64, 0.76, 1)
+
+[node name="CTAWrapper" type="VBoxContainer" parent="Content/Layout/HeroCard/Hero"]
+layout_mode = 2
+custom_constants/separation = 8
+alignment = 1
+
+[node name="NormalButton" type="Button" parent="Content/Layout/HeroCard/Hero/CTAWrapper"]
+layout_mode = 2
+text = "MODO NORMAL"
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 52)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_button_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+name_in_owner = "NormalButton"
+mouse_filter = 1
+
+[node name="DevButton" type="Button" parent="Content/Layout/HeroCard/Hero/CTAWrapper"]
+layout_mode = 2
+text = "MODO DEV"
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+name_in_owner = "DevButton"
+mouse_filter = 1
+
+[node name="OnlineHint" type="Label" parent="Content/Layout/HeroCard/Hero/CTAWrapper"]
+layout_mode = 2
+text = "Online P2P em desenvolvimento"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.5, 0.56, 0.7, 1)
+
+[node name="SideCard" type="Panel" parent="Content/Layout"]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 3
+custom_minimum_size = Vector2(320, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="SideVBox" type="VBoxContainer" parent="Content/Layout/SideCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 14
+alignment = 1
+
+[node name="SideTitle" type="Label" parent="Content/Layout/SideCard/SideVBox"]
+layout_mode = 2
+text = "OPÇÕES"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.8, 0.84, 0.9, 1)
+
+[node name="HitboxToggle" type="CheckButton" parent="Content/Layout/SideCard/SideVBox"]
+layout_mode = 2
+text = "Mostrar hitboxes"
+button_pressed = true
+name_in_owner = "HitboxToggle"
+
+[node name="DevToggle" type="CheckButton" parent="Content/Layout/SideCard/SideVBox"]
+layout_mode = 2
+text = "Modo Dev"
+button_pressed = false
+name_in_owner = "DevToggle"
+
+[node name="SideHint" type="Label" parent="Content/Layout/SideCard/SideVBox"]
+layout_mode = 2
+text = "Conecte com amigos (Steam) quando online estiver ativo."
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.58, 0.64, 0.74, 1)
+
+[node name="SideFooter" type="Label" parent="Content/Layout/SideCard/SideVBox"]
+layout_mode = 2
+text = "Versão Pre-Alpha"
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.45, 0.5, 0.6, 1)
+

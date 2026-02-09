@@ -1,0 +1,38 @@
+{
+  "reload_interval_sec": 0.5,
+  "inputs": {
+    "axis": {
+      "left": 0.0,
+      "idle": -5,
+      "right": 0.0
+    },
+    "jump_pressed": -1,
+    "shoot_pressed": -2,
+    "shoot_is_pressed": -2,
+    "melee_pressed": -2,
+    "dash_pressed": -2,
+    "ult_pressed": -5,
+    "per_second": -1
+  },
+  "distance": {
+    "target": 360.0,
+    "tolerance": 120.0,
+    "weight": 1,
+    "too_close": 90.0,
+    "close_penalty": -1,
+    "too_far": 720.0,
+    "far_penalty": -1
+  },
+  "events": {
+    "kill": 5000
+  },
+  "shoot": {
+    "shot_fired": 11,
+    "shot_hit": 2000,   
+    "shot_missed": -10,
+    "hit_window_sec": 0.8,
+    "miss_window_sec": 1.25,
+    "no_shoot_per_sec": -1,
+    "no_shoot_grace_sec": 1.0
+  }
+}

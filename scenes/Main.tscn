@@ -1,0 +1,852 @@
+[gd_scene load_steps=11 format=3 uid="uid://qu48ounqmh0u"]
+
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1"]
+[ext_resource type="Script" uid="uid://dyhoe8naqx4ik" path="res://scripts/Main.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/Arrow.tscn" id="3"]
+[ext_resource type="Texture2D" uid="uid://gfk0khrcslaa" path="res://assets/maps/backgrounds/background1.png" id="4"]
+[ext_resource type="Resource" path="res://data/arenas/default_arena.tres" id="5"]
+[ext_resource type="Script" uid="uid://d3aj8xgku65ea" path="res://scripts/ui/dev_hud.gd" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rarhs"]
+size = Vector2(13.959063, 11.503374)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcsgt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c01mt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxtc6"]
+size = Vector2(19.540339, 18.806324)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("2")
+arena_definition = ExtResource("5")
+
+[node name="ArenaCamera" type="Camera2D" parent="."]
+
+[node name="Backdrop" type="Node2D" parent="."]
+
+[node name="Sky" type="Polygon2D" parent="Backdrop"]
+visible = false
+color = Color(0.24, 0.52, 0.86, 1)
+polygon = PackedVector2Array(-1280, -720, 1280, -720, 1280, 720, -1280, 720)
+
+[node name="BackdropHills" type="Polygon2D" parent="Backdrop"]
+visible = false
+color = Color(0.18, 0.42, 0.52, 1)
+polygon = PackedVector2Array(-1280, 220, -820, 120, -380, 220, 0, 140, 380, 220, 820, 130, 1280, 220, 1280, 720, -1280, 720)
+
+[node name="Background" type="Sprite2D" parent="Backdrop"]
+z_index = -10
+texture = ExtResource("4")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Backdrop/Background"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(-831.00006, 654)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_rarhs")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(-831.00006, 654)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_rarhs")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(837.9998, 656)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_rarhs")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(1269, 424)
+rotation = -3.1415925
+scale = Vector2(3.968232, 43.45435)
+shape = SubResource("RectangleShape2D_rarhs")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(-1268, 425.99997)
+rotation = -3.1415925
+scale = Vector2(3.968232, 43.45435)
+shape = SubResource("RectangleShape2D_rarhs")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+scale = Vector2(27.137403, 3.6780875)
+shape = SubResource("RectangleShape2D_vcsgt")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+shape = SubResource("RectangleShape2D_c01mt")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(-1144.7094, 202.83122)
+rotation = -3.1415925
+scale = Vector2(24.841879, 3.6337538)
+shape = SubResource("RectangleShape2D_nxtc6")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
+position = Vector2(1141.0001, 197.99998)
+rotation = -3.1415925
+scale = Vector2(24.841879, 3.6337538)
+shape = SubResource("RectangleShape2D_nxtc6")
+
+[node name="Player1" parent="." instance=ExtResource("1")]
+position = Vector2(-639, 572)
+arrow_scene = ExtResource("3")
+
+[node name="Player2" parent="." instance=ExtResource("1")]
+position = Vector2(690, 576)
+player_id = 2
+arrow_scene = ExtResource("3")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "P1 0  x  0 P2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinnerLabel" type="Label" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -30.0
+offset_right = 240.0
+offset_bottom = 30.0
+text = "Player 1 venceu!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DevHUD" type="CanvasLayer" parent="."]
+script = ExtResource("6")
+
+[node name="Panel" type="Panel" parent="DevHUD"]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 560.0
+offset_bottom = 340.0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="DevHUD/Panel"]
+layout_mode = 0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="DevHUD/Panel/Margin"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="HeaderRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox"]
+layout_mode = 2
+custom_constants/separation = 12
+
+[node name="ContentRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox"]
+layout_mode = 2
+custom_constants/separation = 16
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ControlsBox" type="GridContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+custom_constants/hseparation = 12
+custom_constants/vseparation = 8
+
+[node name="TrainingGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="TrainerGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="TrainerTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+text = "Trainer externo"
+
+[node name="TrainerPythonRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="TrainerPythonLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow"]
+layout_mode = 2
+text = "Python"
+
+[node name="TrainerPythonPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "python"
+
+[node name="TrainerScriptRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="TrainerScriptLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow"]
+layout_mode = 2
+text = "Script"
+
+[node name="TrainerScriptPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "tools/training_genetic_ga.py"
+
+[node name="TrainerArgsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="TrainerArgsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow"]
+layout_mode = 2
+text = "Args"
+
+[node name="TrainerArgs" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "--device cpu"
+
+[node name="TrainerButtonsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="TrainerStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow"]
+layout_mode = 2
+text = "Iniciar trainer"
+
+[node name="TrainerStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow"]
+layout_mode = 2
+text = "Parar trainer"
+disabled = true
+
+[node name="TrainerStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
+layout_mode = 2
+text = "Trainer: parado"
+
+[node name="RewardsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="RoundGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="GaGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="GenomeGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="MetricsBox" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 6
+
+[node name="StatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Modo Dev OFF"
+
+[node name="ReloadButton" type="Button" parent="DevHUD/Panel/Margin/VBox/HeaderRow"]
+layout_mode = 2
+text = "Recarregar"
+custom_minimum_size = Vector2(140, 0)
+
+[node name="TrainingTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "Treino"
+
+[node name="TrainingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "Ativar treino"
+button_pressed = false
+
+[node name="WatchToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "Assistir"
+button_pressed = false
+
+[node name="ResetEpisodeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "Resetar episódio"
+
+[node name="LoggingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "Salvar CSV"
+button_pressed = false
+
+[node name="LogPathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
+layout_mode = 2
+text = "CSV OFF: user://training_metrics.csv"
+autowrap_mode = 2
+
+[node name="RewardsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+text = "Recomp. base"
+
+[node name="RewardStepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RewardStepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow"]
+layout_mode = 2
+text = "Tempo sem kill"
+
+[node name="RewardStepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.001
+value = -0.001
+
+[node name="RewardKillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RewardKillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow"]
+layout_mode = 2
+text = "Kill"
+
+[node name="RewardKillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = 1.0
+
+[node name="RewardDeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RewardDeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow"]
+layout_mode = 2
+text = "Death"
+
+[node name="RewardDeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = -1.0
+
+[node name="RewardAliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RewardAliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow"]
+layout_mode = 2
+text = "Tempo vivo"
+
+[node name="RewardAliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.001
+value = 0.0
+
+[node name="RewardsApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
+layout_mode = 2
+text = "Salvar recomp."
+
+[node name="BotsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 6
+
+[node name="BotsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup"]
+layout_mode = 2
+text = "Bots"
+
+[node name="BotCards" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 4
+
+[node name="BotP1Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+text = "Agressivo (P1)"
+
+[node name="BotP1PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow"]
+layout_mode = 2
+text = "Preset"
+
+[node name="BotP1Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP1StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow"]
+layout_mode = 2
+text = "Tempo sem kill"
+
+[node name="BotP1StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5
+max_value = 5
+step = 0.001
+value = -0.001
+
+[node name="BotP1KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow"]
+layout_mode = 2
+text = "Kill"
+
+[node name="BotP1KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = 1.2
+
+[node name="BotP1DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow"]
+layout_mode = 2
+text = "Death"
+
+[node name="BotP1DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = -1.0
+
+[node name="BotP1AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow"]
+layout_mode = 2
+text = "Tempo vivo"
+
+[node name="BotP1AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5
+max_value = 5
+step = 0.001
+value = 0.003
+
+[node name="BotP1ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
+layout_mode = 2
+text = "Salvar bot P1"
+
+[node name="BotP2Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_constants/separation = 4
+
+[node name="BotP2Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+text = "Estrategista (P2)"
+
+[node name="BotP2PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow"]
+layout_mode = 2
+text = "Preset"
+
+[node name="BotP2Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP2StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow"]
+layout_mode = 2
+text = "Tempo sem kill"
+
+[node name="BotP2StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5
+max_value = 5
+step = 0.001
+value = -0.001
+
+[node name="BotP2KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow"]
+layout_mode = 2
+text = "Kill"
+
+[node name="BotP2KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = 1.0
+
+[node name="BotP2DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow"]
+layout_mode = 2
+text = "Death"
+
+[node name="BotP2DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10
+max_value = 10
+step = 0.1
+value = -1.2
+
+[node name="BotP2AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow"]
+layout_mode = 2
+text = "Tempo vivo"
+
+[node name="BotP2AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5
+max_value = 5
+step = 0.001
+value = 0.004
+
+[node name="BotP2ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
+layout_mode = 2
+text = "Salvar bot P2"
+
+[node name="RoundLimitsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
+layout_mode = 2
+text = "Rodada"
+
+[node name="RoundStepsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RoundStepsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow"]
+layout_mode = 2
+text = "Max steps"
+
+[node name="RoundStepsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0
+max_value = 100000
+step = 1
+value = 0
+
+[node name="RoundSecondsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RoundSecondsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow"]
+layout_mode = 2
+text = "Max seg."
+
+[node name="RoundSecondsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0
+max_value = 600
+step = 0.5
+value = 0
+
+[node name="RoundKillsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="RoundKillsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow"]
+layout_mode = 2
+text = "Max kills"
+
+[node name="RoundKillsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0
+max_value = 50
+step = 1
+value = 5
+
+[node name="RoundApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
+layout_mode = 2
+text = "Salvar rodada"
+
+[node name="GaConfigTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
+layout_mode = 2
+text = "GA"
+
+[node name="GaGenerationToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
+layout_mode = 2
+text = "Ger. por rodada"
+button_pressed = true
+
+[node name="GaGenerationsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="GaGenerationsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow"]
+layout_mode = 2
+text = "Max gerações"
+
+[node name="GaGenerationsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0
+max_value = 100000
+step = 1
+value = 0
+
+[node name="GaApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
+layout_mode = 2
+text = "Salvar GA"
+
+[node name="GenomeLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+text = "Genoma: res://IA/weights/best_genome.json"
+autowrap_mode = 2
+
+[node name="LoadGenomeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+text = "Carregar genoma"
+
+[node name="LiveTrainButtons" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="LiveTrainStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Treinar ao vivo"
+
+[node name="LiveTrainStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Parar"
+
+[node name="LiveTrainSaveP1Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Salvar P1"
+
+[node name="LiveTrainSaveP2Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Salvar P2"
+
+[node name="LiveTrainStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+text = "Live: parado"
+autowrap_mode = 2
+
+[node name="LiveTrainP1Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+text = "P1: gen ? | ind ? | treinos ?/?"
+autowrap_mode = 2
+
+[node name="LiveTrainP2Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
+layout_mode = 2
+text = "P2: modo ?"
+autowrap_mode = 2
+
+[node name="TrainingMetricsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Treino: inativo"
+
+[node name="BotMetricsTabs" type="TabContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Geral" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
+layout_mode = 2
+custom_constants/separation = 4
+
+[node name="GlobalMetrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/Geral"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+text = "[b]Geral[/b]\nTreino: inativo"
+autowrap_mode = 2
+
+[node name="P1" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
+layout_mode = 2
+custom_constants/separation = 4
+
+[node name="BotP1Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P1"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+text = "[b]P1[/b]\nTreino: inativo"
+
+[node name="P2" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
+layout_mode = 2
+custom_constants/separation = 4
+
+[node name="BotP2Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P2"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+text = "[b]P2[/b]\nTreino: inativo"
+autowrap_mode = 2
+
+[node name="EntriesLabel" type="Label" parent="DevHUD/Panel/Margin/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+text = "Sem eventos registrados."
+autowrap_mode = 2
+
+[node name="GaOverlay" type="Panel" parent="DevHUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -360.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 216.0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay"]
+layout_mode = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="BotP1Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="BotP1GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+text = "[b]P1[/b]\nGA: -"
+
+[node name="BotP1GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP1GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Nome do modelo (ex: X)"
+
+[node name="BotP1GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow"]
+layout_mode = 2
+text = "Salvar"
+
+[node name="BotP2Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin"]
+layout_mode = 2
+custom_constants/separation = 6
+
+[node name="BotP2GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+text = "[b]P2[/b]\nGA: -"
+
+[node name="BotP2GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox"]
+layout_mode = 2
+custom_constants/separation = 8
+
+[node name="BotP2GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Nome do modelo (ex: X)"
+
+[node name="BotP2GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow"]
+layout_mode = 2
+text = "Salvar"

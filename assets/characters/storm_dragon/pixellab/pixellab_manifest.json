@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "source_zip": "storm_dragon_pixellab.zip",
+  "character_id": "839fcfec-5e19-4927-b51a-a181f7038bf5",
+  "name": "Lee sin, Electric martial artist, Storm dragon powers, with a lightining Bow and arrow as his main weapon",
+  "prompt": "Lee sin, Electric martial artist, Storm dragon powers, with a lightining Bow and arrow as his main weapon",
+  "view": "side",
+  "directions": 8,
+  "size": {
+    "width": 148,
+    "height": 148
+  },
+  "rotations": [
+    "east",
+    "north",
+    "north-east",
+    "north-west",
+    "south",
+    "south-east",
+    "south-west",
+    "west"
+  ],
+  "animations": [
+    "cross-punch",
+    "custom-A strong punch on the ground with his hand, leaves",
+    "custom-A super fast dash that leaves lighttning electric ",
+    "custom-A super fast dash that leaves magic electric parti",
+    "custom-BOW AND ARROW AIMING, WITH HIS LIGHTINING BOW ",
+    "custom-BOW AND ARROW AIMING, WITH HIS LIGHTINING MAGIC BO",
+    "flying-kick",
+    "roundhouse-kick",
+    "running-4-frames",
+    "walking-4-frames"
+  ],
+  "animation_detail": {
+    "custom-A super fast dash that leaves magic electric parti": {
+      "directions": [
+        "east",
+        "north",
+        "north-west",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "south": 16,
+        "north": 16,
+        "east": 16,
+        "north-west": 16,
+        "west": 16
+      }
+    },
+    "custom-BOW AND ARROW AIMING, WITH HIS LIGHTINING MAGIC BO": {
+      "directions": [
+        "east",
+        "north",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "north": 16,
+        "east": 16,
+        "west": 16,
+        "south": 16
+      }
+    },
+    "custom-A super fast dash that leaves lighttning electric ": {
+      "directions": [
+        "east",
+        "north",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "east": 16,
+        "south": 16,
+        "north": 16,
+        "west": 16
+      }
+    },
+    "custom-A strong punch on the ground with his hand, leaves": {
+      "directions": [
+        "east",
+        "north",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "west": 16,
+        "north": 16,
+        "east": 16,
+        "south": 16
+      }
+    },
+    "cross-punch": {
+      "directions": [
+        "east",
+        "north",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "north": 6,
+        "south": 6,
+        "east": 6,
+        "west": 6
+      }
+    },
+    "flying-kick": {
+      "directions": [
+        "east",
+        "north",
+        "north-east",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "east": 6,
+        "south": 6,
+        "north": 6,
+        "west": 6,
+        "north-east": 6
+      }
+    },
+    "custom-BOW AND ARROW AIMING, WITH HIS LIGHTINING BOW ": {
+      "directions": [
+        "east",
+        "west"
+      ],
+      "frame_counts": {
+        "east": 16,
+        "west": 16
+      }
+    },
+    "roundhouse-kick": {
+      "directions": [
+        "east",
+        "north",
+        "north-east",
+        "south"
+      ],
+      "frame_counts": {
+        "east": 28,
+        "south": 7,
+        "north-east": 7,
+        "north": 7
+      }
+    },
+    "running-4-frames": {
+      "directions": [
+        "east"
+      ],
+      "frame_counts": {
+        "east": 4
+      }
+    },
+    "walking-4-frames": {
+      "directions": [
+        "east",
+        "north",
+        "south",
+        "west"
+      ],
+      "frame_counts": {
+        "east": 4,
+        "west": 4,
+        "south": 4,
+        "north": 4
+      }
+    }
+  }
+}

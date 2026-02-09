@@ -1,0 +1,96 @@
+{
+	"tuning": {
+		"description": "Parametros globais de comportamento e fisica",
+		"keep_distance": 250.0,
+		"shoot_range": 600.0,
+		"min_shoot_distance": 80.0,
+		"dash_range": 500.0,
+		"dash_probability": 0.8,
+		"melee_range": 90.0,
+		"decision_interval_ms": 60,
+		"reaction_time_ms": 100,
+		"aim_noise_degrees": 2.0
+	},
+	"metrics": {
+		"description": "Configuracao de logs para debug",
+		"enabled": true,
+		"path": "user://handmade_metrics.jsonl",
+		"flush_seconds": 2.0,
+		"sample_every_steps": 10,
+		"include_observation": false
+	},
+	"rules": [
+		{
+			"id": "recover_low",
+			"description": "Se estiver muito abaixo do oponente (caindo?), tenta pular e subir",
+			"when": {
+				"dy_gt": 200
+			},
+			"do": {
+				"jump": true,
+				"aim": "toward",
+				"axis": "toward"
+			}
+		},
+		{
+			"id": "melee_rush",
+			"description": "Se estiver muito perto, tenta bater e dar dash",
+			"when": {
+				"distance_lt": 100
+			},
+			"cooldown_ms": 500,
+			"do": {
+				"melee": true,
+				"dash": "toward",
+				"aim": "toward"
+			}
+		},
+		{
+			"id": "shoot_sniper",
+			"description": "Se estiver longe, alinhado verticalmente, e tiver flecha: atira",
+			"when": {
+				"distance_gt": 150,
+				"distance_lt": 600,
+				"dy_lt": 80,
+				"dy_gt": -80,
+				"self_arrows_gt": 0
+			},
+			"cooldown_ms": 800,
+			"do": {
+				"shoot": true,
+				"aim": "toward",
+				"axis": "stop"
+			}
+		},
+		{
+			"id": "evade_close",
+			"description": "Se o oponente chegar muito perto e nao for hora de bater, afasta",
+			"when": {
+				"distance_lt": 150
+			},
+			"do": {
+				"axis": "away",
+				"dash": "away",
+				"aim": "toward"
+			}
+		},
+		{
+			"id": "approach",
+			"description": "Se estiver muito longe, aproxima",
+			"when": {
+				"distance_gt": 400
+			},
+			"do": {
+				"axis": "toward"
+			}
+		},
+		{
+			"id": "default_hover",
+			"description": "Regra padrao: fica rondando",
+			"when": {},
+			"do": {
+				"axis": "stop"
+			}
+		}
+	]
+}

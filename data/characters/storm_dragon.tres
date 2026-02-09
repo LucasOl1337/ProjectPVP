@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="CharacterData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/character_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/skills/ground_slam_skill.tres" id="2"]
+[ext_resource type="Texture2D" path="res://assets/characters/arrow/custom/crystal_arrow.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = "storm_dragon"
+display_name = "Storm Dragon"
+asset_base_path = "res://assets/characters/storm_dragon/pixellab/"
+sprite_scale = Vector2(3.6, 3.6)
+melee_skill = null
+ult_skill = ExtResource("2")
+collider_size = Vector2(90, 210)
+collider_offset = Vector2(0, 0)
+projectile_forward = 134.0
+projectile_vertical_offset = -156.0
+projectile_texture = ExtResource("3")
+aim_skip_left = true
+action_animation_paths = {
+	"dash": ["res://assets/characters/storm_dragon/pixellab/animations/dash/"],
+	"aim": ["res://assets/characters/storm_dragon/pixellab/animations/aiming/"],
+	"ult": ["res://assets/characters/storm_dragon/pixellab/animations/ult/"],
+	"melee": [
+		"res://assets/characters/storm_dragon/pixellab/animations/melee/",
+		"res://assets/characters/storm_dragon/pixellab/animations/Melee/"
+	],
+	"running": ["res://assets/characters/storm_dragon/pixellab/animations/running/"],
+	"jump": ["res://assets/characters/storm_dragon/pixellab/animations/jump/"],
+}
+action_animation_durations = {
+	"ult": 0.25,
+	"melee": 0.3,		
+	"dash": 0.8,
+	"running": 0.5,
+	"aiming": 0.1,
+	"jump": 0.1
+}
+action_animation_speeds = {
+    "dash": 10,
+    "ult": 15,
+    "melee": 15,
+    "running": 5,
+    "aiming": 0.1,
+    "jump": 0.1
+}
+action_sfx_paths = {
+	"ult": "res://assets/characters/storm_dragon/sfx/ult.ogg",
+	"melee": "res://assets/characters/storm_dragon/sfx/melee.ogg"
+}
+action_sfx_durations = {
+	"ult": 0.8,
+	"melee": 0.3
+}
+action_sfx_speeds = {
+	"ult": 3.0,
+	"melee": 1.0
+}
+	

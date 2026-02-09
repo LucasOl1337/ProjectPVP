@@ -1,0 +1,16 @@
+{
+  "crossover": false,
+  "elite": 2,
+  "episodes_per_genome": 1,
+  "generation_per_round": false,
+  "generations": 5,
+  "hidden": 128,
+  "load_path": "",
+  "log_path": "IA/logs/genetic_log.csv",
+  "mutation_rate": 0.1,
+  "mutation_std": 0.2,
+  "opponent": "best",
+  "population": 8,
+  "save_path": "IA/weights/best_genome.json",
+  "seed": 0
+}

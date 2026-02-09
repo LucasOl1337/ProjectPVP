@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "source_zip": "nyx_ranger.zip",
+  "character_id": "fff01282-77f1-4922-9a3f-506e425f4d33",
+  "name": "NyxRanger",
+  "prompt": "Hooded_cyber_ranger_archer_with_glowing_energy_bow_neon_teal_purple_clean_pixel_art_8dir",
+  "view": "low top-down",
+  "directions": 8,
+  "size": {
+    "width": 48,
+    "height": 48
+  },
+  "rotations": [
+    "east",
+    "north",
+    "north-east",
+    "north-west",
+    "south",
+    "south-east",
+    "south-west",
+    "west"
+  ],
+  "animations": [
+    "running-6-frames"
+  ],
+  "animation_detail": {
+    "running-6-frames": {
+      "directions": [
+        "east",
+        "north",
+        "north-east",
+        "north-west",
+        "south",
+        "south-east",
+        "south-west",
+        "west"
+      ],
+      "frame_counts": {
+        "north-west": 6,
+        "south": 6,
+        "south-west": 6,
+        "north-east": 6,
+        "west": 6,
+        "south-east": 6,
+        "north": 6,
+        "east": 6
+      }
+    }
+  }
+}

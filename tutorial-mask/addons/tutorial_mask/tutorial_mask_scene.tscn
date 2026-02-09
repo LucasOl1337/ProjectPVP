@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce7qu0l2lyt73"]
+
+[ext_resource type="Script" uid="uid://bysqtk0r7kdp7" path="res://addons/tutorial_mask/tutorial_mask.gd" id="1_beu0e"]
+
+[node name="TutorialMask" type="CanvasLayer"]
+script = ExtResource("1_beu0e")

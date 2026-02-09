@@ -1,0 +1,23 @@
+{
+  "source": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\chato\\matchups\\legal\\state\\round_0023\\top\\seed_01_G0023_N000552_score_1.750000.json",
+  "source_rel": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\chato\\matchups\\legal\\state\\round_0023\\top\\seed_01_G0023_N000552_score_1.750000.json",
+  "promoted_to": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\chato\\best_genome.json",
+  "round": 23,
+  "best": 1.75,
+  "best_ever": 1.75,
+  "best_metric": "fitness",
+  "sweep_5_0": true,
+  "worker_id": 1,
+  "individual": 552,
+  "islands_round": 23,
+  "generation": 2,
+  "port": 14806,
+  "episodes_per_genome": 1,
+  "mutation_rate": 0.08,
+  "mutation_std": 0.2,
+  "opponent": "best",
+  "time_scale": 8.0,
+  "seed_used": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\chato\\matchups\\legal\\state\\round_0022\\top\\seed_02_G0022_N000545_score_1.000000.json",
+  "result_path": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\chato\\matchups\\legal\\state\\round_0023\\worker_1\\result.json",
+  "timestamp": 1770654924
+}

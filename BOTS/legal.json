@@ -1,0 +1,28 @@
+{
+  "name": "legal",
+  "description": "Perfil criado via supertreino.py (legal).",
+  "rewards": {
+    "base": {
+      "time_without_kill": -0.1,
+      "kill": 10.0,
+      "death": -5.0,
+      "time_alive": 0.0
+    },
+    "p1": {},
+    "p2": {}
+  },
+  "islands": {
+    "workers": 25,
+    "concurrency": 10,
+    "topk": 12,
+    "time_scale": 8.0,
+    "fixed_fps": 60,
+    "generations": 6,
+    "episodes_per_genome": 1,
+    "mutation_rate": 0.08,
+    "mutation_std": 0.2,
+    "opponent": "baseline",
+    "learn_aim": true,
+    "aim_bins": 9
+  }
+}

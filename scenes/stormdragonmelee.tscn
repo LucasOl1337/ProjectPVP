@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dby77bttmtg7e"]
+
+[ext_resource type="Script" uid="uid://cnjuq4rmh6ksh" path="res://scripts/skills/skill_hitbox_area.gd" id="1_olvy8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2o4mr"]
+radius = 119.6706
+
+[node name="HitboxStormDragon" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("1_olvy8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(241, -161)
+scale = Vector2(1.1, 0.255)
+shape = SubResource("CircleShape2D_2o4mr")

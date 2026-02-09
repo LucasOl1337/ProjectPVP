@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dc6t06d5yaf3"]
+
+[ext_resource type="Shader" uid="uid://cwe5gmw8ixw42" path="res://addons/tutorial_mask/shader/tutorial_mask.gdshader" id="1_uf5gp"]
+
+[resource]
+shader = ExtResource("1_uf5gp")
+shader_parameter/screen_size = Vector2(1920, 1080)
+shader_parameter/target_pos = Vector2(0, 0)
+shader_parameter/target_size = Vector2(100, 100)
+shader_parameter/alpha_strength = 0.0

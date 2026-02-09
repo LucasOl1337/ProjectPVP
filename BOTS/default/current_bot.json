@@ -1,0 +1,21 @@
+{
+  "source": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\default\\matchups\\agressivo\\state\\round_0015\\top\\seed_01_G0021_N000521_score_0.781284.json",
+  "source_rel": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\default\\matchups\\agressivo\\state\\round_0015\\top\\seed_01_G0021_N000521_score_0.781284.json",
+  "promoted_to": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\default\\best_genome.json",
+  "round": 15,
+  "best": 0.7812842068246808,
+  "best_ever": 0.7812842068246808,
+  "worker_id": 20,
+  "individual": 521,
+  "islands_round": 15,
+  "generation": 7,
+  "port": 14545,
+  "episodes_per_genome": 1,
+  "mutation_rate": 0.08,
+  "mutation_std": 0.2,
+  "opponent": "best",
+  "time_scale": 8.0,
+  "seed_used": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\default\\matchups\\agressivo\\state\\round_0014\\top\\seed_09_G0020_N000476_score_-0.059587.json",
+  "result_path": "C:\\Users\\user\\CascadeProjects\\Project PVP\\BOTS\\default\\matchups\\agressivo\\state\\round_0015\\worker_20\\result.json",
+  "timestamp": 1770326660
+}
