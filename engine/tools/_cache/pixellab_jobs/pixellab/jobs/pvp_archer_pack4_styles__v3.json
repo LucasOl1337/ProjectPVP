@@ -1,0 +1,15 @@
+{
+  "char_id": "pvp_archer_pack4_styles__v3",
+  "character_id": "bb32311b-08ad-4953-8af7-2f8f02161eef",
+  "name": "PvP Archer Pack4 v3",
+  "description": "pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, head: red-tinted goggles/glasses silhouette, weapon: wrist-mounted crossbow that shoots bolts, fingerless draw glove, emblem: rune circle, weapon: repeating crossbow, weapon dominates the silhouette, cocky smirk, glowing charm amulet, nocked arrow with glowing tip, head: hood + half-mask silhouette, face: distinct eyebrows and visible eyes, palette: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).",
+  "lore": "",
+  "style": "lol_vayne",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770945474,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `bb32311b-08ad-4953-8af7-2f8f02161eef`\n**Name:** PvP Archer Pack4 v3\n**Description:** pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, head: red-tinted goggles/glasses silhouette, weapon: wrist-mounted crossbow that shoots bolts, fingerless draw glove, emblem: rune circle, weapon: repeating crossbow, weapon dominates the silhouette, cocky smirk, glowing charm amulet, nocked arrow with glowing tip, head: hood + half-mask silhouette, face: distinct eyebrows and visible eyes, palette: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"bb32311b-08ad-4953-8af7-2f8f02161eef\")`\n- Queue animations now: `animate_character(character_id=\"bb32311b-08ad-4953-8af7-2f8f02161eef\", ...)`",
+  "imported_at": 1770945788,
+  "asset_dir": "assets/characters/pvp_archer_pack4_styles__v3/pixellab",
+  "qa_score": 215.04379439767513
+}

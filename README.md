@@ -26,13 +26,13 @@ Jogo 2D PvP estilo TowerFall, com foco em movimentação precisa e hitboxes cons
 Para importar exports do PixelLab no formato esperado pelo jogo, use o script:
 
 ```bash
-python tools/pixellab_import.py <zip_path> --name <nome_personagem>
+python engine/tools/pixellab_import.py <zip_path> --name <nome_personagem>
 ```
 
 Ou para importar varios ZIPs de uma pasta:
 
 ```bash
-python tools/pixellab_import.py <pasta_com_zips>
+python engine/tools/pixellab_import.py <pasta_com_zips>
 ```
 
 Ele extrai para `assets/characters/<nome_personagem>/pixellab/` e mantém a estrutura
@@ -43,7 +43,7 @@ Ele extrai para `assets/characters/<nome_personagem>/pixellab/` e mantém a estr
 Para garantir que o loop principal continua determinístico (pré-requisito do modo online/rollback), rode:
 
 ```bash
-godot4 --headless --fixed-fps 60 --script res://tools/determinism_tester.gd --frames=720 --runs=3 --seed=1337
+godot4 --headless --fixed-fps 60 --script res://engine/tools/determinism_tester.gd --frames=720 --runs=3 --seed=1337
 ```
 
 O tester instancia `Main.tscn`, injeta inputs pseudo-aleatórios via `PlayerInput.push_frame` e compara o hash final de cada execução. Se algum hash divergir, o comando retorna código 1. Ajuste `--frames`, `--runs` ou `--seed` conforme necessário.

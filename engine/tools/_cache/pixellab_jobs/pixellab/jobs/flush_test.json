@@ -1,0 +1,13 @@
+{
+  "char_id": "flush_test",
+  "character_id": "c17a5f09-3f6b-47e9-a305-bf47dd0792de",
+  "name": "T",
+  "description": "high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard, torn scarf, belt with large buckle, ornate embroidery, weapon with glowing crystal, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit",
+  "preset": "premium_side_128",
+  "no_animations": true,
+  "created_at": 1770932783,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `c17a5f09-3f6b-47e9-a305-bf47dd0792de`\n**Name:** T\n**Description:** high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard, torn scarf, belt with large buckle, ornate embroidery, weapon with glowing crystal, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"c17a5f09-3f6b-47e9-a305-bf47dd0792de\")`\n- Queue animations now: `animate_character(character_id=\"c17a5f09-3f6b-47e9-a305-bf47dd0792de\", ...)`",
+  "imported_at": 1770933269,
+  "asset_dir": "assets/characters/flush_test/pixellab",
+  "qa_score": 203.51246103139178
+}

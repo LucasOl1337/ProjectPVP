@@ -36,10 +36,10 @@ def clear_screen() -> None:
 
 
 def find_default_config(project_root: Path) -> Path:
-    primary = project_root / "IA" / "config" / "islands.json"
+    primary = project_root / "BOTS" / "IA" / "config" / "islands.json"
     if primary.exists():
         return primary
-    fallback = project_root / "IA" / "config" / "islands_small.json"
+    fallback = project_root / "BOTS" / "IA" / "config" / "islands_small.json"
     return fallback
 
 
@@ -203,7 +203,7 @@ def main() -> int:
             update_json(cfg_path, {"godot_exe": resolved_godot})
             cfg["godot_exe"] = resolved_godot
 
-    state_dir_value = cfg.get("state_dir", "IA/weights/islands")
+    state_dir_value = cfg.get("state_dir", "BOTS/IA/weights/islands")
     state_dir = (project_root / state_dir_value).resolve() if not Path(state_dir_value).is_absolute() else Path(state_dir_value)
     status_path = state_dir / "status.json"
     summary_path = state_dir / "last_summary.json"
@@ -216,7 +216,7 @@ def main() -> int:
 
     orchestrator_cmd = [
         str(python_exe),
-        str(project_root / "tools" / "island_orchestrator.py"),
+        str(project_root / "engine" / "tools" / "island_orchestrator.py"),
         "run",
         "--config",
         str(cfg_path),

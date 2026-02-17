@@ -1,0 +1,16 @@
+{
+  "char_id": "pvp_archer_pack6_shapes__v8",
+  "character_id": "a548aa61-1b0b-42f6-a88c-06214ea96d32",
+  "name": "PvP Archer Pack6 v8",
+  "description": "pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, SILHOUETTE: backpack/tubes create top-heavy shape, BODY: hunched, theme: primal beast-hunter archer, palette: dark brown + bone + ember orange, nocked arrow with glowing tip, emblem: crescent moon glyph, weapon: hand crossbow, oversized arrowhead, reckless grin, glowing charm amulet, head: spiked crown silhouette, face: distinct eyebrows and visible eyes, render: strong 3-tone shading, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading",
+  "lore": "",
+  "style": "style_tribal_beast",
+  "shape": "hunched",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770949373,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `a548aa61-1b0b-42f6-a88c-06214ea96d32`\n**Name:** PvP Archer Pack6 v8\n**Description:** pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, SILHOUETTE: backpack/tubes create top-heavy shape, BODY: hunched, theme: primal beast-hunter archer, palette: dark brown + bone + ember orange, nocked arrow with glowing tip, emblem: crescent moon glyph, weapon: hand crossbow, oversized arrowhead, reckless grin, glowing charm amulet, head: spiked crown silhouette, face: distinct eyebrows and visible eyes, render: strong 3-tone shading, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"a548aa61-1b0b-42f6-a88c-06214ea96d32\")`\n- Queue animations now: `animate_character(character_id=\"a548aa61-1b0b-42f6-a88c-06214ea96d32\", ...)`",
+  "imported_at": 1770949629,
+  "asset_dir": "assets/characters/pvp_archer_pack6_shapes__v8/pixellab",
+  "qa_score": 216.99567133525335
+}

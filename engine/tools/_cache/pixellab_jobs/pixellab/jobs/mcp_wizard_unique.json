@@ -1,0 +1,13 @@
+{
+  "char_id": "mcp_wizard_unique",
+  "character_id": "caa1f1a4-508d-42ea-9d17-4c1f347b0321",
+  "name": "Wizard Purple",
+  "description": "premium game-ready pixel art character for a 2D PvP arena, full-body, strong silhouette, adult heroic proportions (not chibi), wizard with very tall purple hat, gold buckle belt, glowing staff, deep purple robes, cyan arcane glow, mysterious half-mask, hood + half-mask, asymmetric cloak, subtle rune pattern, weapon with arcane sigil, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high contrast 3-tone shading, readable silhouette, distinctive accessories, asymmetry, clear face or intentional mask, no generic simple outfit",
+  "preset": "premium_side_128",
+  "no_animations": true,
+  "created_at": 1770932175,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `caa1f1a4-508d-42ea-9d17-4c1f347b0321`\n**Name:** Wizard Purple\n**Description:** premium game-ready pixel art character for a 2D PvP arena, full-body, strong silhouette, adult heroic proportions (not chibi), wizard with very tall purple hat, gold buckle belt, glowing staff, deep purple robes, cyan arcane glow, mysterious half-mask, hood + half-mask, asymmetric cloak, subtle rune pattern, weapon with arcane sigil, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high contrast 3-tone shading, readable silhouette, distinctive accessories, asymmetry, clear face or intentional mask, no generic simple outfit\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"caa1f1a4-508d-42ea-9d17-4c1f347b0321\")`\n- Queue animations now: `animate_character(character_id=\"caa1f1a4-508d-42ea-9d17-4c1f347b0321\", ...)`",
+  "imported_at": 1770933000,
+  "asset_dir": "assets/characters/mcp_wizard_unique/pixellab",
+  "qa_score": 237.6647965120381
+}

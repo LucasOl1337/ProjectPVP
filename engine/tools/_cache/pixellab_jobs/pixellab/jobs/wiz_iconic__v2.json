@@ -1,0 +1,13 @@
+{
+  "char_id": "wiz_iconic__v2",
+  "character_id": "55d8d8b1-779e-4f46-8dfa-3e6c2a5d83fc",
+  "name": "Wizard Purple v2",
+  "description": "high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard with very tall purple hat, crescent moon hat pin, glowing staff with cracked crystal, floating rune orb, one forearm glowing tattoos, deep purple robes, cyan arcane glow, gold buckle belt, visible glowing eyes, crescent-moon hat pin, masked face with glowing eyes, layered robe with ornate trim, rune-embroidered sash, belt with large buckle, geometric trim, weapon with metallic guard, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit",
+  "preset": "premium_side_128",
+  "no_animations": true,
+  "created_at": 1770932672,
+  "status_preview": "⏳ Character is still being generated (1% complete). ETA: ~296s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 296` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `55d8d8b1-779e-4f46-8dfa-3e6c2a5d83fc`\n**Name:** Wizard Purple v2\n**Description:** high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard with very tall purple hat, crescent moon hat pin, glowing staff with cracked crystal, floating rune orb, one forearm glowing tattoos, deep purple robes, cyan arcane glow, gold buckle belt, visible glowing eyes, crescent-moon hat pin, masked face with glowing eyes, layered robe with ornate trim, rune-embroidered sash, belt with large buckle, geometric trim, weapon with metallic guard, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"55d8d8b1-779e-4f46-8dfa-3e6c2a5d83fc\")`\n- Queue animations now: `animate_character(character_id=\"55d8d8b1-779e-4f46-8dfa-3e6c2a5d83fc\", ...)`",
+  "imported_at": 1770932944,
+  "asset_dir": "assets/characters/wiz_iconic__v2/pixellab",
+  "qa_score": 214.66516182932705
+}

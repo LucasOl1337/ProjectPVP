@@ -1,0 +1,15 @@
+{
+  "char_id": "pvp_archer_pack4_styles__v4",
+  "character_id": "52b23583-6f9c-41e9-aaaf-25e2244e51cc",
+  "name": "PvP Archer Pack4 v4",
+  "description": "pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: bone white + charcoal + teal glow, head: carved mask face, eerie calm, arrow quiver with visible fletching, emblem: arrowhead insignia, weapon: oversized recurve bow, big thematic bow grip, cold calm stare, glowing charm amulet, cloak tails flowing from movement, head: top hat silhouette, face: serene eyes, palette: limited palette: 2 main colors + 1 glow accent, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).",
+  "lore": "",
+  "style": "lol_kindred",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770945477,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `52b23583-6f9c-41e9-aaaf-25e2244e51cc`\n**Name:** PvP Archer Pack4 v4\n**Description:** pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: bone white + charcoal + teal glow, head: carved mask face, eerie calm, arrow quiver with visible fletching, emblem: arrowhead insignia, weapon: oversized recurve bow, big thematic bow grip, cold calm stare, glowing charm amulet, cloak tails flowing from movement, head: top hat silhouette, face: serene eyes, palette: limited palette: 2 main colors + 1 glow accent, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"52b23583-6f9c-41e9-aaaf-25e2244e51cc\")`\n- Queue animations now: `animate_character(character_id=\"52b23583-6f9c-41e9-aaaf-25e2244e51cc\", ...)`",
+  "imported_at": 1770945790,
+  "asset_dir": "assets/characters/pvp_archer_pack4_styles__v4/pixellab",
+  "qa_score": 257.3571643127604
+}

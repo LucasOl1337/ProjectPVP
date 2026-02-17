@@ -1,0 +1,16 @@
+{
+  "char_id": "pvp_archer_pack6_shapes__v6",
+  "character_id": "c1d3cda8-64c0-45ca-a284-3273d97b7f88",
+  "name": "PvP Archer Pack6 v6",
+  "description": "pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, SILHOUETTE: heavy upper-body mass, PROPORTIONS: big shoulders, thick arms, short legs, head: crested kabuto-like helmet silhouette, palette: ink black + bone white + red accent, arrow quiver with visible fletching, emblem: skull mark, weapon: spiritwood bow with paper talismans, big thematic bow grip, cold calm stare, fingerless gloves, face: monocle on one eye, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading",
+  "lore": "",
+  "style": "style_samurai_archer",
+  "shape": "bulky",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770949301,
+  "status_preview": "⏳ Character is still being generated (5% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `c1d3cda8-64c0-45ca-a284-3273d97b7f88`\n**Name:** PvP Archer Pack6 v6\n**Description:** pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, SILHOUETTE: heavy upper-body mass, PROPORTIONS: big shoulders, thick arms, short legs, head: crested kabuto-like helmet silhouette, palette: ink black + bone white + red accent, arrow quiver with visible fletching, emblem: skull mark, weapon: spiritwood bow with paper talismans, big thematic bow grip, cold calm stare, fingerless gloves, face: monocle on one eye, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"c1d3cda8-64c0-45ca-a284-3273d97b7f88\")`\n- Queue animations now: `animate_character(character_id=\"c1d3cda8-64c0-45ca-a284-3273d97b7f88\", ...)`",
+  "imported_at": 1770949484,
+  "asset_dir": "assets/characters/pvp_archer_pack6_shapes__v6/pixellab",
+  "qa_score": 131.37392348772568
+}

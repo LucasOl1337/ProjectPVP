@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 
-SUPER_REWARD_PATH = "res://IA/config/super_reward.json"
+SUPER_REWARD_PATH = "res://BOTS/IA/config/super_reward.json"
 MATCH_RULES_PATH = "IA/config/match_rules_match.json"
 
 
@@ -115,7 +115,7 @@ def ensure_seed(root: Path, seed_path: Path) -> None:
         return
     generated = root / "IA" / "weights" / "seed_genome.json"
     if not generated.exists():
-        cmd = [sys.executable, str(root / "tools" / "make_random_genome.py")]
+        cmd = [sys.executable, str(root / "engine" / "tools" / "make_random_genome.py")]
         subprocess.check_call(cmd, cwd=str(root))
     seed_path.parent.mkdir(parents=True, exist_ok=True)
     seed_path.write_text(generated.read_text(encoding="utf-8"), encoding="utf-8")
@@ -361,7 +361,7 @@ def build_matchup_config(
 
 
 def run_islands(root: Path, cfg_path: Path) -> int:
-    cmd = [sys.executable, str(root / "tools" / "island_orchestrator.py"), "run", "--config", str(cfg_path)]
+    cmd = [sys.executable, str(root / "engine" / "tools" / "island_orchestrator.py"), "run", "--config", str(cfg_path)]
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
     return subprocess.call(cmd, cwd=str(root), env=env)

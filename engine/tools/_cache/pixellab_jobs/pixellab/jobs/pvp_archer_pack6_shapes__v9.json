@@ -1,0 +1,16 @@
+{
+  "char_id": "pvp_archer_pack6_shapes__v9",
+  "character_id": "7d66b5cb-6792-4897-9627-787d85695506",
+  "name": "PvP Archer Pack6 v9",
+  "description": "pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, BODY: slender, SILHOUETTE: longcoat with split tails, weapon: wrist-mounted crossbow that shoots bolts, theme: remorseless monster hunter, arrow quiver with visible fletching, emblem: rune circle, bright bowstring highlight, cocky smirk, torn scarf, focused eyes and sharp expression, head: hood + half-mask silhouette, face: stylized mask with glowing eyes, render: subtle dithering, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading",
+  "lore": "",
+  "style": "lol_vayne",
+  "shape": "longcoat",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770949410,
+  "status_preview": "⏳ Character is still being generated (5% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `7d66b5cb-6792-4897-9627-787d85695506`\n**Name:** PvP Archer Pack6 v9\n**Description:** pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, BODY: slender, SILHOUETTE: longcoat with split tails, weapon: wrist-mounted crossbow that shoots bolts, theme: remorseless monster hunter, arrow quiver with visible fletching, emblem: rune circle, bright bowstring highlight, cocky smirk, torn scarf, focused eyes and sharp expression, head: hood + half-mask silhouette, face: stylized mask with glowing eyes, render: subtle dithering, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"7d66b5cb-6792-4897-9627-787d85695506\")`\n- Queue animations now: `animate_character(character_id=\"7d66b5cb-6792-4897-9627-787d85695506\", ...)`",
+  "imported_at": 1770949699,
+  "asset_dir": "assets/characters/pvp_archer_pack6_shapes__v9/pixellab",
+  "qa_score": 194.76608475933617
+}

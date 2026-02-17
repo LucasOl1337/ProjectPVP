@@ -1,0 +1,30 @@
+{
+  "animations": [
+    {
+      "animation_name": "walk",
+      "template_animation_id": "walking-6-frames",
+      "action_description": "walk cycle, readable footwork, steady posture"
+    },
+    {
+      "animation_name": "running",
+      "template_animation_id": "running-8-frames",
+      "action_description": "run cycle, energetic but controlled, readable silhouette"
+    },
+    {
+      "animation_name": "dash",
+      "template_animation_id": "running-slide",
+      "action_description": "fast dash, low body, strong forward motion"
+    },
+    {
+      "animation_name": "aiming",
+      "template_animation_id": "fight-stance-idle-8-frames",
+      "action_description": "aiming stance, steady, minimal movement, weapon readable"
+    },
+    {
+      "animation_name": "jump",
+      "template_animation_id": "two-footed-jump",
+      "action_description": "quick jump, knees slightly tucked, weapon kept close"
+    }
+  ]
+}
+

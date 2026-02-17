@@ -1,0 +1,7 @@
+{
+  "history_max": 5.0,
+  "log_path": "BOTS/IA/logs/round_stats.csv",
+  "max_kills": 5,
+  "max_seconds": 20.0,
+  "max_steps": 15000
+}

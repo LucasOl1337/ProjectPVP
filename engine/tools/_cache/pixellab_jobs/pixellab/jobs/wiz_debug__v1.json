@@ -1,0 +1,10 @@
+{
+  "char_id": "wiz_debug__v1",
+  "character_id": "88708ac0-5230-4e72-b912-e102a1c8ccb8",
+  "name": "W v1",
+  "description": "high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard, rune-embroidered sash, asymmetric cloak, ornate embroidery, weapon with arcane sigil, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit",
+  "preset": "premium_side_128",
+  "no_animations": true,
+  "created_at": 1770932713,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `88708ac0-5230-4e72-b912-e102a1c8ccb8`\n**Name:** W v1\n**Description:** high-quality dark-fantasy pixel art character sprite for a 2D PvP arena, full-body, strong iconic silhouette, adult heroic proportions (not chibi), wizard, rune-embroidered sash, asymmetric cloak, ornate embroidery, weapon with arcane sigil, crisp pixels, no blur, no anti-aliasing, 1-2px dark outline, high-contrast 3-tone shading, rich materials (leather/metal/cloth), readable at small size, avoid faceless mannequin, avoid generic simple outfit\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"88708ac0-5230-4e72-b912-e102a1c8ccb8\")`\n- Queue animations now: `animate_character(character_id=\"88708ac0-5230-4e72-b912-e102a1c8ccb8\", ...)`"
+}

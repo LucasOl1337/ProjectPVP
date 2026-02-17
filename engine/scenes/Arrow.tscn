@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3]
+
+
+
+[ext_resource type="Script" path="res://engine/mecanicas/arrow.gd" id="1"]
+
+[ext_resource type="Texture2D" path="res://visuals/assets/characters/arrow/custom/crystal_arrow.png" id="2"]
+
+
+
+[sub_resource type="RectangleShape2D" id="1"]
+
+size = Vector2(100, 25)
+
+
+
+[node name="Arrow" type="Area2D"]
+
+script = ExtResource("1")
+
+arrow_texture = ExtResource("2")
+
+
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+shape = SubResource("1")
+
+
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+z_index = 2
+
+scale = Vector2(2, 2)
+
+
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,0 +1,15 @@
+{
+  "char_id": "pvp_archer_pack4_styles__v2",
+  "character_id": "619c6a19-2b1c-4ed2-8e1e-2297ea035ae3",
+  "name": "PvP Archer Pack4 v2",
+  "description": "pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, weapon: organic spiked bow with purple-red glow, theme: corrupted darkin archer, cloak tails flowing from movement, emblem: crescent moon glyph, weapon: repeating crossbow, weapon held forward in hands (not on back), predatory focus, torn scarf, arrow quiver with visible fletching, head: spiked crown silhouette, face: monocle on one eye, palette: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).",
+  "lore": "",
+  "style": "lol_varus",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770945470,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `619c6a19-2b1c-4ed2-8e1e-2297ea035ae3`\n**Name:** PvP Archer Pack4 v2\n**Description:** pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, weapon: organic spiked bow with purple-red glow, theme: corrupted darkin archer, cloak tails flowing from movement, emblem: crescent moon glyph, weapon: repeating crossbow, weapon held forward in hands (not on back), predatory focus, torn scarf, arrow quiver with visible fletching, head: spiked crown silhouette, face: monocle on one eye, palette: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"619c6a19-2b1c-4ed2-8e1e-2297ea035ae3\")`\n- Queue animations now: `animate_character(character_id=\"619c6a19-2b1c-4ed2-8e1e-2297ea035ae3\", ...)`",
+  "imported_at": 1770945784,
+  "asset_dir": "assets/characters/pvp_archer_pack4_styles__v2/pixellab",
+  "qa_score": 206.47510006035571
+}

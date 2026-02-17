@@ -39,7 +39,7 @@ def normalize_bot_name(name: str) -> str:
 
 
 def build_bot_paths(root: Path, bot: str) -> Dict[str, Path]:
-    base = root / "BOTS" / bot
+    base = root / "BOTS" / "profiles" / bot
     return {
         "base": base,
         "profile": root / "BOTS" / f"{bot}.json",
@@ -125,13 +125,13 @@ def build_matchup_config(
 
     cfg = dict(cfg)
 
-    cfg["match_rules_path"] = str(Path("IA") / "config" / "match_rules.json").replace("\\", "/")
+    cfg["match_rules_path"] = str(Path("BOTS") / "IA" / "config" / "match_rules.json").replace("\\", "/")
     cfg.pop("max_steps", None)
     cfg.pop("max_seconds", None)
     cfg.pop("max_kills", None)
 
-    cfg["progress_path"] = str((root / "BOTS" / train_bot / "progress.json").resolve())
-    cfg["league_dir"] = str((Path("BOTS") / train_bot / "league").as_posix())
+    cfg["progress_path"] = str((root / "BOTS" / "profiles" / train_bot / "progress.json").resolve())
+    cfg["league_dir"] = str((Path("BOTS") / "profiles" / train_bot / "league").as_posix())
     cfg["league_max"] = int(cfg.get("league_max", 64))
 
     if opponent == "baseline":
@@ -141,11 +141,11 @@ def build_matchup_config(
         matchup_dir = train_paths["base"] / "matchups" / "baseline"
     else:
         opp = normalize_bot_name(opponent)
-        opp_best = root / "BOTS" / opp / "best_genome.json"
+        opp_best = root / "BOTS" / "profiles" / opp / "best_genome.json"
         if not opp_best.exists():
             raise RuntimeError(f"Oponente sem best_genome: {opp_best}")
         opp_tag = opp
-        opp_meta = read_json(root / "BOTS" / opp / "current_bot.json")
+        opp_meta = read_json(root / "BOTS" / "profiles" / opp / "current_bot.json")
         if opp_meta:
             if "individual" in opp_meta:
                 try:
@@ -163,7 +163,7 @@ def build_matchup_config(
         cfg["opponent_tag"] = opp_tag
         cfg["opponent"] = "best"
         cfg["opponent_load_path"] = str(opp_best)
-        cfg["opponent_pool_dir"] = str((Path("BOTS") / opp / "league").as_posix())
+        cfg["opponent_pool_dir"] = str((Path("BOTS") / "profiles" / opp / "league").as_posix())
         cfg["opponent_pool_max"] = int(cfg.get("opponent_pool_max", 8))
         cfg["opponent_pool_mode"] = str(cfg.get("opponent_pool_mode", "round_robin"))
         cfg["opponent_pool_include_best"] = True
@@ -185,9 +185,9 @@ def interactive_menu(root: Path) -> int:
     default_idx = names.index("default") if "default" in profiles else 0
 
     while True:
-        print("\n=== Treino (Perfis BOTS/) ===")
+        print("\n=== Treino (Perfis BOTS/profiles/) ===")
         print("Indivíduo global: N = (round-1)*workers + (worker_id+1)")
-        print("Arquivos por indivíduo: BOTS/<perfil>/matchups/<oponente>/state/round_xxxx/individuals/")
+        print("Arquivos por indivíduo: BOTS/profiles/<perfil>/matchups/<oponente>/state/round_xxxx/individuals/")
         print("1) Treinar bot selecionado (P1 vs P2)")
         print("2) Treinar bot vs outro bot (alternando P1/P2)")
         print("3) Gerar novo bot")
@@ -211,7 +211,7 @@ def interactive_menu(root: Path) -> int:
         if choice == "1":
             p1_idx = prompt_choice("Selecione o bot a treinar (P1)", names, default_idx)
             train_bot = names[p1_idx]
-            progress_path = root / "BOTS" / train_bot / "progress.json"
+            progress_path = root / "BOTS" / "profiles" / train_bot / "progress.json"
             progress = read_json(progress_path)
             if progress:
                 try:
@@ -257,9 +257,9 @@ def interactive_menu(root: Path) -> int:
 def ensure_seed(root: Path, seed_path: Path) -> None:
     if seed_path.exists():
         return
-    generated = root / "IA" / "weights" / "seed_genome.json"
+    generated = root / "BOTS" / "IA" / "weights" / "seed_genome.json"
     if not generated.exists():
-        cmd = [sys.executable, str(root / "tools" / "make_random_genome.py")]
+        cmd = [sys.executable, str(root / "engine" / "tools" / "make_random_genome.py")]
         subprocess.check_call(cmd, cwd=str(root))
     seed_path.parent.mkdir(parents=True, exist_ok=True)
     seed_path.write_text(generated.read_text(encoding="utf-8"), encoding="utf-8")
@@ -325,12 +325,12 @@ def write_profile_artifacts(root: Path, bot: str, profile: Dict[str, Any]) -> Di
     if not paths["best"].exists():
         paths["best"].write_text(paths["seed"].read_text(encoding="utf-8"), encoding="utf-8")
 
-    base_cfg = read_json(root / "IA" / "config" / "islands_fresh.json")
+    base_cfg = read_json(root / "BOTS" / "IA" / "config" / "islands_fresh.json")
     islands = profile.get("islands", {}) if isinstance(profile.get("islands"), dict) else {}
     cfg = dict(base_cfg)
     cfg.update(islands)
 
-    cfg["match_rules_path"] = str(Path("IA") / "config" / "match_rules.json").replace("\\", "/")
+    cfg["match_rules_path"] = str(Path("BOTS") / "IA" / "config" / "match_rules.json").replace("\\", "/")
     cfg.pop("max_steps", None)
     cfg.pop("max_seconds", None)
     cfg.pop("max_kills", None)
@@ -338,20 +338,20 @@ def write_profile_artifacts(root: Path, bot: str, profile: Dict[str, Any]) -> Di
     cfg["initial_seed"] = str(paths["best"].relative_to(root)).replace("\\", "/")
     cfg["promote_best_path"] = str(paths["best"].relative_to(root)).replace("\\", "/")
     cfg["promote_state_path"] = str(paths["current"].relative_to(root)).replace("\\", "/")
-    cfg["progress_path"] = str((root / "BOTS" / bot / "progress.json").resolve())
-    cfg["league_dir"] = str((Path("BOTS") / bot / "league").as_posix())
+    cfg["progress_path"] = str((root / "BOTS" / "profiles" / bot / "progress.json").resolve())
+    cfg["league_dir"] = str((Path("BOTS") / "profiles" / bot / "league").as_posix())
     cfg["league_max"] = int(cfg.get("league_max", 64))
     cfg["godot_user_args"] = [
-        f"--rewards-path=res://BOTS/{bot}/rewards.json",
-        f"--bot-config-p1=res://BOTS/{bot}/bot_p1.json",
-        f"--bot-config-p2=res://BOTS/{bot}/bot_p2.json",
+        f"--rewards-path=res://BOTS/profiles/{bot}/rewards.json",
+        f"--bot-config-p1=res://BOTS/profiles/{bot}/bot_p1.json",
+        f"--bot-config-p2=res://BOTS/profiles/{bot}/bot_p2.json",
     ]
     write_json(paths["islands_cfg"], cfg)
     return paths
 
 
 def run_islands(root: Path, cfg_path: Path) -> int:
-    cmd = [sys.executable, str(root / "tools" / "island_orchestrator.py"), "run", "--config", str(cfg_path)]
+    cmd = [sys.executable, str(root / "engine" / "tools" / "island_orchestrator.py"), "run", "--config", str(cfg_path)]
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
     return subprocess.call(cmd, cwd=str(root), env=env)

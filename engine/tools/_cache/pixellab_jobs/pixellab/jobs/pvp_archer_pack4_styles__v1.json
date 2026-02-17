@@ -1,0 +1,15 @@
+{
+  "char_id": "pvp_archer_pack4_styles__v1",
+  "character_id": "44d0f11f-e296-4bf2-8501-93f79fd37e28",
+  "name": "PvP Archer Pack4 v1",
+  "description": "pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: icy blue + white + silver, theme: iceborn archer royalty, arm guard bracer, emblem: gear crest, weapon: oversized recurve bow, thick readable bow limbs, predatory focus, fingerless gloves, cloak tails flowing from movement, head: hood + half-mask silhouette, face: asymmetric scar across cheek, palette: two-tone palette with strong accent color, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).",
+  "lore": "",
+  "style": "lol_ashe",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770945467,
+  "status_preview": "⏳ Character is still being generated (5% complete). ETA: ~291s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 291` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `44d0f11f-e296-4bf2-8501-93f79fd37e28`\n**Name:** PvP Archer Pack4 v1\n**Description:** pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: icy blue + white + silver, theme: iceborn archer royalty, arm guard bracer, emblem: gear crest, weapon: oversized recurve bow, thick readable bow limbs, predatory focus, fingerless gloves, cloak tails flowing from movement, head: hood + half-mask silhouette, face: asymmetric scar across cheek, palette: two-tone palette with strong accent color, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"44d0f11f-e296-4bf2-8501-93f79fd37e28\")`\n- Queue animations now: `animate_character(character_id=\"44d0f11f-e296-4bf2-8501-93f79fd37e28\", ...)`",
+  "imported_at": 1770945781,
+  "asset_dir": "assets/characters/pvp_archer_pack4_styles__v1/pixellab",
+  "qa_score": 250.47531622032332
+}

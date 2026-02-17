@@ -1,0 +1,9 @@
+{
+
+  "python_path": "python",
+
+  "script_args": "--host 127.0.0.1",
+
+  "script_path": "engine/tools/training_genetic_ga.py"
+
+}

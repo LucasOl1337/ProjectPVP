@@ -1,0 +1,15 @@
+{
+  "char_id": "pvp_archer_pack4_styles__v6",
+  "character_id": "65fc328e-2bda-4f34-9191-82876042c5a7",
+  "name": "PvP Archer Pack4 v6",
+  "description": "pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: moss green + rust + neon green, head: cracked goggles silhouette, focused eyes and sharp expression, emblem: arrowhead insignia, weapon: spiritwood bow with paper talismans, weapon dominates the silhouette, predatory focus, torn scarf, fingerless draw glove, head: top hat silhouette, face: serene eyes, palette: limited palette: 2 main colors + 1 glow accent, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).",
+  "lore": "",
+  "style": "lol_twitch",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770945483,
+  "status_preview": "⏳ Character is still being generated (0% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `65fc328e-2bda-4f34-9191-82876042c5a7`\n**Name:** PvP Archer Pack4 v6\n**Description:** pixel art PvP archer hero sprite, full-body, iconic silhouette, adult proportions (not chibi). Follow the brief tags (weapon/head/emblem/palette) and make them obvious., archer hero, make it non-generic, iconic silhouette, weapon-first readability, big arrow-shooting weapon HELD IN HANDS, bowstring drawn, arrow nocked, big arrowhead, distinct quiver shape, emblem clearly visible, one asymmetry, palette: moss green + rust + neon green, head: cracked goggles silhouette, focused eyes and sharp expression, emblem: arrowhead insignia, weapon: spiritwood bow with paper talismans, weapon dominates the silhouette, predatory focus, torn scarf, fingerless draw glove, head: top hat silhouette, face: serene eyes, palette: limited palette: 2 main colors + 1 glow accent, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading, readable at small size. Avoid generic soldier armor, avoid plain clothing, avoid melee focus (no swords/axes).\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"65fc328e-2bda-4f34-9191-82876042c5a7\")`\n- Queue animations now: `animate_character(character_id=\"65fc328e-2bda-4f34-9191-82876042c5a7\", ...)`",
+  "imported_at": 1770945795,
+  "asset_dir": "assets/characters/pvp_archer_pack4_styles__v6/pixellab",
+  "qa_score": 236.59716411010632
+}

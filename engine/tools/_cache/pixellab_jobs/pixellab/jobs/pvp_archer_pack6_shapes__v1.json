@@ -1,0 +1,16 @@
+{
+  "char_id": "pvp_archer_pack6_shapes__v1",
+  "character_id": "f22fa568-999c-4902-b738-f07e5925fbaf",
+  "name": "PvP Archer Pack6 v1",
+  "description": "pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, PROPORTIONS: small head, long legs, narrow torso, BODY: very tall and lanky, head: crown/tiara silhouette, palette: icy blue + white + silver, arrow quiver with visible fletching, body: slender long-coat silhouette, flowing tails, emblem: crescent moon glyph, weapon: hextech bolt-bow that shoots arrows, bright bowstring highlight, cold calm stare, rune-embroidered sash, cloak tails flowing from movement, head: slick hair silhouette, face: harsh expression, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading",
+  "lore": "",
+  "style": "lol_ashe",
+  "shape": "lanky",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770948987,
+  "status_preview": "⏳ Character is still being generated (5% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `f22fa568-999c-4902-b738-f07e5925fbaf`\n**Name:** PvP Archer Pack6 v1\n**Description:** pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, PROPORTIONS: small head, long legs, narrow torso, BODY: very tall and lanky, head: crown/tiara silhouette, palette: icy blue + white + silver, arrow quiver with visible fletching, body: slender long-coat silhouette, flowing tails, emblem: crescent moon glyph, weapon: hextech bolt-bow that shoots arrows, bright bowstring highlight, cold calm stare, rune-embroidered sash, cloak tails flowing from movement, head: slick hair silhouette, face: harsh expression, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"f22fa568-999c-4902-b738-f07e5925fbaf\")`\n- Queue animations now: `animate_character(character_id=\"f22fa568-999c-4902-b738-f07e5925fbaf\", ...)`",
+  "imported_at": 1770949466,
+  "asset_dir": "assets/characters/pvp_archer_pack6_shapes__v1/pixellab",
+  "qa_score": 274.31044922401526
+}

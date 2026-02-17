@@ -1,0 +1,16 @@
+{
+  "char_id": "pvp_archer_pack6_shapes__v10",
+  "character_id": "f7ea68b7-6ed9-40f8-b58f-f868903bdcf8",
+  "name": "PvP Archer Pack6 v10",
+  "description": "pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, PROPORTIONS: big shoulders, thick arms, short legs, SILHOUETTE: heavy upper-body mass, detail: vein-like tendrils of corruption, theme: corrupted darkin archer, ranged stance, bowstring pulled, emblem: arrowhead insignia, weapon: hextech bolt-bow that shoots arrows, weapon dominates the silhouette, cold calm stare, spiked shoulder pauldron, nocked arrow with glowing tip, head: very tall hat silhouette, face: stylized mask with glowing eyes, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading",
+  "lore": "",
+  "style": "lol_varus",
+  "shape": "bulky",
+  "preset": "pvp_archer_side_128",
+  "no_animations": true,
+  "created_at": 1770949446,
+  "status_preview": "⏳ Character is still being generated (5% complete). ETA: ~297s\n\n**Download behavior:**\n- Returns HTTP 423 with `Retry-After: 297` header\n- Response body is JSON error (not ZIP) \n- Use `curl --fail` to properly handle this\n- Without `--fail`, you'll save ~100 byte JSON error instead of ZIP\n\n**Character ID:** `f7ea68b7-6ed9-40f8-b58f-f868903bdcf8`\n**Name:** PvP Archer Pack6 v10\n**Description:** pixel art character sprite, full-body, iconic silhouette, readable at 128px, 8-direction side view, archer hero, silhouette-first, weapon held in hands, bowstring drawn, arrow nocked, oversized arrowhead, distinct quiver, clear emblem, one asymmetry, no plain tshirt, no plain pants, PROPORTIONS: big shoulders, thick arms, short legs, SILHOUETTE: heavy upper-body mass, detail: vein-like tendrils of corruption, theme: corrupted darkin archer, ranged stance, bowstring pulled, emblem: arrowhead insignia, weapon: hextech bolt-bow that shoots arrows, weapon dominates the silhouette, cold calm stare, spiked shoulder pauldron, nocked arrow with glowing tip, head: very tall hat silhouette, face: stylized mask with glowing eyes, render: high contrast rim light, crisp pixel clusters, no blur, no anti-aliasing, 1-2px outline, strong 3-tone shading\n**Directions:** 8-directions\n\n**Next steps:**\n- Check status: `get_character(character_id=\"f7ea68b7-6ed9-40f8-b58f-f868903bdcf8\")`\n- Queue animations now: `animate_character(character_id=\"f7ea68b7-6ed9-40f8-b58f-f868903bdcf8\", ...)`",
+  "imported_at": 1770949729,
+  "asset_dir": "assets/characters/pvp_archer_pack6_shapes__v10/pixellab",
+  "qa_score": 145.71667393416382
+}
