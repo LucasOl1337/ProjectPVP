@@ -26,8 +26,11 @@ class_name CharacterData
 @export var action_sfx_paths: Dictionary = {}
 @export var action_sfx_durations: Dictionary = {}
 @export var action_sfx_speeds: Dictionary = {}
+@export var action_sfx_volumes_db: Dictionary = {}
 @export var base_profile: Resource
 @export var action_animation_paths: Dictionary = {}
+@export var action_sprite_scale: Dictionary = {}
+@export var action_sprite_offset: Dictionary = {}
 @export var overrides_stats := false
 @export var move_speed := 240.0
 @export var acceleration := 1600.0

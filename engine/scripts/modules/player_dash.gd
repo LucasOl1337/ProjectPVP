@@ -24,8 +24,6 @@ var needs_ground_reset := false
 var combo_timer := 0.0
 var pending_keys = []
 var dash_cooldowns := {
-	"l1": 0.0,
-	"l2": 0.0,
 	"r1": 0.0,
 	"r2": 0.0
 }
@@ -46,15 +44,6 @@ func update_cooldowns(delta: float) -> void:
 	if combo_timer > 0.0:
 		combo_timer = max(combo_timer - delta, 0.0)
 
-func update_and_get_velocity(delta: float) -> Vector2:
-	if dash_time_left <= 0.0:
-		return Vector2.ZERO
-	dash_time_left -= delta
-	return dash_velocity
-
-func update_grounded(is_on_floor: bool) -> void:
-	if is_on_floor:
-		needs_ground_reset = false
 
 func collect_combo_inputs(pressed: Array) -> Array:
 	if combo_timer <= 0.0:
@@ -72,10 +61,17 @@ func collect_combo_inputs(pressed: Array) -> Array:
 			pending_keys.append(key)
 	return []
 
+func update_and_get_velocity(delta: float) -> Vector2:
+	if dash_time_left <= 0.0:
+		return Vector2.ZERO
+	dash_time_left -= delta
+	return dash_velocity
+
+func update_grounded(is_on_floor: bool) -> void:
+	if is_on_floor:
+		needs_ground_reset = false
+
 func try_trigger(dash_keys: Array, dash_dir: Vector2, move_speed: float) -> bool:
-	# Mesma regra do DashMechanic:
-	# - Se `dash_distance > 0`, calcula a velocidade como distância/duração.
-	# - Em combos, soma distância proporcional ao número de teclas usadas.
 	if needs_ground_reset:
 		return false
 	if dash_time_left > 0.0:
@@ -90,9 +86,11 @@ func try_trigger(dash_keys: Array, dash_dir: Vector2, move_speed: float) -> bool
 	var total_boost := 0.0
 	var used_count := 0
 	for dash_key in dash_keys:
+		if dash_key != "r1" and dash_key != "r2":
+			continue
 		if not dash_cooldowns.has(dash_key):
 			continue
-		if dash_cooldowns[dash_key] > 0.0:
+		if float(dash_cooldowns[dash_key]) > 0.0:
 			continue
 		total_boost += move_speed * dash_multiplier
 		dash_cooldowns[dash_key] = dash_cooldown
@@ -135,4 +133,11 @@ func apply_state(state: Dictionary) -> void:
 	if state.has("pending_keys") and state["pending_keys"] is Array:
 		pending_keys = (state["pending_keys"] as Array).duplicate()
 	if state.has("dash_cooldowns") and state["dash_cooldowns"] is Dictionary:
-		dash_cooldowns = (state["dash_cooldowns"] as Dictionary).duplicate(true)
+		var incoming: Dictionary = state["dash_cooldowns"] as Dictionary
+		for k in dash_cooldowns.keys():
+			if incoming.has(k):
+				dash_cooldowns[k] = float(incoming[k])
+	elif state.has("dash_cooldown_left"):
+		var cd := float(state["dash_cooldown_left"])
+		for k in dash_cooldowns.keys():
+			dash_cooldowns[k] = cd

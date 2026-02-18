@@ -663,16 +663,12 @@ func has_action_animation(action: String) -> bool:
 
 
 func _candidate_action_keys(action: String) -> Array[String]:
-
 	var keys: Array[String] = [action]
-
 	if action in ["jump_start", "jump_air"]:
-
 		keys.append("jump")
-
+	if action == "aim":
+		keys.append("aiming")
 	return keys
-
-
 
 func get_action_animation_duration(action: String, default_duration: float = 0.8) -> float:
 
@@ -725,7 +721,6 @@ func is_dash_anim_active(dash_active: bool) -> bool:
 
 
 func update_animation_timers(delta: float) -> void:
-
 	if shoot_anim_timer > 0.0:
 
 		shoot_anim_timer = max(shoot_anim_timer - delta, 0.0)
@@ -745,10 +740,8 @@ func update_animation_timers(delta: float) -> void:
 	if dash_anim_hold_timer > 0.0:
 
 		dash_anim_hold_timer = max(dash_anim_hold_timer - delta, 0.0)
-
+	update_action_override_state(delta)
 	_update_action_lock_timers(delta)
-
-
 
 func update_visuals(delta: float, dash_active: bool, facing: int) -> void:
 
@@ -918,113 +911,62 @@ func setup_character_sprite() -> void:
 
 	print("[ANIM] === Loading animations for character: %s ===" % resolved_id)
 
-	_load_action_variants(frames, "walk", get_action_animation_speed("walk", 10.0), _animation_paths("walk", [
-
+	_load_action(frames, "walk", get_action_animation_speed("walk", 10.0), [
 		base_path + "animations/walk/"
-
-	], base_path))
-
-	_load_action_variants(
-
-		frames,
-
-		"running",
-
-		get_action_animation_speed("running", get_action_animation_speed("walk", 10.0)),
-
-		_animation_paths("running", [
-
-			base_path + "animations/running/",
-
-			base_path + "animations/run/"
-
-		], base_path)
-
-	)
-
-	_load_action_variants(frames, "dash", get_action_animation_speed("dash", 8.0), _animation_paths("dash", [
-
-		base_path + "animations/dash_magic/",
-
-		base_path + "animations/running-6-frames/",
-
-		base_path + "animations/running-8-frames/",
-
-		base_path + "animations/running-4-frames/"
-
-	], base_path))
-
-	_load_action_variants(frames, "jump_start", get_action_animation_speed("jump_start", 10.0), _animation_paths("jump_start", [
-
-		base_path + "animations/jumping-1/"
-
-	], base_path))
-
-	_load_action_variants(frames, "jump_air", get_action_animation_speed("jump_air", 10.0), _animation_paths("jump_air", [
-
-		base_path + "animations/jumping-2/"
-
-	], base_path))
-
-	_load_action_variants(frames, "shoot", get_action_animation_speed("shoot", 12.0), _animation_paths("shoot", [
-
-		base_path + "animations/throw-object/",
-
-		base_path + "animations/custom-Bow and arrow aiming/"
-
-	], base_path))
-
-	_load_action_variants(frames, "ult", get_action_animation_speed("ult", 12.0), _animation_paths("ult", [
-
-		base_path + "animations/roundhouse-kick/"
-
-	], base_path))
-
-	_load_action_variants(frames, "aim", get_action_animation_speed("aim", 12.0), _animation_paths("aim", [
-
-		base_path + "animations/custom-Bow and arrow aiming/",
-
-		base_path + "animations/throw-object/",
-
-		base_path + "animations/aiming/"
-
-	], base_path))
-
-	_load_action_variants(frames, "melee", get_action_animation_speed("melee", 12.0), _animation_paths("melee", [
-
-		base_path + "animations/lead-jab/",
-
-		base_path + "animations/cross-punch/",
-
-		base_path + "animations/high-kick/"
-
-	], base_path))
-
-	_load_action_variants(frames, "hurt", get_action_animation_speed("hurt", 10.0), _animation_paths("hurt", [
-
-		base_path + "animations/taking-punch/"
-
-	], base_path))
-
-	_load_action_variants(frames, "death", get_action_animation_speed("death", 8.0), _animation_paths("death", [
-
-		base_path + "animations/falling-back-death/"
-
-	], base_path))
-
-	var crouch_paths := _animation_paths("crouch", [
-
-		base_path + "animations/crouching/"
-
 	], base_path)
 
-	_load_action_variants(frames, "crouch", get_action_animation_speed("crouch", 6.0), crouch_paths)
+	_load_action(frames, "running", get_action_animation_speed("running", get_action_animation_speed("walk", 10.0)), [
+		base_path + "animations/running/",
+		base_path + "animations/run/"
+	], base_path)
 
-	var crouch_speed := get_action_animation_speed("crouch", 6.0)
+	_load_action(frames, "dash", get_action_animation_speed("dash", 8.0), [
+		base_path + "animations/dash_magic/",
+		base_path + "animations/running-6-frames/",
+		base_path + "animations/running-8-frames/",
+		base_path + "animations/running-4-frames/"
+	], base_path)
 
-	if crouch_paths.size() > 0:
+	_load_action(frames, "jump_start", get_action_animation_speed("jump_start", 10.0), [
+		base_path + "animations/jumping-1/"
+	], base_path)
 
-		_load_single_animation(frames, crouch_paths[0], "crouch", crouch_speed)
+	_load_action(frames, "jump_air", get_action_animation_speed("jump_air", 10.0), [
+		base_path + "animations/jumping-2/"
+	], base_path)
+
+	_load_action(frames, "shoot", get_action_animation_speed("shoot", 12.0), [
+		base_path + "animations/throw-object/",
+		base_path + "animations/custom-Bow and arrow aiming/"
+	], base_path)
+
+	_load_action(frames, "ult", get_action_animation_speed("ult", 12.0), [
+		base_path + "animations/roundhouse-kick/"
+	], base_path)
+
+	_load_action(frames, "aim", get_action_animation_speed("aim", 12.0), [
+		base_path + "animations/custom-Bow and arrow aiming/",
+		base_path + "animations/throw-object/",
+		base_path + "animations/aiming/"
+	], base_path)
+
+	_load_action(frames, "melee", get_action_animation_speed("melee", 12.0), [
+		base_path + "animations/lead-jab/",
+		base_path + "animations/cross-punch/",
+		base_path + "animations/high-kick/"
+	], base_path)
+
+	_load_action(frames, "hurt", get_action_animation_speed("hurt", 10.0), [
+		base_path + "animations/taking-punch/"
+	], base_path)
+
+	_load_action(frames, "death", get_action_animation_speed("death", 8.0), [
+		base_path + "animations/falling-back-death/"
+	], base_path)
+
+	_load_action(frames, "crouch", get_action_animation_speed("crouch", 6.0), [
+		base_path + "animations/crouching/"
+	], base_path)
 
 	character_sprite.sprite_frames = frames
 
@@ -1651,19 +1593,9 @@ func update_character_sprite(aim_input: Vector2, dash_active: bool, facing: int,
 		character_sprite.flip_h = flip_h
 
 		if character_sprite.animation != anim:
-
 			_apply_animation_offset(anim)
-
-			if action == "dash":
-
-				print("[ANIM] Playing dash animation: '%s' (frames: %d)" % [anim, frames.get_frame_count(anim)])
-
 			character_sprite.play(anim)
-
 		_apply_animation_offset(anim)
-
-
-
 func get_projectile_spawn_offset(direction: Vector2, facing: int) -> Vector2:
 
 	var dir := direction
@@ -1696,7 +1628,7 @@ func play_death_animation(facing: int) -> void:
 
 		return
 
-	var direction = "east" if facing >= 0 else "west"
+	var direction = "right" if facing >= 0 else "left"
 
 	var anim := _pick_animation("death", direction, facing)
 
@@ -1946,11 +1878,46 @@ func _apply_animation_offset(anim_name: String) -> void:
 
 		target = offsets[frame_idx]
 
-	character_sprite.position = target
+	var action := _resolve_action_from_anim(anim_name)
+	var scale_mult := _resolve_action_sprite_scale_multiplier(action)
+	var action_offset := _resolve_action_sprite_offset(action)
+	var final_scale := base_sprite_scale * Vector2(scale_mult, scale_mult)
 
-	character_sprite.scale = base_sprite_scale
+	if scale_mult != 1.0 and character_sprite.sprite_frames != null:
+		var frames: SpriteFrames = character_sprite.sprite_frames
+		var texture := frames.get_frame_texture(anim_name, frame_idx)
+		var used := _texture_used_rect(texture)
+		if texture != null and used.size != Vector2i.ZERO:
+			var texture_size: Vector2 = texture.get_size()
+			var anchor_ratio := _resolve_ground_anchor_ratio(action)
+			var offset_x: float = (used.position.x + used.size.x * 0.5 - texture_size.x * 0.5) * final_scale.x
+			var offset_y: float = (used.position.y + used.size.y * anchor_ratio - texture_size.y * 0.5) * final_scale.y
+			target = Vector2(-offset_x, -offset_y) + _resolve_sprite_anchor_offset()
+
+	character_sprite.position = target + action_offset
+	character_sprite.scale = final_scale
 
 	_update_debug_overlay(anim_name)
+
+
+func _resolve_action_sprite_scale_multiplier(action: String) -> float:
+	if character_data != null:
+		for lookup_action in _candidate_action_keys(action):
+			if character_data.action_sprite_scale.has(lookup_action):
+				var v: Variant = character_data.action_sprite_scale[lookup_action]
+				if v is float or v is int:
+					return max(0.05, float(v))
+	return 1.0
+
+
+func _resolve_action_sprite_offset(action: String) -> Vector2:
+	if character_data != null:
+		for lookup_action in _candidate_action_keys(action):
+			if character_data.action_sprite_offset.has(lookup_action):
+				var v: Variant = character_data.action_sprite_offset[lookup_action]
+				if v is Vector2:
+					return v
+	return Vector2.ZERO
 
 
 
@@ -2346,6 +2313,7 @@ func _pick_animation_with_flip(action: String, direction: String, facing: int) -
 
 		candidates.append({"name": "%s_%s" % [action, fallback_dir], "flip": false})
 
+	candidates.append({"name": action, "flip": facing < 0})
 	candidates.append({"name": action, "flip": false})
 
 	var direction_priority := [canonical_direction, "right", "left", "up", "down", "up_right", "up_left", "down_right", "down_left"]
@@ -2450,51 +2418,112 @@ func _resolve_direction(aim_input: Vector2, use_8_dir: bool, facing: int) -> Str
 
 
 
-func _animation_paths(action: String, defaults: Array[String], base_path: String) -> Array[String]:
+func _load_action(frames: SpriteFrames, action: String, speed: float, defaults: Array[String], base_path: String) -> void:
+	var config := _resolve_action_paths_config(action, defaults, base_path)
+	_load_action_from_config(frames, action, speed, config)
 
-	var resolved: Array[String] = []
 
-	print("[ANIM] _animation_paths called for action '%s'" % action)
+func _resolve_action_paths_config(action: String, defaults: Array[String], base_path: String) -> Dictionary:
+	var shared: Array[String] = []
+	var dirs: Dictionary = {}
 
 	if character_data != null:
-
 		for lookup_action in _candidate_action_keys(action):
-
 			if not character_data.action_animation_paths.has(lookup_action):
-
 				continue
-
 			var custom: Variant = character_data.action_animation_paths[lookup_action]
+			if custom is Dictionary:
+				for raw_key in (custom as Dictionary).keys():
+					var key := str(raw_key)
+					var value: Variant = (custom as Dictionary)[raw_key]
+					if key == "" or key == "shared":
+						_shared_append_paths(shared, value, base_path)
+					else:
+						var dir_key := _normalize_direction_key(key)
+						if dir_key == "":
+							continue
+						if not dirs.has(dir_key):
+							dirs[dir_key] = []
+						_shared_append_paths(dirs[dir_key], value, base_path)
+			else:
+				_shared_append_paths(shared, custom, base_path)
 
-			if custom is Array:
+	if shared.is_empty():
+		for p in defaults:
+			shared.append(_resolve_animation_path(p, base_path))
 
-				for path in custom:
+	return {"shared": shared, "dirs": dirs}
 
-					if path is String:
 
-						var converted := _resolve_animation_path(path, base_path)
-
-						if converted != "":
-
-							resolved.append(converted)
-
-			elif custom is String:
-
-				var converted := _resolve_animation_path(custom, base_path)
-
+func _shared_append_paths(out: Array, value: Variant, base_path: String) -> void:
+	if value is Array:
+		for v in value:
+			if v is String:
+				var converted := _resolve_animation_path(str(v), base_path)
 				if converted != "":
+					out.append(converted)
+		return
+	if value is String:
+		var converted := _resolve_animation_path(str(value), base_path)
+		if converted != "":
+			out.append(converted)
 
-					resolved.append(converted)
 
-	if not resolved.is_empty():
+func _normalize_direction_key(key: String) -> String:
+	var k := key.strip_edges().to_lower()
+	match k:
+		"right", "r", "east", "e":
+			return "right"
+		"left", "l", "west", "w":
+			return "left"
+		"up", "u", "north", "n":
+			return "up"
+		"down", "d", "south", "s":
+			return "down"
+		"up_right", "upright", "ne", "northeast", "north_east":
+			return "up_right"
+		"up_left", "upleft", "nw", "northwest", "north_west":
+			return "up_left"
+		"down_right", "downright", "se", "southeast", "south_east":
+			return "down_right"
+		"down_left", "downleft", "sw", "southwest", "south_west":
+			return "down_left"
+		_:
+			return ""
 
-		print("[ANIM] Using custom paths for '%s': %s" % [action, resolved])
 
-		return resolved
+func _load_action_from_config(frames: SpriteFrames, action: String, speed: float, config: Dictionary) -> void:
+	var dirs: Dictionary = config.get("dirs", {})
+	var shared: Array = config.get("shared", [])
 
-	print("[ANIM] Using default paths for '%s': %s" % [action, defaults])
+	var loaded_any := false
+	var loaded_dirs := false
 
-	return defaults
+	if dirs != null and not dirs.is_empty():
+		for dir_key in dirs.keys():
+			var paths: Variant = dirs[dir_key]
+			if not (paths is Array):
+				continue
+			for p in paths:
+				var folder_path := str(p)
+				if folder_path == "":
+					continue
+				var anim_name := "%s_%s" % [action, str(dir_key)]
+				if _load_frames_from_folder(frames, anim_name, folder_path):
+					frames.set_animation_speed(anim_name, speed)
+					loaded_any = true
+					loaded_dirs = true
+					break
+
+	if shared != null and not shared.is_empty():
+		_load_action_variants(frames, action, speed, shared)
+		loaded_any = loaded_any or (frames.has_animation(action) and frames.get_frame_count(action) > 0)
+
+	if loaded_dirs:
+		_ensure_action_fallback(frames, action)
+		_ensure_direction_fallbacks(frames, action)
+	elif loaded_any:
+		_ensure_action_fallback(frames, action)
 
 
 
@@ -2663,17 +2692,6 @@ func _load_animation_set(frames: SpriteFrames, base_path: String, action: String
 		if not frames.has_animation(action) or frames.get_frame_count(action) == 0:
 
 			_copy_animation(frames, shared_animation, action)
-
-		for dir_name in DIRECTION_FOLDER_ALIASES.keys():
-
-			var animation_name := "%s_%s" % [action, dir_name]
-
-			if frames.has_animation(animation_name) and frames.get_frame_count(animation_name) > 0:
-
-				continue
-
-			_copy_animation(frames, shared_animation, animation_name)
-
 		return true
 
 

@@ -895,6 +895,20 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		return
 
+	if dev_mode_enabled and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F5:
+		_dev_hot_reload_mechanics()
+		var viewport := get_viewport()
+		if viewport:
+			viewport.set_input_as_handled()
+		return
+
+	if dev_mode_enabled and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F6:
+		_reload_current_scene()
+		var viewport := get_viewport()
+		if viewport:
+			viewport.set_input_as_handled()
+		return
+
 	if dev_mode_enabled and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_1 and event.alt_pressed:
 
 		_dev_hot_reload_mechanics()
@@ -933,6 +947,9 @@ func _dev_reload_script(path: String) -> void:
 	var script_res: Variant = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
 	if script_res and script_res.has_method("reload"):
 		script_res.call("reload", false)
+	if DevDebug and path == "res://engine/mecanicas/dash.gd":
+		var mtime := FileAccess.get_modified_time(path) if FileAccess.file_exists(path) else 0
+		DevDebug.log_event("hot_reload", "dash.gd mtime=%d" % int(mtime))
 
 
 

@@ -28,6 +28,10 @@ DevDebug="*res://engine/scripts/modules/dev_debug.gd"
 window/size/viewport_width=2560
 window/size/viewport_height=1440
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/anim_action_mapper/plugin.cfg")
+
 [gameplay]
 
 global_gravity_scale=1.0

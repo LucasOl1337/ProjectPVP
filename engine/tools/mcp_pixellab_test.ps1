@@ -68,17 +68,29 @@ $notifBody = ($notifBodyObj | ConvertTo-Json -Depth 4 -Compress)
 $notifResp = Invoke-McpJsonRpc -Url $url -Headers $baseHeaders -Body $notifBody
 Write-Host ('[MCP] notifications/initialized status=' + $notifResp.StatusCode)
 
-$toolsBodyObj = @{ jsonrpc='2.0'; id=2; method='tools/list'; params=@{} }
-$toolsBody = ($toolsBodyObj | ConvertTo-Json -Depth 6 -Compress)
-$toolsResp = Invoke-McpJsonRpc -Url $url -Headers $baseHeaders -Body $toolsBody
-Write-Host ('[MCP] tools/list status=' + $toolsResp.StatusCode)
+$toolsMethods = @('engine/tools/list','tools/list')
+$toolsResp = $null
+$toolsMethodUsed = $null
+foreach ($m in $toolsMethods) {
+  $toolsBodyObj = @{ jsonrpc='2.0'; id=2; method=$m; params=@{} }
+  $toolsBody = ($toolsBodyObj | ConvertTo-Json -Depth 6 -Compress)
+  try {
+    $toolsResp = Invoke-McpJsonRpc -Url $url -Headers $baseHeaders -Body $toolsBody
+    $toolsMethodUsed = $m
+    break
+  } catch {
+    continue
+  }
+}
+if (-not $toolsResp) { throw 'Falha ao chamar tools/list (tentou engine/tools/list e tools/list)' }
+Write-Host ('[MCP] ' + $toolsMethodUsed + ' status=' + $toolsResp.StatusCode)
 
 $messages = Get-McpJsonRpcFromResponseText -Text $toolsResp.Content
 $payload = $null
 foreach ($m in $messages) {
   if ($m -and $m.id -eq 2 -and $m.result -and $m.result.tools) { $payload = $m; break }
 }
-if (-not $payload) { throw 'tools/list não retornou payload parseável' }
+if (-not $payload) { throw ($toolsMethodUsed + ' não retornou payload parseável') }
 
 $names = @($payload.result.tools | ForEach-Object { $_.name })
 Write-Host ('[MCP] tools_count=' + $names.Count)

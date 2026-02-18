@@ -18,9 +18,9 @@ class_name DashMechanic
 # - Se `dash_distance > 0`, a velocidade do dash vira: `dash_distance / dash_duration`.
 # - Em combos (ex.: 2 dashes no mesmo trigger), a distância soma: `dash_distance * used_count`.
 
-var dash_multiplier := 5
+var dash_multiplier := 1.8
 var dash_duration := 0.12
-var dash_cooldown := 5
+var dash_cooldown := 0.45
 var dash_distance := 100
 var upward_multiplier := 0.5
 var combo_window := 0.05
@@ -31,11 +31,62 @@ var needs_ground_reset := false
 var combo_timer := 0.0
 var pending_keys: Array = []
 var dash_cooldowns := {
-	"l1": 0.0,
-	"l2": 0.0,
 	"r1": 0.0,
 	"r2": 0.0
 }
+
+func dev_apply_config_from_source(path: String = "res://engine/mecanicas/dash.gd") -> Dictionary:
+	var result := {
+		"ok": false,
+		"path": path,
+		"global_path": ProjectSettings.globalize_path(path),
+		"applied": {},
+		"error": ""
+	}
+
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		result["error"] = "Não foi possível abrir arquivo"
+		return result
+	var text := file.get_as_text()
+	file.close()
+
+	var rx := RegEx.new()
+	var err := rx.compile("^\\s*var\\s+(dash_multiplier|dash_duration|dash_cooldown|dash_distance|upward_multiplier|combo_window)\\s*:?=\\s*([+-]?(?:\\d+\\.?\\d*|\\d*\\.?\\d+))\\s*$")
+	if err != OK:
+		result["error"] = "Falha ao compilar regex"
+		return result
+
+	var applied: Dictionary = {}
+	for line in text.split("\n"):
+		var m := rx.search(line)
+		if m == null:
+			continue
+		var key := String(m.get_string(1))
+		var value := float(m.get_string(2))
+		applied[key] = value
+
+	if applied.is_empty():
+		result["error"] = "Nenhuma chave encontrada no arquivo"
+		return result
+
+	if applied.has("dash_multiplier"):
+		dash_multiplier = float(applied["dash_multiplier"])
+	if applied.has("dash_duration"):
+		dash_duration = float(applied["dash_duration"])
+	if applied.has("dash_cooldown"):
+		dash_cooldown = float(applied["dash_cooldown"])
+	if applied.has("dash_distance"):
+		dash_distance = float(applied["dash_distance"])
+	if applied.has("upward_multiplier"):
+		upward_multiplier = float(applied["upward_multiplier"])
+	if applied.has("combo_window"):
+		combo_window = float(applied["combo_window"])
+	_normalize_config()
+
+	result["ok"] = true
+	result["applied"] = applied.duplicate(true)
+	return result
 
 func configure(mult: float, duration: float, cooldown: float, distance: float = -1.0) -> void:
 	# Método opcional para configurar em runtime.
@@ -56,31 +107,17 @@ func _normalize_config() -> void:
 	dash_cooldown = max(dash_cooldown, 0.0)
 	dash_multiplier = max(dash_multiplier, 0.0)
 	dash_distance = max(dash_distance, 0.0)
+	combo_window = max(combo_window, 0.0)
 
 func update_cooldowns(delta: float) -> void:
-	# Atualiza cooldown das teclas de dash e janela de combo.
 	for key in dash_cooldowns.keys():
 		var time_left := float(dash_cooldowns[key]) - delta
 		dash_cooldowns[key] = max(time_left, 0.0)
 	if combo_timer > 0.0:
 		combo_timer = max(combo_timer - delta, 0.0)
 
-func update_and_get_velocity(delta: float) -> Vector2:
-	# Enquanto estiver dashing, retorna a velocidade do dash.
-	# Quando acaba o tempo, retorna Vector2.ZERO.
-	if dash_time_left <= 0.0:
-		return Vector2.ZERO
-	dash_time_left -= delta
-	return dash_velocity
-
-func update_grounded(is_on_floor: bool) -> void:
-	# Evita “dash infinito”: depois de um dash, exige tocar o chão para liberar novamente.
-	if is_on_floor:
-		needs_ground_reset = false
 
 func collect_combo_inputs(pressed: Array) -> Array:
-	# Agrupa inputs dentro de uma pequena janela para permitir combos
-	# (ex.: apertar 2 botões de dash quase juntos).
 	if combo_timer <= 0.0:
 		if pending_keys.is_empty():
 			if pressed.is_empty():
@@ -95,6 +132,19 @@ func collect_combo_inputs(pressed: Array) -> Array:
 		if not pending_keys.has(key):
 			pending_keys.append(key)
 	return []
+
+func update_and_get_velocity(delta: float) -> Vector2:
+	# Enquanto estiver dashing, retorna a velocidade do dash.
+	# Quando acaba o tempo, retorna Vector2.ZERO.
+	if dash_time_left <= 0.0:
+		return Vector2.ZERO
+	dash_time_left -= delta
+	return dash_velocity
+
+func update_grounded(is_on_floor: bool) -> void:
+	# Evita “dash infinito”: depois de um dash, exige tocar o chão para liberar novamente.
+	if is_on_floor:
+		needs_ground_reset = false
 
 func try_trigger(dash_keys: Array, dash_dir: Vector2, move_speed: float) -> bool:
 	# Tenta iniciar um dash.
@@ -115,9 +165,11 @@ func try_trigger(dash_keys: Array, dash_dir: Vector2, move_speed: float) -> bool
 	var total_boost := 0.0
 	var used_count := 0
 	for dash_key in dash_keys:
+		if dash_key != "r1" and dash_key != "r2":
+			continue
 		if not dash_cooldowns.has(dash_key):
 			continue
-		if dash_cooldowns[dash_key] > 0.0:
+		if float(dash_cooldowns[dash_key]) > 0.0:
 			continue
 		total_boost += move_speed * dash_multiplier
 		dash_cooldowns[dash_key] = dash_cooldown
@@ -160,4 +212,11 @@ func apply_state(state: Dictionary) -> void:
 	if state.has("pending_keys") and state["pending_keys"] is Array:
 		pending_keys = (state["pending_keys"] as Array).duplicate()
 	if state.has("dash_cooldowns") and state["dash_cooldowns"] is Dictionary:
-		dash_cooldowns = (state["dash_cooldowns"] as Dictionary).duplicate(true)
+		var incoming: Dictionary = state["dash_cooldowns"] as Dictionary
+		for k in dash_cooldowns.keys():
+			if incoming.has(k):
+				dash_cooldowns[k] = float(incoming[k])
+	elif state.has("dash_cooldown_left"):
+		var cd := float(state["dash_cooldown_left"])
+		for k in dash_cooldowns.keys():
+			dash_cooldowns[k] = cd

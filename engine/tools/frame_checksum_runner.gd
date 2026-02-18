@@ -16,7 +16,7 @@ const DEFAULT_RUNS := 2
 
 const DEFAULT_SEED := 1337
 
-const DASH_KEYS := ["l1", "l2", "r1", "r2"]
+const DASH_KEYS := ["r1", "r2"]
 
 
 
@@ -289,6 +289,3 @@ func _build_frame_dict(rng: RandomNumberGenerator, player_id: int, frame_number:
 		}
 
 	}
-
-
-

@@ -80,6 +80,9 @@ var _dash_debug_inputs: Array = []
 
 var max_arrows := 5
 
+var _dev_char_reload_timer := 0.0
+var _dev_char_last_mtime := 0
+
 func dev_hot_reload_mechanics() -> void:
 	var was_dash_state := dash.get_state() if dash and dash.has_method("get_state") else {}
 	var was_shooter_state := shooter.get_state() if shooter and shooter.has_method("get_state") else {}
@@ -100,6 +103,8 @@ func dev_hot_reload_mechanics() -> void:
 		if dash_script.has_method("reload"):
 			dash_script.call("reload", false)
 		dash = (dash_script as Script).new()
+		if dash.has_method("dev_apply_config_from_source"):
+			dash.dev_apply_config_from_source("res://engine/mecanicas/dash.gd")
 		if dash.has_method("_normalize_config"):
 			dash.call("_normalize_config")
 		if was_dash_state is Dictionary and was_dash_state.has("needs_ground_reset"):
@@ -486,6 +491,7 @@ func _make_collision_shapes_unique() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_dev_hot_reload_character_visuals(delta)
 
 	input_reader.capture()
 
@@ -552,6 +558,8 @@ func _physics_process(delta: float) -> void:
 		var dash_anim_duration := visuals.get_action_animation_duration("dash", 0.3)
 
 		visuals.hold_dash_animation(dash_anim_duration)
+		if action_sfx_players.has("dash"):
+			_play_action_sfx("dash")
 
 		_dash_debug_pending = true
 		_dash_debug_pos_before = global_position
@@ -604,7 +612,8 @@ func _physics_process(delta: float) -> void:
 				arrows = max(arrows - 1, 0)
 				_update_ammo_ui()
 				_play_shoot_sfx()
-				visuals.trigger_shoot_animation(0.6)
+				var shoot_anim_duration := visuals.get_action_animation_duration("shoot", 0.6)
+				visuals.trigger_shoot_animation(shoot_anim_duration)
 
 
 	visuals.update_animation_timers(delta)
@@ -669,6 +678,33 @@ func _physics_process(delta: float) -> void:
 
 	_check_head_stomp()
 
+
+func _dev_hot_reload_character_visuals(delta: float) -> void:
+	if not OS.has_feature("editor"):
+		return
+	if character_data == null:
+		return
+	var path := String(character_data.resource_path)
+	if path == "" or not FileAccess.file_exists(path):
+		return
+	_dev_char_reload_timer -= delta
+	if _dev_char_reload_timer > 0.0:
+		return
+	_dev_char_reload_timer = 0.5
+	var mtime := int(FileAccess.get_modified_time(path))
+	if mtime <= 0 or mtime == _dev_char_last_mtime:
+		return
+	_dev_char_last_mtime = mtime
+	if CharacterRegistry:
+		CharacterRegistry.reload_cache()
+	var reloaded: Variant = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE)
+	if reloaded is CharacterData:
+		character_data = reloaded
+		visuals.set_character_data(character_data)
+		_setup_action_sfx()
+		visuals.setup_character_sprite()
+		visuals.align_hitbox_to_sprite()
+		visuals.cache_animation_offsets()
 	
 
 
@@ -1000,7 +1036,9 @@ func _update_ammo_ui() -> void:
 
 
 func _play_shoot_sfx() -> void:
-
+	if action_sfx_players.has("shoot"):
+		_play_action_sfx("shoot")
+		return
 	_play_tone(shoot_sfx, shoot_stream, 780.0, 0.12)
 
 
@@ -1045,6 +1083,8 @@ func _play_action_sfx(action: String) -> void:
 
 	var playback_duration := _resolve_action_sfx_duration(key)
 
+	var volume_db := _resolve_action_sfx_volume_db(key)
+
 	if playback_speed > 0.0:
 
 		audio_player.pitch_scale = playback_speed
@@ -1052,6 +1092,8 @@ func _play_action_sfx(action: String) -> void:
 	else:
 
 		audio_player.pitch_scale = 1.0
+
+	audio_player.volume_db = volume_db
 
 	audio_player.stop()
 
@@ -1185,7 +1227,7 @@ func _setup_action_sfx() -> void:
 
 		player.bus = "Master"
 
-		player.volume_db = -2.0
+		player.volume_db = _resolve_action_sfx_volume_db(key)
 
 		add_child(player)
 
@@ -1340,6 +1382,14 @@ func _resolve_action_sfx_speed(action: String) -> float:
 			return max(0.05, float(value))
 
 	return 1.0
+
+
+func _resolve_action_sfx_volume_db(action: String) -> float:
+	if character_data != null and character_data.action_sfx_volumes_db != null and character_data.action_sfx_volumes_db.has(action):
+		var value: Variant = character_data.action_sfx_volumes_db[action]
+		if value is float or value is int:
+			return float(value)
+	return -2.0
 
 
 

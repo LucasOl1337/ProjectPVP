@@ -1932,6 +1932,10 @@ class McpClient:
 
         self.protocol_version = protocol_version
 
+        self._method_tools_list = "engine/tools/list"
+
+        self._method_tools_call = "engine/tools/call"
+
 
 
     def _headers(self) -> dict[str, str]:
@@ -2005,66 +2009,141 @@ class McpClient:
         self._post({"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}})
 
 
-
-    def tools_list(self) -> list[dict[str, Any]]:
-
-        status, body = self._post({"jsonrpc": "2.0", "id": 2, "method": "engine/tools/list", "params": {}})
-
-        if status < 200 or status >= 300:
-
-            raise RuntimeError(f"engine/tools/list HTTP {status}: {body[:400]}")
-
-        messages = _extract_jsonrpc_messages(body)
+    def _is_method_not_found(self, messages: list[dict[str, Any]], call_id: int) -> bool:
 
         for m in messages:
 
-            if m.get("id") == 2 and isinstance(m.get("result"), dict):
+            if m.get("id") != call_id:
 
-                tools = m["result"].get("tools")
+                continue
 
-                if isinstance(tools, list):
+            err = m.get("error")
 
-                    return [t for t in tools if isinstance(t, dict)]
+            if isinstance(err, dict) and err.get("code") == -32601:
 
-        raise RuntimeError(f"engine/tools/list sem tools: {body[:400]}")
+                return True
+
+            if isinstance(err, str) and "not found" in err.lower():
+
+                return True
+
+            if isinstance(err, dict):
+
+                msg = err.get("message")
+
+                if isinstance(msg, str) and "not found" in msg.lower():
+
+                    return True
+
+        return False
+
+
+
+    def tools_list(self) -> list[dict[str, Any]]:
+
+        call_id = 2
+
+        methods = [self._method_tools_list]
+
+        if self._method_tools_list != "tools/list":
+
+            methods.append("tools/list")
+
+        for method in methods:
+
+            status, body = self._post({"jsonrpc": "2.0", "id": call_id, "method": method, "params": {}})
+
+            if status < 200 or status >= 300:
+
+                if status in (404, 405):
+
+                    continue
+
+                raise RuntimeError(f"{method} HTTP {status}: {body[:400]}")
+
+            messages = _extract_jsonrpc_messages(body)
+
+            if self._is_method_not_found(messages, call_id):
+
+                continue
+
+            for m in messages:
+
+                if m.get("id") == call_id and isinstance(m.get("result"), dict):
+
+                    tools = m["result"].get("tools")
+
+                    if isinstance(tools, list):
+
+                        self._method_tools_list = method
+
+                        return [t for t in tools if isinstance(t, dict)]
+
+        raise RuntimeError(f"tools_list sem tools (tentou {methods}): {body[:400]}")
 
 
 
     def tools_call(self, name: str, arguments: dict[str, Any], call_id: int) -> dict[str, Any]:
 
-        payload = {
+        methods = [self._method_tools_call]
 
-            "jsonrpc": "2.0",
+        if self._method_tools_call != "tools/call":
 
-            "id": call_id,
+            methods.append("tools/call")
 
-            "method": "engine/tools/call",
+        last_body = ""
 
-            "params": {"name": name, "arguments": arguments},
+        last_status = 0
 
-        }
+        for method in methods:
 
-        status, body = self._post(payload)
+            payload = {
 
-        if status < 200 or status >= 300:
+                "jsonrpc": "2.0",
 
-            raise RuntimeError(f"engine/tools/call {name} HTTP {status}: {body[:400]}")
+                "id": call_id,
 
-        messages = _extract_jsonrpc_messages(body)
+                "method": method,
 
-        for m in messages:
+                "params": {"name": name, "arguments": arguments},
 
-            if m.get("id") == call_id:
+            }
+
+            status, body = self._post(payload)
+
+            last_status, last_body = status, body
+
+            if status < 200 or status >= 300:
+
+                if status in (404, 405):
+
+                    continue
+
+                raise RuntimeError(f"{method} {name} HTTP {status}: {body[:400]}")
+
+            messages = _extract_jsonrpc_messages(body)
+
+            if self._is_method_not_found(messages, call_id):
+
+                continue
+
+            for m in messages:
+
+                if m.get("id") != call_id:
+
+                    continue
 
                 if isinstance(m.get("result"), dict):
+
+                    self._method_tools_call = method
 
                     return m["result"]
 
                 if m.get("error"):
 
-                    raise RuntimeError(f"engine/tools/call {name} error: {m['error']}")
+                    raise RuntimeError(f"{method} {name} error: {m['error']}")
 
-        raise RuntimeError(f"engine/tools/call {name} sem resposta id={call_id}: {body[:400]}")
+        raise RuntimeError(f"tools_call {name} sem resposta id={call_id} (HTTP {last_status}): {last_body[:400]}")
 
 
 
@@ -2596,9 +2675,17 @@ def cmd_submit(
 
             )
 
-        except Exception:
+        except Exception as e:
 
-            pass
+            print(
+
+                f"animate_failed idx={idx} name={job.get('animation_name')} template={templ} err={e}",
+
+                file=sys.stderr,
+
+                flush=True,
+
+            )
 
 
 
@@ -3979,4 +4066,3 @@ def main() -> None:
 if __name__ == "__main__":
 
     main()
-

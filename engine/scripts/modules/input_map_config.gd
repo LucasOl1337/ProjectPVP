@@ -21,13 +21,14 @@ func apply() -> void:
 	_reset_action("p2_ult")
 	_reset_action("p2_triangle")
 	_reset_action("p1_dash_l1")
-	_reset_action("p1_dash_l2")
 	_reset_action("p1_dash_r1")
 	_reset_action("p1_dash_r2")
-	_reset_action("p2_dash_l1")
-	_reset_action("p2_dash_l2")
 	_reset_action("p2_dash_r1")
 	_reset_action("p2_dash_r2")
+	_erase_action("p1_dash_l1")
+	_erase_action("p1_dash_l2")
+	_erase_action("p2_dash_l1")
+	_erase_action("p2_dash_l2")
 
 	_add_key_action("p1_left", "A")
 	_add_key_action("p1_right", "D")
@@ -63,9 +64,7 @@ func apply() -> void:
 	_add_joypad_button("p1_ult", 1, 0)
 	_add_joypad_button("p1_triangle", 3, 0)
 	_add_joypad_button("p1_jump", 11, 0)
-	_add_joypad_button("p1_dash_l1", 9, 0)
 	_add_joypad_button("p1_dash_r1", 10, 0)
-	_add_joypad_axis("p1_dash_l2", 4, 1.0, 0)
 	_add_joypad_axis("p1_dash_r2", 5, 1.0, 0)
 
 	_add_joypad_axis("p2_left", 0, -1.0, 1)
@@ -82,15 +81,17 @@ func apply() -> void:
 	_add_joypad_button("p2_ult", 1, 1)
 	_add_joypad_button("p2_triangle", 3, 1)
 	_add_joypad_button("p2_jump", 11, 1)
-	_add_joypad_button("p2_dash_l1", 9, 1)
 	_add_joypad_button("p2_dash_r1", 10, 1)
-	_add_joypad_axis("p2_dash_l2", 4, 1.0, 1)
 	_add_joypad_axis("p2_dash_r2", 5, 1.0, 1)
 
 func _reset_action(action: String) -> void:
 	if not InputMap.has_action(action):
 		InputMap.add_action(action)
 	InputMap.action_erase_events(action)
+
+func _erase_action(action: String) -> void:
+	if InputMap.has_action(action):
+		InputMap.erase_action(action)
 
 func _add_key_action(action: String, key_name: String) -> void:
 	var keycode := OS.find_keycode_from_string(key_name)

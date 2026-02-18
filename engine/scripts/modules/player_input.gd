@@ -336,10 +336,6 @@ func _read_aim_input() -> Vector2:
 
 func _read_dash_pressed() -> Array:
 	var pressed := []
-	if _is_action_just_pressed_safe(dash_action("l1")):
-		pressed.append("l1")
-	if _is_action_just_pressed_safe(dash_action("l2")):
-		pressed.append("l2")
 	if _is_action_just_pressed_safe(dash_action("r1")):
 		pressed.append("r1")
 	if _is_action_just_pressed_safe(dash_action("r2")):
