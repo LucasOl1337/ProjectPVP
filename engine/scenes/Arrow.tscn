@@ -1,39 +1,21 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://bvya6qx7v3oow"]
 
-
-
-[ext_resource type="Script" path="res://engine/mecanicas/arrow.gd" id="1"]
-
-[ext_resource type="Texture2D" path="res://visuals/assets/characters/arrow/custom/crystal_arrow.png" id="2"]
-
-
+[ext_resource type="Script" uid="uid://cwb310wd4py0e" path="res://engine/mecanicas/arrow.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ckhg775n43jn5" path="res://visuals/assets/characters/arrow/custom/crystal_arrow.png" id="2"]
 
 [sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(68, 15.5)
 
-size = Vector2(100, 25)
-
-
-
-[node name="Arrow" type="Area2D"]
-
+[node name="Arrow" type="Area2D" unique_id=1973669022]
 script = ExtResource("1")
-
 arrow_texture = ExtResource("2")
 
-
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=563100943]
+position = Vector2(-16, -4.75)
 shape = SubResource("1")
 
-
-
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
-
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=2145542620]
 z_index = 2
-
 scale = Vector2(2, 2)
 
-
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=72115513]

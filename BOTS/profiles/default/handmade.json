@@ -19,6 +19,37 @@
 		"sample_every_steps": 10,
 		"include_observation": false
 	},
+	"sensors": {
+		"description": "Sensores de cenário (raycasts) usados pelo bot",
+		"enabled": true,
+		"mask": 1,
+		"front_wall_distance": 34.0,
+		"front_wall_y_offsets": [-34.0, -18.0],
+		"ground_distance": 220.0,
+		"ceiling_distance": 120.0,
+		"ledge_probe_x": 28.0,
+		"ledge_probe_down": 260.0,
+		"reload_interval_ms": 500
+	},
+	"objectives": {
+		"description": "Camada de objetivos (antes das regras). Regras podem filtrar por objective_is.",
+		"enabled": true,
+		"pick_interval_ms": 80,
+		"collect_arrow": {
+			"enabled": true,
+			"min_self_arrows": 1,
+			"max_arrow_distance": 520.0,
+			"prefer_when_opponent_distance_gt": 160.0
+		},
+		"recover_height": {
+			"enabled": true,
+			"dy_gt": 220.0
+		},
+		"safety": {
+			"avoid_ledges": true,
+			"avoid_walls": true
+		}
+	},
 	"rules": [
 		{
 			"id": "recover_low",
@@ -30,6 +61,18 @@
 				"jump": true,
 				"aim": "toward",
 				"axis": "toward"
+			}
+		},
+		{
+			"id": "avoid_ledge",
+			"description": "Se tiver borda na frente, para para nao cair",
+			"when": {
+				"self_sensor_ledge_ahead": true,
+				"self_on_floor": true
+			},
+			"do": {
+				"axis": "stop",
+				"aim": "toward"
 			}
 		},
 		{

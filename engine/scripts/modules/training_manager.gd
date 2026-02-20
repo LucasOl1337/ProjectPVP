@@ -160,6 +160,19 @@ var force_external_policies := false
 
 var external_policies_applied := false
 
+var external_control_players := {
+	1: true,
+	2: true
+}
+
+func set_external_control_players(player_ids: Array) -> void:
+	var out := {1: false, 2: false}
+	for v in player_ids:
+		var id := int(v)
+		if id == 1 or id == 2:
+			out[id] = true
+	external_control_players = out
+
 
 
 func _get_dev_debug() -> Node:
@@ -512,11 +525,11 @@ func step(delta: float) -> void:
 
 		var needs_external := not external_policies_applied
 
-		if bot_driver_one and bot_driver_one.has_method("get_policy_id"):
+		if bool(external_control_players.get(1, true)) and bot_driver_one and bot_driver_one.has_method("get_policy_id"):
 
 			needs_external = needs_external or String(bot_driver_one.get_policy_id()) != "external"
 
-		if bot_driver_two and bot_driver_two.has_method("get_policy_id"):
+		if bool(external_control_players.get(2, true)) and bot_driver_two and bot_driver_two.has_method("get_policy_id"):
 
 			needs_external = needs_external or String(bot_driver_two.get_policy_id()) != "external"
 
@@ -548,17 +561,22 @@ func step(delta: float) -> void:
 
 func _tick_training(step_delta: float) -> void:
 
-	round_elapsed += step_delta
+	var dt := step_delta
+	var ts := Engine.time_scale
+	if ts > 0.0:
+		dt = step_delta / ts
+
+	round_elapsed += dt
 
 	round_steps += 1
 
-	episode_elapsed += step_delta
+	episode_elapsed += dt
 
-	var obs_p1: Dictionary = observation_builder.build(main_node, player_one, player_two, frame_number, step_delta)
+	var obs_p1: Dictionary = observation_builder.build(main_node, player_one, player_two, frame_number, dt)
 
-	var obs_p2: Dictionary = observation_builder.build(main_node, player_two, player_one, frame_number, step_delta)
+	var obs_p2: Dictionary = observation_builder.build(main_node, player_two, player_one, frame_number, dt)
 
-	var rewards: Dictionary = _compute_rewards(obs_p1, obs_p2, step_delta)
+	var rewards: Dictionary = _compute_rewards(obs_p1, obs_p2, dt)
 
 	var done: bool = _is_done()
 
@@ -566,7 +584,7 @@ func _tick_training(step_delta: float) -> void:
 
 	var alive_p2: bool = _is_alive(obs_p2)
 
-	_accumulate_round_stats(obs_p1, obs_p2, alive_p1, alive_p2, step_delta)
+	_accumulate_round_stats(obs_p1, obs_p2, alive_p1, alive_p2, dt)
 
 	_update_episode_metrics(rewards, done, alive_p1, alive_p2)
 
@@ -1032,9 +1050,9 @@ func _build_round_stats(winner_id: int) -> Dictionary:
 
 		time_out = episode_elapsed
 
-		kills_out = {"1": w1, "2": w2}
+		kills_out = round_kills.duplicate(true)
 
-		deaths_out = {"1": w2, "2": w1}
+		deaths_out = round_deaths.duplicate(true)
 
 	return {
 
@@ -1876,13 +1894,13 @@ func _apply_time_scale() -> void:
 
 func _ensure_external_policies() -> void:
 
-	if bot_driver_one and bot_driver_one.has_method("set_policy"):
+	if bool(external_control_players.get(1, true)) and bot_driver_one and bot_driver_one.has_method("set_policy"):
 
 		bot_driver_one.set_policy("external")
 
 		bot_driver_one.set_enabled(true)
 
-	if bot_driver_two and bot_driver_two.has_method("set_policy"):
+	if bool(external_control_players.get(2, true)) and bot_driver_two and bot_driver_two.has_method("set_policy"):
 
 		bot_driver_two.set_policy("external")
 

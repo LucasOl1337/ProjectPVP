@@ -1,1703 +1,935 @@
-[gd_scene load_steps=11 format=3 uid="uid://qu48ounqmh0u"]
+[gd_scene format=3 uid="uid://qu48ounqmh0u"]
 
-
-
-[ext_resource type="PackedScene" path="res://engine/scenes/Player.tscn" id="1"]
-
+[ext_resource type="PackedScene" uid="uid://cl4734aqv6s6k" path="res://engine/scenes/Player.tscn" id="1"]
 [ext_resource type="Script" uid="uid://dyhoe8naqx4ik" path="res://engine/scripts/Main.gd" id="2"]
-
-[ext_resource type="PackedScene" path="res://engine/scenes/Arrow.tscn" id="3"]
-
+[ext_resource type="PackedScene" uid="uid://bvya6qx7v3oow" path="res://engine/scenes/Arrow.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://gfk0khrcslaa" path="res://visuals/assets/maps/backgrounds/background1.png" id="4"]
-
 [ext_resource type="Resource" path="res://engine/data/arenas/default_arena.tres" id="5"]
-
 [ext_resource type="Script" uid="uid://d3aj8xgku65ea" path="res://engine/scripts/ui/dev_hud.gd" id="6"]
 
-
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rarhs"]
+size = Vector2(18.029816, 16.033192)
 
-size = Vector2(13.959063, 11.503374)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sc6cu"]
+size = Vector2(14.693189, 14.406644)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hcupo"]
+size = Vector2(3.120438, 119.06987)
 
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcsgt"]
-
-
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c01mt"]
-
-
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rfewr"]
+size = Vector2(1.127197, 115.98213)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nxtc6"]
-
 size = Vector2(19.540339, 18.806324)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_304dn"]
+size = Vector2(11.076045, 16.033184)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6isv3"]
+size = Vector2(12.709929, 38.39526)
 
-[node name="Main" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jx7y5"]
+size = Vector2(5.1123734, 16.033192)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_210uc"]
+size = Vector2(6.361413, 15.220137)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7in1l"]
+size = Vector2(3.5392766, 16.033192)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pnpll"]
+size = Vector2(4.418004, 16.033192)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mnmtm"]
+size = Vector2(61.70511, 5.461359)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qe4ll"]
+size = Vector2(52.55205, 1.499918)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h72tt"]
+size = Vector2(111.00845, 1.499918)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fbue"]
+size = Vector2(87.65228, 1.499918)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcsgt"]
+size = Vector2(15.870605, 18.322144)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v6hd3"]
+size = Vector2(21.56477, 30.31817)
+
+[node name="Main" type="Node2D" unique_id=1283060336]
 script = ExtResource("2")
-
 arena_definition = ExtResource("5")
 
+[node name="ArenaCamera" type="Camera2D" parent="." unique_id=80800906]
 
+[node name="Backdrop" type="Node2D" parent="." unique_id=1888627774]
 
-[node name="ArenaCamera" type="Camera2D" parent="."]
-
-
-
-[node name="Backdrop" type="Node2D" parent="."]
-
-
-
-[node name="Sky" type="Polygon2D" parent="Backdrop"]
-
+[node name="Sky" type="Polygon2D" parent="Backdrop" unique_id=710814575]
 visible = false
-
 color = Color(0.24, 0.52, 0.86, 1)
-
 polygon = PackedVector2Array(-1280, -720, 1280, -720, 1280, 720, -1280, 720)
 
-
-
-[node name="BackdropHills" type="Polygon2D" parent="Backdrop"]
-
+[node name="BackdropHills" type="Polygon2D" parent="Backdrop" unique_id=1551250202]
 visible = false
-
 color = Color(0.18, 0.42, 0.52, 1)
-
 polygon = PackedVector2Array(-1280, 220, -820, 120, -380, 220, 0, 140, 380, 220, 820, 130, 1280, 220, 1280, 720, -1280, 720)
 
-
-
-[node name="Background" type="Sprite2D" parent="Backdrop"]
-
+[node name="Background" type="Sprite2D" parent="Backdrop" unique_id=797814704]
 z_index = -10
-
+scale = Vector2(0.87305146, 0.8877761)
 texture = ExtResource("4")
 
+[node name="StaticBody2D" type="StaticBody2D" parent="Backdrop/Background" unique_id=1564518102]
 
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Backdrop/Background"]
-
-
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(-831.00006, 654)
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1134834729]
+position = Vector2(-914.3526, 782.9999)
 rotation = -3.1415925
-
 scale = Vector2(59.04635, 3.9910228)
-
 shape = SubResource("RectangleShape2D_rarhs")
 
-
-
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(-831.00006, 654)
-
+[node name="CollisionShape2D13" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=819281647]
+position = Vector2(-815.2104, 739.99994)
 rotation = -3.1415925
-
 scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_sc6cu")
 
-shape = SubResource("RectangleShape2D_rarhs")
-
-
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(837.9998, 656)
-
+[node name="CollisionShape2D15" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=505948776]
+position = Vector2(-944.3085, 473.02502)
 rotation = -3.1415925
-
 scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_hcupo")
 
-shape = SubResource("RectangleShape2D_rarhs")
-
-
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(1269, 424)
-
+[node name="CollisionShape2D23" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=173965684]
+position = Vector2(-906.0176, 105.88255)
 rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_rfewr")
 
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=507136277]
+position = Vector2(-49.252533, 156.57101)
+rotation = -3.1415925
+scale = Vector2(24.841879, 3.6337538)
+shape = SubResource("RectangleShape2D_nxtc6")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1405714388]
+position = Vector2(36.999992, -505.99435)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_304dn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1325276860]
+position = Vector2(1103.0276, 731.0624)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D/CollisionShape2D2" unique_id=584942678]
+position = Vector2(1098, 720)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D18" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=830339931]
+position = Vector2(1328.9332, -280.9999)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_jx7y5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D/CollisionShape2D18" unique_id=1539109164]
+position = Vector2(1098, 720)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D21" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1546737604]
+position = Vector2(1305.8025, 137.42201)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_210uc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D/CollisionShape2D21" unique_id=921340545]
+position = Vector2(1098, 720)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D22" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=840958096]
+position = Vector2(1375.3761, 93.49205)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_7in1l")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D/CollisionShape2D22" unique_id=250228232]
+position = Vector2(1098, 720)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D19" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=2078587303]
+position = Vector2(1349.4335, -606)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_pnpll")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D/CollisionShape2D19" unique_id=1449672576]
+position = Vector2(1098, 720)
+rotation = -3.1415925
+scale = Vector2(59.04635, 3.9910228)
+shape = SubResource("RectangleShape2D_6isv3")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=199811382]
+position = Vector2(-1368.8909, 693.48193)
+rotation = -3.1415925
+scale = Vector2(3.9682314, 43.45435)
+shape = SubResource("RectangleShape2D_mnmtm")
+
+[node name="CollisionShape2D12" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1445994038]
+position = Vector2(-1353, 600)
+rotation = -3.1415925
 scale = Vector2(3.968232, 43.45435)
+shape = SubResource("RectangleShape2D_qe4ll")
 
-shape = SubResource("RectangleShape2D_rarhs")
-
-
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(-1268, 425.99997)
-
+[node name="CollisionShape2D14" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1640124777]
+position = Vector2(-1255.0315, 278.2233)
 rotation = -3.1415925
+scale = Vector2(3.9682317, 60.780914)
+shape = SubResource("RectangleShape2D_h72tt")
 
+[node name="CollisionShape2D16" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=67877404]
+position = Vector2(-1320.845, -144.00002)
+rotation = -3.1415925
+scale = Vector2(3.9682317, 43.45435)
+shape = SubResource("RectangleShape2D_3fbue")
+
+[node name="CollisionShape2D17" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=708946154]
+position = Vector2(-1304, -614)
+rotation = -3.1415925
 scale = Vector2(3.968232, 43.45435)
+shape = SubResource("RectangleShape2D_3fbue")
 
-shape = SubResource("RectangleShape2D_rarhs")
-
-
-
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=1607105547]
+position = Vector2(114.343506, -87.69522)
 scale = Vector2(27.137403, 3.6780875)
-
 shape = SubResource("RectangleShape2D_vcsgt")
 
-
-
-[node name="CollisionShape2D10" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-shape = SubResource("RectangleShape2D_c01mt")
-
-
-
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(-1144.7094, 202.83122)
-
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=858096846]
+position = Vector2(112, 398)
 rotation = -3.1415925
-
 scale = Vector2(24.841879, 3.6337538)
-
 shape = SubResource("RectangleShape2D_nxtc6")
 
-
-
-[node name="CollisionShape2D9" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D"]
-
-position = Vector2(1141.0001, 197.99998)
-
+[node name="CollisionShape2D20" type="CollisionShape2D" parent="Backdrop/Background/StaticBody2D" unique_id=2114798302]
+position = Vector2(49.14532, 760.9156)
 rotation = -3.1415925
-
 scale = Vector2(24.841879, 3.6337538)
+shape = SubResource("RectangleShape2D_v6hd3")
 
-shape = SubResource("RectangleShape2D_nxtc6")
-
-
-
-[node name="Player1" parent="." instance=ExtResource("1")]
-
-position = Vector2(-639, 572)
-
+[node name="Player1" parent="." unique_id=1334978989 instance=ExtResource("1")]
+position = Vector2(-1083, 161.00003)
+scale = Vector2(0.6941198, 0.6331057)
 arrow_scene = ExtResource("3")
 
-
-
-[node name="Player2" parent="." instance=ExtResource("1")]
-
-position = Vector2(690, 576)
-
+[node name="Player2" parent="." unique_id=1703495443 instance=ExtResource("1")]
+position = Vector2(1047, 58.000122)
+scale = Vector2(0.6941198, 0.6331057)
 player_id = 2
-
 arrow_scene = ExtResource("3")
 
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1356684386]
 
-
-[node name="HUD" type="CanvasLayer" parent="."]
-
-
-
-[node name="ScoreLabel" type="Label" parent="HUD"]
-
+[node name="ScoreLabel" type="Label" parent="HUD" unique_id=1591701983]
 anchors_preset = 5
-
 anchor_left = 0.5
-
 anchor_right = 0.5
-
 offset_left = -120.0
-
 offset_top = 20.0
-
 offset_right = 120.0
-
 offset_bottom = 60.0
-
 text = "P1 0  x  0 P2"
-
 horizontal_alignment = 1
-
 vertical_alignment = 1
 
-
-
-[node name="WinnerLabel" type="Label" parent="HUD"]
-
+[node name="WinnerLabel" type="Label" parent="HUD" unique_id=2103478138]
 anchors_preset = 8
-
 anchor_left = 0.5
-
 anchor_top = 0.5
-
 anchor_right = 0.5
-
 anchor_bottom = 0.5
-
 offset_left = -240.0
-
 offset_top = -30.0
-
 offset_right = 240.0
-
 offset_bottom = 30.0
-
 text = "Player 1 venceu!"
-
 horizontal_alignment = 1
-
 vertical_alignment = 1
 
-
-
-[node name="DevHUD" type="CanvasLayer" parent="."]
-
+[node name="DevHUD" type="CanvasLayer" parent="." unique_id=1070167514]
+visible = false
 script = ExtResource("6")
 
-
-
-[node name="Panel" type="Panel" parent="DevHUD"]
-
-anchors_preset = 0
-
-anchor_left = 0.0
-
-anchor_top = 0.0
-
-anchor_right = 0.0
-
-anchor_bottom = 0.0
-
+[node name="Panel" type="Panel" parent="DevHUD" unique_id=2073701705]
+visible = false
 offset_left = 16.0
-
 offset_top = 16.0
-
 offset_right = 560.0
-
 offset_bottom = 340.0
-
 mouse_filter = 2
 
-
-
-[node name="Margin" type="MarginContainer" parent="DevHUD/Panel"]
-
+[node name="Margin" type="MarginContainer" parent="DevHUD/Panel" unique_id=818413782]
 layout_mode = 0
-
 theme_override_constants/margin_left = 12
-
 theme_override_constants/margin_top = 12
-
 theme_override_constants/margin_right = 12
-
 theme_override_constants/margin_bottom = 12
 
-
-
-[node name="VBox" type="VBoxContainer" parent="DevHUD/Panel/Margin"]
-
+[node name="VBox" type="VBoxContainer" parent="DevHUD/Panel/Margin" unique_id=274601211]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="HeaderRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox"]
-
+[node name="HeaderRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox" unique_id=731925835]
 layout_mode = 2
 
-custom_constants/separation = 12
-
-
-
-[node name="ContentRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox"]
-
+[node name="StatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/HeaderRow" unique_id=422267584]
 layout_mode = 2
-
-custom_constants/separation = 16
-
 size_flags_horizontal = 3
-
-size_flags_vertical = 3
-
-
-
-[node name="ControlsBox" type="GridContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-columns = 2
-
-custom_constants/hseparation = 12
-
-custom_constants/vseparation = 8
-
-
-
-[node name="TrainingGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-text = "Trainer externo"
-
-
-
-[node name="TrainerPythonRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerPythonLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow"]
-
-layout_mode = 2
-
-text = "Python"
-
-
-
-[node name="TrainerPythonPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-placeholder_text = "python"
-
-
-
-[node name="TrainerScriptRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerScriptLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow"]
-
-layout_mode = 2
-
-text = "Script"
-
-
-
-[node name="TrainerScriptPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-placeholder_text = "engine/tools/training_genetic_ga.py"
-
-
-
-[node name="TrainerArgsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerArgsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow"]
-
-layout_mode = 2
-
-text = "Args"
-
-
-
-[node name="TrainerArgs" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-placeholder_text = "--device cpu"
-
-
-
-[node name="TrainerButtonsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 6
-
-
-
-[node name="TrainerStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow"]
-
-layout_mode = 2
-
-text = "Iniciar trainer"
-
-
-
-[node name="TrainerStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow"]
-
-layout_mode = 2
-
-text = "Parar trainer"
-
-disabled = true
-
-
-
-[node name="TrainerStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup"]
-
-layout_mode = 2
-
-text = "Trainer: parado"
-
-
-
-[node name="RewardsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="RoundGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="GaGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="GenomeGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="MetricsBox" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-size_flags_vertical = 3
-
-custom_constants/separation = 6
-
-
-
-[node name="StatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/HeaderRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
 text = "Modo Dev OFF"
 
-
-
-[node name="ReloadButton" type="Button" parent="DevHUD/Panel/Margin/VBox/HeaderRow"]
-
+[node name="ReloadButton" type="Button" parent="DevHUD/Panel/Margin/VBox/HeaderRow" unique_id=2033709036]
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
-
 text = "Recarregar"
 
-custom_minimum_size = Vector2(140, 0)
-
-
-
-[node name="TrainingTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="ContentRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox" unique_id=817386695]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
+[node name="ControlsBox" type="GridContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow" unique_id=1919656700]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="TrainingGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=771917292]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TrainingTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=309644446]
+layout_mode = 2
 text = "Treino"
 
-
-
-[node name="TrainingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="TrainingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=37948892]
 layout_mode = 2
-
 text = "Ativar treino"
 
-button_pressed = false
-
-
-
-[node name="WatchToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="WatchToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=1974630453]
 layout_mode = 2
-
 text = "Assistir"
 
-button_pressed = false
-
-
-
-[node name="ResetEpisodeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="ResetEpisodeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=1738815269]
 layout_mode = 2
-
 text = "Resetar episódio"
 
-
-
-[node name="LoggingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="LoggingToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=1819925554]
 layout_mode = 2
-
 text = "Salvar CSV"
 
-button_pressed = false
-
-
-
-[node name="LogPathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup"]
-
+[node name="LogPathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainingGroup" unique_id=1841722377]
 layout_mode = 2
-
 text = "CSV OFF: user://training_metrics.csv"
-
 autowrap_mode = 2
 
+[node name="TrainerGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=1321122148]
+layout_mode = 2
+size_flags_horizontal = 3
 
+[node name="TrainerTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=128510376]
+layout_mode = 2
+text = "Trainer externo"
 
-[node name="RewardsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="TrainerPythonRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=36624702]
 layout_mode = 2
 
+[node name="TrainerPythonLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow" unique_id=2062751927]
+layout_mode = 2
+text = "Python"
+
+[node name="TrainerPythonPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerPythonRow" unique_id=2079273584]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "python"
+
+[node name="TrainerScriptRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=610991152]
+layout_mode = 2
+
+[node name="TrainerScriptLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow" unique_id=1560135327]
+layout_mode = 2
+text = "Script"
+
+[node name="TrainerScriptPath" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerScriptRow" unique_id=126135337]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "engine/tools/training_genetic_ga.py"
+
+[node name="TrainerArgsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=1145415495]
+layout_mode = 2
+
+[node name="TrainerArgsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow" unique_id=897125667]
+layout_mode = 2
+text = "Args"
+
+[node name="TrainerArgs" type="LineEdit" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerArgsRow" unique_id=507357411]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "--device cpu"
+
+[node name="TrainerButtonsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=553082310]
+layout_mode = 2
+
+[node name="TrainerStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow" unique_id=1813903108]
+layout_mode = 2
+text = "Iniciar trainer"
+
+[node name="TrainerStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup/TrainerButtonsRow" unique_id=384974565]
+layout_mode = 2
+disabled = true
+text = "Parar trainer"
+
+[node name="TrainerStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/TrainerGroup" unique_id=1647717596]
+layout_mode = 2
+text = "Trainer: parado"
+
+[node name="RewardsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=1519258298]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RewardsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=1127194450]
+layout_mode = 2
 text = "Recomp. base"
 
-
-
-[node name="RewardStepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="RewardStepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=142278836]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RewardStepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow"]
-
+[node name="RewardStepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow" unique_id=686503601]
 layout_mode = 2
-
 text = "Tempo sem kill"
 
-
-
-[node name="RewardStepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow"]
-
+[node name="RewardStepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardStepRow" unique_id=1783276548]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
+min_value = -10.0
+max_value = 10.0
 step = 0.001
+value = -0.0009999999999994458
 
-value = -0.001
-
-
-
-[node name="RewardKillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="RewardKillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=352947649]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RewardKillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow"]
-
+[node name="RewardKillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow" unique_id=716142160]
 layout_mode = 2
-
 text = "Kill"
 
-
-
-[node name="RewardKillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow"]
-
+[node name="RewardKillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardKillRow" unique_id=479139669]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
+min_value = -10.0
+max_value = 10.0
 step = 0.1
-
 value = 1.0
 
-
-
-[node name="RewardDeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="RewardDeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=431033125]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RewardDeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow"]
-
+[node name="RewardDeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow" unique_id=2103816987]
 layout_mode = 2
-
 text = "Death"
 
-
-
-[node name="RewardDeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow"]
-
+[node name="RewardDeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardDeathRow" unique_id=1412775966]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
+min_value = -10.0
+max_value = 10.0
 step = 0.1
-
 value = -1.0
 
-
-
-[node name="RewardAliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="RewardAliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=2018658108]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RewardAliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow"]
-
+[node name="RewardAliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow" unique_id=679893324]
 layout_mode = 2
-
 text = "Tempo vivo"
 
-
-
-[node name="RewardAliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow"]
-
+[node name="RewardAliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup/RewardAliveRow" unique_id=1143564256]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
+min_value = -10.0
+max_value = 10.0
 step = 0.001
 
-value = 0.0
-
-
-
-[node name="RewardsApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup"]
-
+[node name="RewardsApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RewardsGroup" unique_id=1257697048]
 layout_mode = 2
-
 text = "Salvar recomp."
 
-
-
-[node name="BotsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox"]
-
+[node name="RoundGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=1325410305]
 layout_mode = 2
-
 size_flags_horizontal = 3
 
-custom_constants/separation = 6
-
-
-
-[node name="BotsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup"]
-
+[node name="RoundLimitsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup" unique_id=1452139258]
 layout_mode = 2
-
-text = "Bots"
-
-
-
-[node name="BotCards" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 4
-
-
-
-[node name="BotP1Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-text = "Agressivo (P1)"
-
-
-
-[node name="BotP1PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow"]
-
-layout_mode = 2
-
-text = "Preset"
-
-
-
-[node name="BotP1Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-
-
-[node name="BotP1StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow"]
-
-layout_mode = 2
-
-text = "Tempo sem kill"
-
-
-
-[node name="BotP1StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -5
-
-max_value = 5
-
-step = 0.001
-
-value = -0.001
-
-
-
-[node name="BotP1KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow"]
-
-layout_mode = 2
-
-text = "Kill"
-
-
-
-[node name="BotP1KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
-step = 0.1
-
-value = 1.2
-
-
-
-[node name="BotP1DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow"]
-
-layout_mode = 2
-
-text = "Death"
-
-
-
-[node name="BotP1DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
-step = 0.1
-
-value = -1.0
-
-
-
-[node name="BotP1AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP1AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow"]
-
-layout_mode = 2
-
-text = "Tempo vivo"
-
-
-
-[node name="BotP1AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -5
-
-max_value = 5
-
-step = 0.001
-
-value = 0.003
-
-
-
-[node name="BotP1ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card"]
-
-layout_mode = 2
-
-text = "Salvar bot P1"
-
-
-
-[node name="BotP2Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-custom_constants/separation = 4
-
-
-
-[node name="BotP2Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-text = "Estrategista (P2)"
-
-
-
-[node name="BotP2PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP2PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow"]
-
-layout_mode = 2
-
-text = "Preset"
-
-
-
-[node name="BotP2Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-
-
-[node name="BotP2StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP2StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow"]
-
-layout_mode = 2
-
-text = "Tempo sem kill"
-
-
-
-[node name="BotP2StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -5
-
-max_value = 5
-
-step = 0.001
-
-value = -0.001
-
-
-
-[node name="BotP2KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP2KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow"]
-
-layout_mode = 2
-
-text = "Kill"
-
-
-
-[node name="BotP2KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
-step = 0.1
-
-value = 1.0
-
-
-
-[node name="BotP2DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP2DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow"]
-
-layout_mode = 2
-
-text = "Death"
-
-
-
-[node name="BotP2DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -10
-
-max_value = 10
-
-step = 0.1
-
-value = -1.2
-
-
-
-[node name="BotP2AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="BotP2AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow"]
-
-layout_mode = 2
-
-text = "Tempo vivo"
-
-
-
-[node name="BotP2AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow"]
-
-layout_mode = 2
-
-size_flags_horizontal = 3
-
-min_value = -5
-
-max_value = 5
-
-step = 0.001
-
-value = 0.004
-
-
-
-[node name="BotP2ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card"]
-
-layout_mode = 2
-
-text = "Salvar bot P2"
-
-
-
-[node name="RoundLimitsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
-
-layout_mode = 2
-
 text = "Rodada"
 
-
-
-[node name="RoundStepsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
-
+[node name="RoundStepsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup" unique_id=1672919248]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RoundStepsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow"]
-
+[node name="RoundStepsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow" unique_id=1220570081]
 layout_mode = 2
-
 text = "Max steps"
 
-
-
-[node name="RoundStepsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow"]
-
+[node name="RoundStepsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundStepsRow" unique_id=1197561415]
 layout_mode = 2
-
 size_flags_horizontal = 3
+max_value = 100000.0
 
-min_value = 0
-
-max_value = 100000
-
-step = 1
-
-value = 0
-
-
-
-[node name="RoundSecondsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
-
+[node name="RoundSecondsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup" unique_id=1083127489]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RoundSecondsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow"]
-
+[node name="RoundSecondsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow" unique_id=1931589506]
 layout_mode = 2
-
 text = "Max seg."
 
-
-
-[node name="RoundSecondsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow"]
-
+[node name="RoundSecondsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundSecondsRow" unique_id=1710876470]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
-min_value = 0
-
-max_value = 600
-
+max_value = 600.0
 step = 0.5
 
-value = 0
-
-
-
-[node name="RoundKillsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
-
+[node name="RoundKillsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup" unique_id=391333467]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="RoundKillsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow"]
-
+[node name="RoundKillsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow" unique_id=1769006588]
 layout_mode = 2
-
 text = "Max kills"
 
-
-
-[node name="RoundKillsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow"]
-
+[node name="RoundKillsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup/RoundKillsRow" unique_id=1903144687]
 layout_mode = 2
-
 size_flags_horizontal = 3
+max_value = 50.0
+value = 5.0
 
-min_value = 0
-
-max_value = 50
-
-step = 1
-
-value = 5
-
-
-
-[node name="RoundApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup"]
-
+[node name="RoundApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/RoundGroup" unique_id=375143519]
 layout_mode = 2
-
 text = "Salvar rodada"
 
-
-
-[node name="GaConfigTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
-
+[node name="GaGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=1086144346]
 layout_mode = 2
-
-text = "GA"
-
-
-
-[node name="GaGenerationToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
-
-layout_mode = 2
-
-text = "Ger. por rodada"
-
-button_pressed = true
-
-
-
-[node name="GaGenerationsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
-
-layout_mode = 2
-
-custom_constants/separation = 8
-
-
-
-[node name="GaGenerationsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow"]
-
-layout_mode = 2
-
-text = "Max gerações"
-
-
-
-[node name="GaGenerationsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow"]
-
-layout_mode = 2
-
 size_flags_horizontal = 3
 
-min_value = 0
+[node name="GaConfigTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup" unique_id=266574842]
+layout_mode = 2
+text = "GA"
 
-max_value = 100000
+[node name="GaGenerationToggle" type="CheckButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup" unique_id=541539507]
+layout_mode = 2
+button_pressed = true
+text = "Ger. por rodada"
 
-step = 1
-
-value = 0
-
-
-
-[node name="GaApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup"]
-
+[node name="GaGenerationsRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup" unique_id=1821810492]
 layout_mode = 2
 
+[node name="GaGenerationsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow" unique_id=395431133]
+layout_mode = 2
+text = "Max gerações"
+
+[node name="GaGenerationsSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup/GaGenerationsRow" unique_id=246742627]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100000.0
+
+[node name="GaApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GaGroup" unique_id=499255147]
+layout_mode = 2
 text = "Salvar GA"
 
-
-
-[node name="GenomeLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="GenomeGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=480940518]
 layout_mode = 2
+size_flags_horizontal = 3
 
+[node name="GenomeLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=1812613975]
+layout_mode = 2
 text = "Genoma: res://BOTS/IA/weights/best_genome.json"
 autowrap_mode = 2
 
-
-
-[node name="LoadGenomeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="LoadGenomeButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=2121943839]
 layout_mode = 2
-
 text = "Carregar genoma"
 
-
-
-[node name="LiveTrainButtons" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="LiveTrainButtons" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=980420586]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="LiveTrainStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
-
+[node name="LiveTrainStartButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons" unique_id=1470271310]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 text = "Treinar ao vivo"
 
-
-
-[node name="LiveTrainStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
-
+[node name="LiveTrainStopButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons" unique_id=1297120844]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 text = "Parar"
 
-
-
-[node name="LiveTrainSaveP1Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
-
+[node name="LiveTrainSaveP1Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons" unique_id=7937586]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 text = "Salvar P1"
 
-
-
-[node name="LiveTrainSaveP2Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons"]
-
+[node name="LiveTrainSaveP2Button" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup/LiveTrainButtons" unique_id=1973243496]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 text = "Salvar P2"
 
-
-
-[node name="LiveTrainStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="LiveTrainStatusLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=1534745432]
 layout_mode = 2
-
 text = "Live: parado"
-
 autowrap_mode = 2
 
-
-
-[node name="LiveTrainP1Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="LiveTrainP1Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=2097455074]
 layout_mode = 2
-
 text = "P1: gen ? | ind ? | treinos ?/?"
-
 autowrap_mode = 2
 
-
-
-[node name="LiveTrainP2Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup"]
-
+[node name="LiveTrainP2Label" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/GenomeGroup" unique_id=1384971549]
 layout_mode = 2
-
 text = "P2: modo ?"
-
 autowrap_mode = 2
 
+[node name="BotsGroup" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox" unique_id=413496922]
+layout_mode = 2
+size_flags_horizontal = 3
 
+[node name="BotsTitle" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup" unique_id=1917976974]
+layout_mode = 2
+text = "Bots"
 
-[node name="TrainingMetricsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox"]
-
+[node name="BotCards" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup" unique_id=110292379]
 layout_mode = 2
 
+[node name="BotP1Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards" unique_id=1813605449]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP1Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=599935482]
+layout_mode = 2
+text = "Agressivo (P1)"
+
+[node name="BotP1PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=1125502215]
+layout_mode = 2
+
+[node name="BotP1PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow" unique_id=461169543]
+layout_mode = 2
+text = "Preset"
+
+[node name="BotP1Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1PresetRow" unique_id=955579029]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP1StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=816527749]
+layout_mode = 2
+
+[node name="BotP1StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow" unique_id=2111128056]
+layout_mode = 2
+text = "Tempo sem kill"
+
+[node name="BotP1StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1StepRow" unique_id=358912362]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 5.0
+step = 0.001
+value = -0.001000000000000334
+
+[node name="BotP1KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=291823090]
+layout_mode = 2
+
+[node name="BotP1KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow" unique_id=6058370]
+layout_mode = 2
+text = "Kill"
+
+[node name="BotP1KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1KillRow" unique_id=579674090]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = 1.1999999999999993
+
+[node name="BotP1DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=1370242226]
+layout_mode = 2
+
+[node name="BotP1DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow" unique_id=2052792480]
+layout_mode = 2
+text = "Death"
+
+[node name="BotP1DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1DeathRow" unique_id=1819857194]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = -1.0
+
+[node name="BotP1AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=78820011]
+layout_mode = 2
+
+[node name="BotP1AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow" unique_id=966563074]
+layout_mode = 2
+text = "Tempo vivo"
+
+[node name="BotP1AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card/BotP1AliveRow" unique_id=1089479317]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 5.0
+step = 0.001
+value = 0.0030000000000001137
+
+[node name="BotP1ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP1Card" unique_id=1846500343]
+layout_mode = 2
+text = "Salvar bot P1"
+
+[node name="BotP2Card" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards" unique_id=120058141]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP2Title" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=1425418935]
+layout_mode = 2
+text = "Estrategista (P2)"
+
+[node name="BotP2PresetRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=1391907792]
+layout_mode = 2
+
+[node name="BotP2PresetLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow" unique_id=1093588480]
+layout_mode = 2
+text = "Preset"
+
+[node name="BotP2Preset" type="OptionButton" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2PresetRow" unique_id=1644838516]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BotP2StepRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=1229957157]
+layout_mode = 2
+
+[node name="BotP2StepLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow" unique_id=1653740213]
+layout_mode = 2
+text = "Tempo sem kill"
+
+[node name="BotP2StepSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2StepRow" unique_id=898719654]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 5.0
+step = 0.001
+value = -0.001000000000000334
+
+[node name="BotP2KillRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=396338441]
+layout_mode = 2
+
+[node name="BotP2KillLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow" unique_id=739923513]
+layout_mode = 2
+text = "Kill"
+
+[node name="BotP2KillSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2KillRow" unique_id=1376677092]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="BotP2DeathRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=129886737]
+layout_mode = 2
+
+[node name="BotP2DeathLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow" unique_id=903972404]
+layout_mode = 2
+text = "Death"
+
+[node name="BotP2DeathSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2DeathRow" unique_id=1328954342]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = -1.1999999999999993
+
+[node name="BotP2AliveRow" type="HBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=97051362]
+layout_mode = 2
+
+[node name="BotP2AliveLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow" unique_id=945254867]
+layout_mode = 2
+text = "Tempo vivo"
+
+[node name="BotP2AliveSpin" type="SpinBox" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card/BotP2AliveRow" unique_id=1501299966]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 5.0
+step = 0.001
+value = 0.0039999999999995595
+
+[node name="BotP2ApplyButton" type="Button" parent="DevHUD/Panel/Margin/VBox/ContentRow/ControlsBox/BotsGroup/BotCards/BotP2Card" unique_id=117311893]
+layout_mode = 2
+text = "Salvar bot P2"
+
+[node name="MetricsBox" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow" unique_id=243529394]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="TrainingMetricsLabel" type="Label" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox" unique_id=212774294]
+layout_mode = 2
+size_flags_vertical = 3
 text = "Treino: inativo"
 
-
-
-[node name="BotMetricsTabs" type="TabContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox"]
-
+[node name="BotMetricsTabs" type="TabContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox" unique_id=588478286]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 size_flags_vertical = 3
+current_tab = 0
 
-
-
-[node name="Geral" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
-
+[node name="Geral" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs" unique_id=1594003453]
 layout_mode = 2
+metadata/_tab_index = 0
 
-custom_constants/separation = 4
-
-
-
-[node name="GlobalMetrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/Geral"]
-
+[node name="GlobalMetrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/Geral" unique_id=2098036338]
 layout_mode = 2
-
 size_flags_vertical = 3
-
 bbcode_enabled = true
-
+text = "[b]Geral[/b]
+Treino: inativo"
 fit_content = true
-
 scroll_active = false
-
-text = "[b]Geral[/b]\nTreino: inativo"
-
 autowrap_mode = 2
 
-
-
-[node name="P1" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
-
+[node name="P1" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs" unique_id=1964095831]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
-custom_constants/separation = 4
-
-
-
-[node name="BotP1Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P1"]
-
+[node name="BotP1Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P1" unique_id=651236711]
 layout_mode = 2
-
 size_flags_vertical = 3
-
 bbcode_enabled = true
-
+text = "[b]P1[/b]
+Treino: inativo"
 fit_content = true
-
 scroll_active = false
 
-text = "[b]P1[/b]\nTreino: inativo"
-
-
-
-[node name="P2" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs"]
-
+[node name="P2" type="VBoxContainer" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs" unique_id=1318264055]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
-custom_constants/separation = 4
-
-
-
-[node name="BotP2Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P2"]
-
+[node name="BotP2Metrics" type="RichTextLabel" parent="DevHUD/Panel/Margin/VBox/ContentRow/MetricsBox/BotMetricsTabs/P2" unique_id=1895668870]
 layout_mode = 2
-
 size_flags_vertical = 3
-
 bbcode_enabled = true
-
+text = "[b]P2[/b]
+Treino: inativo"
 fit_content = true
-
 scroll_active = false
-
-text = "[b]P2[/b]\nTreino: inativo"
-
 autowrap_mode = 2
 
-
-
-[node name="EntriesLabel" type="Label" parent="DevHUD/Panel/Margin/VBox"]
-
-layout_mode = 2
-
+[node name="EntriesLabel" type="Label" parent="DevHUD/Panel/Margin/VBox" unique_id=1774723062]
 custom_minimum_size = Vector2(0, 60)
-
+layout_mode = 2
 text = "Sem eventos registrados."
-
 autowrap_mode = 2
 
-
-
-[node name="GaOverlay" type="Panel" parent="DevHUD"]
-
+[node name="GaOverlay" type="Panel" parent="DevHUD" unique_id=533416135]
 anchors_preset = 1
-
 anchor_left = 1.0
-
-anchor_top = 0.0
-
 anchor_right = 1.0
-
-anchor_bottom = 0.0
-
 offset_left = -360.0
-
 offset_top = 16.0
-
 offset_right = -16.0
-
 offset_bottom = 216.0
-
 mouse_filter = 2
 
-
-
-[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay"]
-
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay" unique_id=282077941]
 layout_mode = 0
-
 theme_override_constants/margin_left = 10
-
 theme_override_constants/margin_top = 10
-
 theme_override_constants/margin_right = 10
-
 theme_override_constants/margin_bottom = 10
 
-
-
-[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin"]
-
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin" unique_id=1289832654]
 layout_mode = 2
 
-custom_constants/separation = 6
-
-
-
-[node name="BotP1Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox"]
-
+[node name="BotP1Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox" unique_id=276166226]
 layout_mode = 2
-
 size_flags_horizontal = 3
 
-
-
-[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card"]
-
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card" unique_id=82966158]
 layout_mode = 2
-
 theme_override_constants/margin_left = 8
-
 theme_override_constants/margin_top = 6
-
 theme_override_constants/margin_right = 8
-
 theme_override_constants/margin_bottom = 6
 
-
-
-[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin"]
-
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin" unique_id=252848756]
 layout_mode = 2
 
-custom_constants/separation = 6
-
-
-
-[node name="BotP1GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox"]
-
+[node name="BotP1GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox" unique_id=220600957]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 bbcode_enabled = true
-
+text = "[b]P1[/b]
+GA: -"
 fit_content = true
-
 scroll_active = false
-
 autowrap_mode = 2
 
-text = "[b]P1[/b]\nGA: -"
-
-
-
-[node name="BotP1GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox"]
-
+[node name="BotP1GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox" unique_id=1665358790]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="BotP1GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow"]
-
+[node name="BotP1GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow" unique_id=1973782861]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 placeholder_text = "Nome do modelo (ex: X)"
 
-
-
-[node name="BotP1GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow"]
-
+[node name="BotP1GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP1Card/Margin/VBox/BotP1GaSaveRow" unique_id=1513573330]
 layout_mode = 2
-
 text = "Salvar"
 
-
-
-[node name="BotP2Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox"]
-
+[node name="BotP2Card" type="PanelContainer" parent="DevHUD/GaOverlay/Margin/VBox" unique_id=2124630713]
 layout_mode = 2
-
 size_flags_horizontal = 3
 
-
-
-[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card"]
-
+[node name="Margin" type="MarginContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card" unique_id=136355817]
 layout_mode = 2
-
 theme_override_constants/margin_left = 8
-
 theme_override_constants/margin_top = 6
-
 theme_override_constants/margin_right = 8
-
 theme_override_constants/margin_bottom = 6
 
-
-
-[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin"]
-
+[node name="VBox" type="VBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin" unique_id=1349581357]
 layout_mode = 2
 
-custom_constants/separation = 6
-
-
-
-[node name="BotP2GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox"]
-
+[node name="BotP2GaLabel" type="RichTextLabel" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox" unique_id=260796546]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 bbcode_enabled = true
-
+text = "[b]P2[/b]
+GA: -"
 fit_content = true
-
 scroll_active = false
-
 autowrap_mode = 2
 
-text = "[b]P2[/b]\nGA: -"
-
-
-
-[node name="BotP2GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox"]
-
+[node name="BotP2GaSaveRow" type="HBoxContainer" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox" unique_id=214038953]
 layout_mode = 2
 
-custom_constants/separation = 8
-
-
-
-[node name="BotP2GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow"]
-
+[node name="BotP2GaName" type="LineEdit" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow" unique_id=1847709933]
 layout_mode = 2
-
 size_flags_horizontal = 3
-
 placeholder_text = "Nome do modelo (ex: X)"
 
-
-
-[node name="BotP2GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow"]
-
+[node name="BotP2GaSaveButton" type="Button" parent="DevHUD/GaOverlay/Margin/VBox/BotP2Card/Margin/VBox/BotP2GaSaveRow" unique_id=417241699]
 layout_mode = 2
-
 text = "Salvar"
-

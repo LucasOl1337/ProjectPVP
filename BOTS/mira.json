@@ -1,0 +1,10 @@
+{
+  "name": "mira",
+  "description": "Perfil criado via ga_launcher.py (mira).",
+  "rewards": {
+    "base": {},
+    "p1": {},
+    "p2": {}
+  },
+  "islands": {}
+}

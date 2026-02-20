@@ -16,3 +16,6 @@ wrap_bounds = Rect2(-1280.0, -720.0, 2560.0, 1440.0)
 
 wrap_padding = Vector2(40.0, 40.0)
 
+bgm_path = "res://sfx/music/Iron Dragon.mp3"
+
+bgm_volume_db = -8.0

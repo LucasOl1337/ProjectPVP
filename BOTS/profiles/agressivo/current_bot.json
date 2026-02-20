@@ -1,0 +1,23 @@
+{
+  "source": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\agressivo\\state\\round_0092\\top\\seed_01_G0093_N002288_score_1.750000.json",
+  "source_rel": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\agressivo\\state\\round_0092\\top\\seed_01_G0093_N002288_score_1.750000.json",
+  "promoted_to": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\agressivo\\best_genome.json",
+  "round": 92,
+  "best": 1.75,
+  "best_ever": 1.75,
+  "best_metric": "fitness",
+  "sweep_5_0": true,
+  "worker_id": 11,
+  "individual": 2288,
+  "islands_round": 92,
+  "generation": -1,
+  "port": -1,
+  "episodes_per_genome": -1,
+  "mutation_rate": 0.08,
+  "mutation_std": 0.2,
+  "opponent": "baseline",
+  "time_scale": 8.0,
+  "seed_used": "",
+  "result_path": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\agressivo\\state\\round_0092\\worker_11\\result.json",
+  "timestamp": 1771533993
+}

@@ -7,6 +7,8 @@ class_name ArenaDefinition
 ]
 @export var wrap_bounds := Rect2(Vector2(-1200.0, -700.0), Vector2(2400.0, 1400.0))
 @export var wrap_padding := Vector2(40.0, 40.0)
+@export var bgm_path := ""
+@export var bgm_volume_db := -8.0
 
 func has_spawn_points() -> bool:
 	return not spawn_points.is_empty()

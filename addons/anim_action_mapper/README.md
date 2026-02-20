@@ -33,6 +33,7 @@ No `CharacterData`, o projétil do tiro usa:
 - `projectile_texture`: textura da flecha.
 - `projectile_forward`: distância para frente no spawn.
 - `projectile_vertical_offset`: offset vertical no spawn.
+- `projectile_inherit_velocity_factor`: quanto da velocidade do player soma no tiro (0 desliga).
 
 No dock isso aparece na seção **Projétil (Flecha)**.
 

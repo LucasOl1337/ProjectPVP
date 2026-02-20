@@ -5,16 +5,18 @@ var config_path := ""
 var config_signature := ""
 
 var tuning := {
-	"keep_distance": 120.0,
-	"shoot_range": 520.0,
-	"min_shoot_distance": 40.0,
+	"keep_distance": 220.0,
+	"shoot_range": 640.0,
+	"min_shoot_distance": 20.0,
 	"dash_range": 640.0,
 	"dash_probability": 0.9,
 	"melee_range": 85.0,
-	"shoot_hold": 0.09,
-	"decision_interval_ms": 60,
+	"shoot_hold": 0.14,
+	"decision_interval_ms": 50,
 	"reaction_time_ms": 0,
-	"aim_noise_degrees": 0.0
+	"aim_noise_degrees": 0.0,
+	"shoot_y_tolerance": 140.0,
+	"shoot_dx_min": 30.0
 }
 
 var metrics_cfg := {
@@ -23,6 +25,25 @@ var metrics_cfg := {
 	"flush_seconds": 1.0,
 	"sample_every_steps": 10,
 	"include_observation": false
+}
+
+var objectives_cfg := {
+	"enabled": true,
+	"pick_interval_ms": 80,
+	"collect_arrow": {
+		"enabled": true,
+		"min_self_arrows": 1,
+		"max_arrow_distance": 520.0,
+		"prefer_when_opponent_distance_gt": 160.0
+	},
+	"recover_height": {
+		"enabled": true,
+		"dy_gt": 220.0
+	},
+	"safety": {
+		"avoid_ledges": true,
+		"avoid_walls": true
+	}
 }
 
 var rules: Array = []
@@ -34,6 +55,9 @@ var _reaction_remaining_ms := 0
 var _cached_action: Dictionary = {}
 var _last_rule_id := ""
 var _rule_next_allowed_ms: Dictionary = {}
+
+var _objective_accum_ms := 0
+var _cached_objective_id := ""
 
 var _rng := RandomNumberGenerator.new()
 var _metrics: Dictionary = {}
@@ -60,6 +84,8 @@ func reset() -> void:
 	_cached_action = {}
 	_last_rule_id = ""
 	_rule_next_allowed_ms.clear()
+	_objective_accum_ms = 0
+	_cached_objective_id = ""
 	_reset_metrics()
 	_close_metrics_file()
 
@@ -99,14 +125,25 @@ func _compute_action(observation: Dictionary) -> Dictionary:
 	if not (delta is Vector2):
 		delta = Vector2.ZERO
 	var distance := float(observation.get("distance", delta.length()))
-	var facing := 1
-	if observation.has("self") and observation["self"] is Dictionary:
-		facing = int((observation["self"] as Dictionary).get("facing", 1))
+	var self_state: Dictionary = observation.get("self", {}) if observation.get("self") is Dictionary else {}
+	var facing := int(self_state.get("facing", 1))
+	var arrows := int(self_state.get("arrows", 0))
+	var dx := float(delta.x)
+	var dy := float(delta.y)
+	var abs_dx := absf(dx)
 
 	var axis := 0.0
 	var keep_distance := float(tuning.get("keep_distance", 120.0))
-	if abs(delta.x) > keep_distance:
-		axis = sign(delta.x)
+	if arrows <= 0:
+		keep_distance = minf(keep_distance, 80.0)
+	var backoff_threshold := keep_distance * 0.6
+	if abs_dx > keep_distance:
+		axis = sign(dx)
+	elif abs_dx < backoff_threshold:
+		if abs_dx < 8.0:
+			axis = -float(facing)
+		else:
+			axis = -sign(dx)
 
 	var aim := Vector2(facing, 0)
 	if distance > 0.0:
@@ -118,15 +155,23 @@ func _compute_action(observation: Dictionary) -> Dictionary:
 	var melee_range := float(tuning.get("melee_range", 85.0))
 	var dash_range := float(tuning.get("dash_range", 640.0))
 	var dash_probability := float(tuning.get("dash_probability", 0.9))
-	var want_shoot := distance > min_shoot_distance and distance < shoot_range
+	var want_shoot := arrows > 0 and distance > min_shoot_distance and distance < shoot_range
 	var melee := distance < melee_range
-	var jump := delta.y < -120.0
+	var jump := dy < -120.0 and abs_dx > 80.0
 	var dash_pressed: Array = []
 	if distance > dash_range and _rng.randf() < clampf(dash_probability, 0.0, 1.0):
 		dash_pressed = ["r1"]
+	var shoot_y_tolerance := float(tuning.get("shoot_y_tolerance", 140.0))
+	var shoot_dx_min := float(tuning.get("shoot_dx_min", 30.0))
+	if want_shoot and abs_dx > shoot_dx_min and absf(dy) < shoot_y_tolerance:
+		axis = 0.0
+		melee = false
+		jump = false
+		dash_pressed = []
 
 	var chosen_rule := ""
 	var overrides: Dictionary = {}
+	var objective_id := _select_objective(observation)
 	var now_ms := int(Time.get_ticks_msec())
 	for rule_value in rules:
 		if not (rule_value is Dictionary):
@@ -139,7 +184,7 @@ func _compute_action(observation: Dictionary) -> Dictionary:
 				continue
 		var when_value: Variant = rule.get("when", {})
 		var when: Dictionary = when_value as Dictionary if when_value is Dictionary else {}
-		if not _match_when(when, observation):
+		if not _match_when(when, observation, objective_id):
 			continue
 		overrides = rule.get("do", {}) if rule.get("do", {}) is Dictionary else {}
 		chosen_rule = rule_id
@@ -147,6 +192,14 @@ func _compute_action(observation: Dictionary) -> Dictionary:
 		if rule_id != "" and cooldown_ms > 0:
 			_rule_next_allowed_ms[rule_id] = now_ms + cooldown_ms
 		break
+
+	var applied_objective := _apply_objective(objective_id, observation, axis, aim, want_shoot, melee, jump, dash_pressed, delta, distance, facing)
+	axis = applied_objective.axis
+	aim = applied_objective.aim
+	want_shoot = applied_objective.want_shoot
+	melee = applied_objective.melee
+	jump = applied_objective.jump
+	dash_pressed = applied_objective.dash_pressed
 
 	if not overrides.is_empty():
 		var applied := _apply_overrides(overrides, axis, aim, want_shoot, melee, jump, dash_pressed, delta, distance, facing)
@@ -181,6 +234,7 @@ func _compute_action(observation: Dictionary) -> Dictionary:
 		"ult_pressed": false,
 		"dash_pressed": dash_pressed,
 		"actions": actions,
+		"debug_objective": objective_id,
 		"debug_rule": chosen_rule,
 		"debug_distance": distance
 	}
@@ -247,7 +301,23 @@ func _apply_overrides(overrides: Dictionary, axis: float, aim: Vector2, want_sho
 		if dash_v is bool:
 			dash_out = ["r1"] if bool(dash_v) else []
 		elif dash_v is String:
-			dash_out = [String(dash_v)]
+			var dash_s := String(dash_v)
+			if dash_s == "toward":
+				dash_out = ["r1"]
+				if not overrides.has("aim"):
+					if distance > 0.0:
+						aim_out = delta.normalized()
+					else:
+						aim_out = Vector2(facing, 0)
+			elif dash_s == "away":
+				dash_out = ["r1"]
+				if not overrides.has("aim"):
+					if distance > 0.0:
+						aim_out = (-delta).normalized()
+					else:
+						aim_out = Vector2(-facing, 0)
+			else:
+				dash_out = [dash_s]
 		elif dash_v is Array:
 			dash_out = (dash_v as Array).duplicate()
 
@@ -260,7 +330,106 @@ func _apply_overrides(overrides: Dictionary, axis: float, aim: Vector2, want_sho
 		"dash_pressed": dash_out
 	}
 
-func _match_when(when: Dictionary, observation: Dictionary) -> bool:
+func _select_objective(observation: Dictionary) -> String:
+	if not bool(objectives_cfg.get("enabled", true)):
+		_cached_objective_id = ""
+		_objective_accum_ms = 0
+		return ""
+	var dt := float(observation.get("delta", 0.0))
+	var dt_ms := int(round(dt * 1000.0))
+	_objective_accum_ms += maxi(dt_ms, 0)
+	var pick_interval_ms := int(objectives_cfg.get("pick_interval_ms", 80))
+	if _cached_objective_id != "" and _objective_accum_ms < pick_interval_ms:
+		return _cached_objective_id
+	_objective_accum_ms = 0
+	_cached_objective_id = _compute_objective_now(observation)
+	return _cached_objective_id
+
+func _compute_objective_now(observation: Dictionary) -> String:
+	var delta: Vector2 = observation.get("delta_position", Vector2.ZERO)
+	if not (delta is Vector2):
+		delta = Vector2.ZERO
+	var distance := float(observation.get("distance", delta.length()))
+	var self_state: Dictionary = observation.get("self", {}) if observation.get("self") is Dictionary else {}
+	var arrows := int(self_state.get("arrows", 0))
+	var collect_cfg_base: Variant = objectives_cfg.get("collect_arrow", {})
+	var collect_cfg_base_dict: Dictionary = collect_cfg_base as Dictionary if collect_cfg_base is Dictionary else {}
+	var opp_far_threshold := float(collect_cfg_base_dict.get("prefer_when_opponent_distance_gt", 160.0))
+
+	var recover_cfg: Dictionary = objectives_cfg.get("recover_height", {}) if objectives_cfg.get("recover_height") is Dictionary else {}
+	if bool(recover_cfg.get("enabled", true)):
+		var dy_mag := float(recover_cfg.get("dy_gt", 220.0))
+		if delta.y < -dy_mag:
+			return "recover_height"
+
+	var collect_cfg: Dictionary = objectives_cfg.get("collect_arrow", {}) if objectives_cfg.get("collect_arrow") is Dictionary else {}
+	if bool(collect_cfg.get("enabled", true)):
+		var min_self_arrows := int(collect_cfg.get("min_self_arrows", 1))
+		var max_arrow_distance := float(collect_cfg.get("max_arrow_distance", 520.0))
+		if arrows < min_self_arrows:
+			var arrow: Dictionary = self_state.get("nearest_arrow", {}) if self_state.get("nearest_arrow") is Dictionary else {}
+			if not arrow.is_empty():
+				var arrow_dist := float(arrow.get("distance", INF))
+				var is_stuck := bool(arrow.get("is_stuck", true))
+				var prefer_when_arrow_distance_lt := float(collect_cfg.get("prefer_when_arrow_distance_lt", 180.0))
+				if is_stuck and arrow_dist < max_arrow_distance and (distance > opp_far_threshold or arrow_dist < prefer_when_arrow_distance_lt):
+					return "collect_arrow"
+
+	return "fight"
+
+func _apply_objective(objective_id: String, observation: Dictionary, axis: float, aim: Vector2, want_shoot: bool, melee: bool, jump: bool, dash_pressed: Array, delta: Vector2, distance: float, facing: int) -> Dictionary:
+	var axis_out := axis
+	var aim_out := aim
+	var want_shoot_out := want_shoot
+	var melee_out := melee
+	var jump_out := jump
+	var dash_out := dash_pressed.duplicate()
+	var self_state: Dictionary = observation.get("self", {}) if observation.get("self") is Dictionary else {}
+	var self_sensors: Dictionary = self_state.get("sensors", {}) if self_state.get("sensors") is Dictionary else {}
+
+	if objective_id == "collect_arrow":
+		var arrow: Dictionary = self_state.get("nearest_arrow", {}) if self_state.get("nearest_arrow") is Dictionary else {}
+		if not arrow.is_empty():
+			var arrow_delta: Variant = arrow.get("delta_position", Vector2.ZERO)
+			if arrow_delta is Vector2:
+				axis_out = sign((arrow_delta as Vector2).x)
+				want_shoot_out = false
+				melee_out = false
+
+	elif objective_id == "recover_height":
+		want_shoot_out = false
+		melee_out = false
+		var recover_base: Variant = objectives_cfg.get("recover_height", {})
+		var recover_dict: Dictionary = recover_base as Dictionary if recover_base is Dictionary else {}
+		if delta.y < -float(recover_dict.get("dy_gt", 220.0)):
+			jump_out = true
+			axis_out = sign(delta.x)
+
+	var safety_cfg: Dictionary = objectives_cfg.get("safety", {}) if objectives_cfg.get("safety") is Dictionary else {}
+	var avoid_ledges := bool(safety_cfg.get("avoid_ledges", true))
+	var avoid_walls := bool(safety_cfg.get("avoid_walls", true))
+	if axis_out != 0.0:
+		var moving_dir := int(sign(axis_out))
+		if moving_dir == facing:
+			if avoid_ledges and bool(self_sensors.get("ledge_ahead", false)):
+				axis_out = 0.0
+			if avoid_walls and bool(self_sensors.get("wall_ahead", false)):
+				axis_out = 0.0
+
+	if aim_out.length() > 0.0:
+		aim_out = aim_out.normalized()
+	aim_out = _apply_aim_noise(aim_out)
+
+	return {
+		"axis": axis_out,
+		"aim": aim_out,
+		"want_shoot": want_shoot_out,
+		"melee": melee_out,
+		"jump": jump_out,
+		"dash_pressed": dash_out
+	}
+
+func _match_when(when: Dictionary, observation: Dictionary, objective_id: String) -> bool:
 	if when.is_empty():
 		return true
 	var delta: Vector2 = observation.get("delta_position", Vector2.ZERO)
@@ -269,9 +438,24 @@ func _match_when(when: Dictionary, observation: Dictionary) -> bool:
 	var distance := float(observation.get("distance", delta.length()))
 	var self_state: Dictionary = observation.get("self", {}) if observation.get("self", {}) is Dictionary else {}
 	var opp_state: Dictionary = observation.get("opponent", {}) if observation.get("opponent", {}) is Dictionary else {}
+	var self_sensors: Dictionary = self_state.get("sensors", {}) if self_state.get("sensors", {}) is Dictionary else {}
 	for key in when.keys():
 		var value: Variant = when[key]
 		match String(key):
+			"objective_is":
+				if value is String:
+					if objective_id != String(value):
+						return false
+				elif value is Array:
+					var ok := false
+					for v in (value as Array):
+						if objective_id == String(v):
+							ok = true
+							break
+					if not ok:
+						return false
+				else:
+					return false
 			"distance_lt":
 				if not (distance < float(value)):
 					return false
@@ -314,6 +498,42 @@ func _match_when(when: Dictionary, observation: Dictionary) -> bool:
 					return false
 				if not (float(arrow.get("distance", INF)) < float(value)):
 					return false
+			"nearest_arrow_distance_gt":
+				var arrow2: Dictionary = self_state.get("nearest_arrow", {}) if self_state.get("nearest_arrow", {}) is Dictionary else {}
+				if arrow2.is_empty():
+					return false
+				if not (float(arrow2.get("distance", 0.0)) > float(value)):
+					return false
+			"self_sensor_wall_ahead":
+				if bool(self_sensors.get("wall_ahead", false)) != bool(value):
+					return false
+			"self_sensor_ledge_ahead":
+				if bool(self_sensors.get("ledge_ahead", false)) != bool(value):
+					return false
+			"self_sensor_ground_distance_lt":
+				if not (float(self_sensors.get("ground_distance", INF)) < float(value)):
+					return false
+			"self_sensor_ground_distance_gt":
+				if not (float(self_sensors.get("ground_distance", 0.0)) > float(value)):
+					return false
+			"self_sensor_front_wall_distance_lt":
+				if not (float(self_sensors.get("front_wall_distance", INF)) < float(value)):
+					return false
+			"self_sensor_front_wall_distance_gt":
+				if not (float(self_sensors.get("front_wall_distance", 0.0)) > float(value)):
+					return false
+			"self_sensor_ceiling_distance_lt":
+				if not (float(self_sensors.get("ceiling_distance", INF)) < float(value)):
+					return false
+			"self_sensor_ceiling_distance_gt":
+				if not (float(self_sensors.get("ceiling_distance", 0.0)) > float(value)):
+					return false
+			"self_sensor_ledge_ground_distance_lt":
+				if not (float(self_sensors.get("ledge_ground_distance", INF)) < float(value)):
+					return false
+			"self_sensor_ledge_ground_distance_gt":
+				if not (float(self_sensors.get("ledge_ground_distance", 0.0)) > float(value)):
+					return false
 			_:
 				return false
 	return true
@@ -338,6 +558,10 @@ func _reload_if_needed(force: bool) -> void:
 	if loaded.has("metrics") and loaded["metrics"] is Dictionary:
 		new_metrics = _deep_merge_dict(new_metrics, loaded["metrics"] as Dictionary)
 	metrics_cfg = new_metrics
+	var new_objectives := objectives_cfg.duplicate(true)
+	if loaded.has("objectives") and loaded["objectives"] is Dictionary:
+		new_objectives = _deep_merge_dict(new_objectives, loaded["objectives"] as Dictionary)
+	objectives_cfg = new_objectives
 	if loaded.has("rules") and loaded["rules"] is Array:
 		rules = (loaded["rules"] as Array).duplicate(true)
 	else:

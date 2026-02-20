@@ -370,6 +370,7 @@ func _setup_stats() -> void:
 		"acceleration": walk.acceleration,
 		"friction": walk.friction,
 		"gravity": jump.gravity,
+		"max_fall_speed": jump.max_fall_speed,
 		"jump_velocity": jump.jump_velocity,
 		"shoot_cooldown": shooter.shoot_cooldown,
 		"max_arrows": float(max_arrows),
@@ -381,6 +382,7 @@ func _setup_stats() -> void:
 		bases["acceleration"] = character_data.acceleration
 		bases["friction"] = character_data.friction
 		bases["gravity"] = character_data.gravity
+		bases["max_fall_speed"] = character_data.max_fall_speed
 		bases["jump_velocity"] = character_data.jump_velocity
 		bases["shoot_cooldown"] = character_data.shoot_cooldown
 		bases["max_arrows"] = float(character_data.max_arrows)
@@ -397,6 +399,7 @@ func _apply_stat_values() -> void:
 	var acceleration := stats.get_value("acceleration", walk.acceleration)
 	var friction := stats.get_value("friction", walk.friction)
 	var gravity := stats.get_value("gravity", jump.gravity)
+	var max_fall_speed := stats.get_value("max_fall_speed", jump.max_fall_speed)
 	var jump_velocity := stats.get_value("jump_velocity", jump.jump_velocity)
 	var shoot_cooldown := stats.get_value("shoot_cooldown", shooter.shoot_cooldown)
 	max_arrows = int(round(stats.get_value("max_arrows", max_arrows)))
@@ -409,7 +412,7 @@ func _apply_stat_values() -> void:
 	melee_duration = stats.get_value("melee_duration", melee_duration)
 
 	walk.configure(move_speed, acceleration, friction)
-	jump.configure(gravity, jump_velocity)
+	jump.configure(gravity, jump_velocity, max_fall_speed)
 	dash.configure(dash_multiplier, dash_duration, dash_cooldown, -1.0)
 	shooter.configure(shoot_cooldown)
 	combat.configure_melee(melee_cooldown, melee_duration)
@@ -1713,3 +1716,21 @@ func _get_body_rect(player: Node) -> Rect2:
 func get_projectile_spawn_offset(direction: Vector2) -> Vector2:
 
 	return visuals.get_projectile_spawn_offset(direction, facing)
+
+
+func get_projectile_inherited_velocity() -> Vector2:
+	return velocity
+
+
+func get_projectile_inherit_velocity_factor() -> float:
+	if character_data != null:
+		return float(character_data.projectile_inherit_velocity_factor)
+	return 1.0
+
+
+func get_projectile_scale() -> float:
+	if character_data != null and character_data.has_property("projectile_scale"):
+		var v: Variant = character_data.get("projectile_scale")
+		if v is float or v is int:
+			return maxf(0.05, float(v))
+	return 1.0

@@ -1,0 +1,66 @@
+{
+  "tuning": {
+    "keep_distance": 250.0,
+    "shoot_range": 600.0,
+    "min_shoot_distance": 80.0,
+    "shoot_y_tolerance": 140.0,
+    "shoot_dx_min": 30.0,
+    "shoot_hold": 0.14,
+    "dash_range": 650.0,
+    "dash_probability": 0.25,
+    "melee_range": 85.0,
+    "decision_interval_ms": 60
+  },
+  "objectives": {
+    "enabled": true,
+    "pick_interval_ms": 60,
+    "safety": {
+      "avoid_ledges": true,
+      "avoid_walls": true
+    }
+  },
+  "rules": [
+    {
+      "id": "ga_disable_air_moves",
+      "when": {
+        "self_sensor_ground_distance_gt": 55.0
+      },
+      "do": {
+        "jump": false,
+        "dash": false
+      }
+    },
+    {
+      "id": "ga_block_jump_low_ceiling",
+      "when": {
+        "self_sensor_ceiling_distance_lt": 18.0
+      },
+      "do": {
+        "jump": false,
+        "dash": false
+      }
+    },
+    {
+      "id": "ga_avoid_big_drop",
+      "when": {
+        "self_sensor_ledge_ground_distance_gt": 85.0,
+        "self_on_floor": true
+      },
+      "do": {
+        "axis": "stop",
+        "aim": "toward"
+      }
+    },
+    {
+      "id": "ga_avoid_front_wall",
+      "when": {
+        "self_sensor_front_wall_distance_lt": 14.0,
+        "self_on_floor": true
+      },
+      "do": {
+        "axis": "stop",
+        "aim": "toward"
+      }
+    }
+  ]
+}

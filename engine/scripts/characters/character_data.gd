@@ -37,6 +37,7 @@ class_name CharacterData
 @export var friction := 2000.0
 @export var jump_velocity := 360.0
 @export var gravity := 1200.0
+@export var max_fall_speed := 2000.0
 @export var shoot_cooldown := 0.001
 @export var max_arrows := 5
 @export var melee_cooldown := 0.45
@@ -45,4 +46,6 @@ class_name CharacterData
 @export var collider_offset := Vector2.ZERO
 @export var projectile_forward := 80.0
 @export var projectile_vertical_offset := 0.0
+@export var projectile_inherit_velocity_factor := 1.0
+@export var projectile_scale := 1.0
 @export var projectile_texture: Texture2D

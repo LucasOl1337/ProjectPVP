@@ -1,0 +1,38 @@
+{
+  "genome_version": 1,
+  "schema_id": "ga_params_v1",
+  "genes": {
+    "movement.keep_distance": 250.0,
+    "movement.backoff_ratio": 0.6,
+    "movement.approach_deadzone_x": 10.0,
+    "shoot.min_distance": 80.0,
+    "shoot.max_distance": 600.0,
+    "shoot.y_tolerance": 140.0,
+    "shoot.hold_seconds": 0.14,
+    "shoot.intent_cooldown": 0.18,
+    "shoot.dx_min": 30.0,
+    "dash.use": true,
+    "dash.range": 650.0,
+    "dash.probability": 0.25,
+    "dash.intent_cooldown": 0.35,
+    "jump.chase_dy": 140.0,
+    "jump.intent_cooldown": 0.25,
+    "melee.range": 85.0,
+    "melee.intent_cooldown": 0.3,
+    "safety.avoid_ledges": true,
+    "safety.avoid_walls": true,
+    "safety.wall_stop_distance": 14.0,
+    "safety.max_safe_drop_distance": 85.0,
+    "safety.ceiling_block_distance": 18.0,
+    "safety.air_ground_distance": 55.0,
+    "objective.collect_arrow_weight": 0.7,
+    "objective.fight_weight": 1.0,
+    "objective.pick_interval": 0.06
+  },
+  "meta": {
+    "mutation_steps": 0,
+    "created_from": "handmade",
+    "saved_at_gen": 6,
+    "best_fitness": 1.1835600003783715
+  }
+}

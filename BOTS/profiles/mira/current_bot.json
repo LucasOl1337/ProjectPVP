@@ -1,0 +1,23 @@
+{
+  "source": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\mira\\state\\round_0034\\top\\seed_01_G0034_N000834_score_1.750000.json",
+  "source_rel": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\mira\\state\\round_0034\\top\\seed_01_G0034_N000834_score_1.750000.json",
+  "promoted_to": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\mira\\best_genome.json",
+  "round": 34,
+  "best": 1.75,
+  "best_ever": 1.75,
+  "best_metric": "fitness",
+  "sweep_5_0": true,
+  "worker_id": 8,
+  "individual": 834,
+  "islands_round": 34,
+  "generation": -1,
+  "port": -1,
+  "episodes_per_genome": -1,
+  "mutation_rate": 0.08,
+  "mutation_std": 0.2,
+  "opponent": "baseline",
+  "time_scale": 8.0,
+  "seed_used": "",
+  "result_path": "C:\\Users\\user\\Desktop\\ProjectPVP\\BOTS\\profiles\\mira\\state\\round_0034\\worker_8\\result.json",
+  "timestamp": 1771543338
+}

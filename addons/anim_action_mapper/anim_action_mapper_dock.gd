@@ -210,6 +210,44 @@ func _build_ui() -> void:
 	)
 	off_row.add_child(voff)
 
+	var ilabel := Label.new()
+	ilabel.text = "Inherit"
+	ilabel.custom_minimum_size = Vector2(60, 0)
+	off_row.add_child(ilabel)
+
+	var inherit := SpinBox.new()
+	inherit.min_value = 0.0
+	inherit.max_value = 3.0
+	inherit.step = 0.05
+	inherit.custom_minimum_size = Vector2(110, 0)
+	inherit.value = float(_data.projectile_inherit_velocity_factor) if _data != null else 1.0
+	inherit.value_changed.connect(func(v: float):
+		if _data == null:
+			return
+		_data.projectile_inherit_velocity_factor = float(v)
+		_mark_dirty()
+	)
+	off_row.add_child(inherit)
+
+	var slabel := Label.new()
+	slabel.text = "Scale"
+	slabel.custom_minimum_size = Vector2(50, 0)
+	off_row.add_child(slabel)
+
+	var scale := SpinBox.new()
+	scale.min_value = 0.1
+	scale.max_value = 5.0
+	scale.step = 0.05
+	scale.custom_minimum_size = Vector2(110, 0)
+	scale.value = float(_data.projectile_scale) if _data != null and _data.has_property("projectile_scale") else 1.0
+	scale.value_changed.connect(func(v: float):
+		if _data == null or not _data.has_property("projectile_scale"):
+			return
+		_data.projectile_scale = float(v)
+		_mark_dirty()
+	)
+	off_row.add_child(scale)
+
 	var hint := Label.new()
 	hint.text = "SFX do tiro: configure na ação SHOOT (campo SFX)"
 	projectile_root.add_child(hint)
@@ -975,7 +1013,7 @@ func _create_duration_control(action: String) -> Control:
 	spin.custom_minimum_size = Vector2(90, 0)
 	spin.value = _get_action_float(_data.action_animation_durations if _data != null else {}, action, 0.0)
 	spin.value_changed.connect(func(v: float):
-		_set_action_float(_data.action_animation_durations, action, v)
+		_set_dict_prop_float("action_animation_durations", action, v, 0.0)
 	)
 	wrap.add_child(spin)
 	return wrap
@@ -994,7 +1032,7 @@ func _create_speed_control(action: String) -> Control:
 	spin.custom_minimum_size = Vector2(90, 0)
 	spin.value = _get_action_float(_data.action_animation_speeds if _data != null else {}, action, 0.0)
 	spin.value_changed.connect(func(v: float):
-		_set_action_float(_data.action_animation_speeds, action, v)
+		_set_dict_prop_float("action_animation_speeds", action, v, 0.0)
 	)
 	wrap.add_child(spin)
 	return wrap
@@ -1091,7 +1129,7 @@ func _create_action_sfx_control(action: String) -> Control:
 	dur.custom_minimum_size = Vector2(90, 0)
 	dur.value = _get_action_float(_data.action_sfx_durations if _data != null else {}, action, 0.0)
 	dur.value_changed.connect(func(v: float):
-		_set_action_float(_data.action_sfx_durations, action, v)
+		_set_dict_prop_float("action_sfx_durations", action, v, 0.0)
 	)
 	wrap.add_child(dur)
 
@@ -1105,7 +1143,7 @@ func _create_action_sfx_control(action: String) -> Control:
 	spd.custom_minimum_size = Vector2(90, 0)
 	spd.value = _get_action_float(_data.action_sfx_speeds if _data != null else {}, action, 1.0)
 	spd.value_changed.connect(func(v: float):
-		_set_action_float(_data.action_sfx_speeds, action, v)
+		_set_dict_prop_float("action_sfx_speeds", action, v, 1.0)
 	)
 	wrap.add_child(spd)
 
@@ -1119,7 +1157,7 @@ func _create_action_sfx_control(action: String) -> Control:
 	vol.custom_minimum_size = Vector2(100, 0)
 	vol.value = _get_action_float(_data.action_sfx_volumes_db if _data != null else {}, action, -2.0)
 	vol.value_changed.connect(func(v: float):
-		_set_action_float_with_default(_data.action_sfx_volumes_db, action, v, -2.0)
+		_set_dict_prop_float("action_sfx_volumes_db", action, v, -2.0)
 	)
 	wrap.add_child(vol)
 

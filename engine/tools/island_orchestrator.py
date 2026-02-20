@@ -1,5 +1,6 @@
 import argparse
 
+import hashlib
 import json
 
 import os
@@ -150,6 +151,205 @@ def _c(text: str, code: str, enabled: bool) -> str:
 
     return f"{code}{text}{ANSI_RESET}"
 
+def _clamp_int(value: object, default: int = 0) -> int:
+    try:
+        return int(value)
+    except Exception:
+        return int(default)
+
+def _clamp_float(value: object, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except Exception:
+        return float(default)
+
+def _read_p12_int(payload: Dict, default: int = 0) -> Tuple[int, int]:
+    if not isinstance(payload, dict):
+        return default, default
+    p1 = payload.get(1, payload.get("1", default))
+    p2 = payload.get(2, payload.get("2", default))
+    return _clamp_int(p1, default), _clamp_int(p2, default)
+
+def _read_p12_float(payload: Dict, default: float = 0.0) -> Tuple[float, float]:
+    if not isinstance(payload, dict):
+        return default, default
+    p1 = payload.get(1, payload.get("1", default))
+    p2 = payload.get(2, payload.get("2", default))
+    return _clamp_float(p1, default), _clamp_float(p2, default)
+
+def _build_box(title: str, lines: List[str], width: int = 0) -> str:
+    safe_lines = [str(x) for x in (lines or [])]
+    t = str(title or "").strip()
+    inner = max([len(t)] + [len(x) for x in safe_lines] + [0])
+    w = max(int(width), inner + 4, 44)
+    top = "+" + ("-" * (w - 2)) + "+"
+    out = [top]
+    if t:
+        out.append("| " + t.center(w - 4) + " |")
+        out.append("|" + ("-" * (w - 2)) + "|")
+    for ln in safe_lines:
+        if len(ln) > (w - 4):
+            ln = ln[: max(0, w - 7)] + "..."
+        out.append("| " + ln.ljust(w - 4) + " |")
+    out.append(top)
+    return "\n".join(out)
+
+def _genes_diff(prev_payload: Dict, next_payload: Dict) -> List[str]:
+    if not isinstance(prev_payload, dict) or not isinstance(next_payload, dict):
+        return []
+    if str(prev_payload.get("schema_id", "")) != "ga_params_v1" or str(next_payload.get("schema_id", "")) != "ga_params_v1":
+        return []
+    prev_genes = prev_payload.get("genes", {}) if isinstance(prev_payload.get("genes"), dict) else {}
+    next_genes = next_payload.get("genes", {}) if isinstance(next_payload.get("genes"), dict) else {}
+    keys = sorted(set(prev_genes.keys()) | set(next_genes.keys()))
+    changes: List[Tuple[float, str]] = []
+    for k in keys:
+        pv = prev_genes.get(k)
+        nv = next_genes.get(k)
+        if pv == nv:
+            continue
+        if isinstance(pv, bool) or isinstance(nv, bool):
+            changes.append((1.0, f"{k}: {bool(pv)} -> {bool(nv)}"))
+            continue
+        try:
+            pf = float(pv)
+            nf = float(nv)
+            d = nf - pf
+            changes.append((abs(d), f"{k}: {pf:.4g} -> {nf:.4g} (Δ {d:+.4g})"))
+        except Exception:
+            changes.append((1.0, f"{k}: {pv} -> {nv}"))
+    changes.sort(key=lambda t: t[0], reverse=True)
+    return [txt for _, txt in changes]
+
+def _genome_sig(payload: Dict) -> str:
+    if not isinstance(payload, dict):
+        return ""
+    schema_id = str(payload.get("schema_id", "") or "")
+    genes = payload.get("genes", {}) if isinstance(payload.get("genes"), dict) else {}
+    if schema_id != "ga_params_v1" or not genes:
+        return ""
+    try:
+        canon = json.dumps(genes, sort_keys=True, separators=(",", ":")).encode("utf-8", errors="ignore")
+        return hashlib.sha1(canon).hexdigest()[:10]
+    except Exception:
+        return ""
+
+def _meta_brief(payload: Dict) -> str:
+    if not isinstance(payload, dict):
+        return ""
+    schema_id = str(payload.get("schema_id", "") or "")
+    meta = payload.get("meta", {}) if isinstance(payload.get("meta"), dict) else {}
+    ms = meta.get("mutation_steps", "")
+    cf = meta.get("created_from", "")
+    parts: List[str] = []
+    if schema_id:
+        parts.append(f"schema={schema_id}")
+    if ms != "":
+        parts.append(f"mut={_clamp_int(ms, 0)}")
+    if str(cf).strip():
+        parts.append(f"from={str(cf)}")
+    sig = _genome_sig(payload)
+    if sig:
+        parts.append(f"sig={sig}")
+    return " | ".join(parts)
+
+def _behavior_param_summary(prev_payload: Dict, next_payload: Dict) -> List[str]:
+    if not isinstance(prev_payload, dict) or not isinstance(next_payload, dict):
+        return []
+    if str(prev_payload.get("schema_id", "")) != "ga_params_v1" or str(next_payload.get("schema_id", "")) != "ga_params_v1":
+        return []
+    prev_genes = prev_payload.get("genes", {}) if isinstance(prev_payload.get("genes"), dict) else {}
+    next_genes = next_payload.get("genes", {}) if isinstance(next_payload.get("genes"), dict) else {}
+
+    def gf(src: Dict, key: str, default: float) -> float:
+        return _clamp_float(src.get(key, default), default)
+
+    def gb(src: Dict, key: str, default: bool) -> bool:
+        return bool(src.get(key, default))
+
+    def fchg(key: str, default: float, eps: float = 1e-6) -> Tuple[float, float, bool]:
+        a = gf(prev_genes, key, default)
+        b = gf(next_genes, key, default)
+        return a, b, abs(b - a) > eps
+
+    def bchg(key: str, default: bool) -> Tuple[bool, bool, bool]:
+        a = gb(prev_genes, key, default)
+        b = gb(next_genes, key, default)
+        return a, b, a != b
+
+    out: List[str] = []
+
+    a, b, ch = fchg("movement.keep_distance", 220.0, 0.25)
+    if ch:
+        out.append(f"Distância: keep_distance {a:.0f} -> {b:.0f} ({'mais distância' if b > a else 'aproxima mais'})")
+    a, b, ch = fchg("movement.backoff_ratio", 0.6, 0.01)
+    if ch:
+        out.append(f"Recuo: backoff_ratio {a:.2f} -> {b:.2f} ({'recuar mais cedo' if b > a else 'recuar mais tarde'})")
+    a, b, ch = fchg("movement.approach_deadzone_x", 10.0, 0.5)
+    if ch:
+        out.append(f"Movimento: deadzone_x {a:.0f} -> {b:.0f} ({'menos micro-ajustes' if b > a else 'mais responsivo'})")
+
+    a, b, ch = fchg("shoot.min_distance", 20.0, 2.0)
+    if ch:
+        out.append(f"Tiro: min_dist {a:.0f} -> {b:.0f} ({'evita atirar de perto' if b > a else 'atira mais perto'})")
+    a, b, ch = fchg("shoot.max_distance", 640.0, 5.0)
+    if ch:
+        out.append(f"Tiro: max_dist {a:.0f} -> {b:.0f} ({'atira mais longe' if b > a else 'atira menos longe'})")
+    a, b, ch = fchg("shoot.y_tolerance", 140.0, 5.0)
+    if ch:
+        out.append(f"Tiro: tolerância Y {a:.0f} -> {b:.0f} ({'aceita mais desnível' if b > a else 'mais exigente no alinhamento'})")
+    a, b, ch = fchg("shoot.dx_min", 30.0, 3.0)
+    if ch:
+        out.append(f"Tiro: dx_min {a:.0f} -> {b:.0f} ({'precisa mais separação' if b > a else 'atira mesmo mais perto na horizontal'})")
+    a, b, ch = fchg("shoot.hold_seconds", 0.14, 0.01)
+    if ch:
+        out.append(f"Tiro: hold {a:.2f}s -> {b:.2f}s ({'segura mais' if b > a else 'solta mais rápido'})")
+    a, b, ch = fchg("shoot.intent_cooldown", 0.18, 0.01)
+    if ch:
+        out.append(f"Tiro: cooldown {a:.2f}s -> {b:.2f}s ({'atira menos frequente' if b > a else 'atira mais frequente'})")
+
+    a_b, b_b, chb = bchg("dash.use", True)
+    if chb:
+        out.append(f"Dash: use {a_b} -> {b_b} ({'ativa dash' if b_b else 'desativa dash'})")
+    a, b, ch = fchg("dash.range", 650.0, 10.0)
+    if ch:
+        out.append(f"Dash: range {a:.0f} -> {b:.0f} ({'dasha mais cedo' if b < a else 'dasha só mais longe'})")
+    a, b, ch = fchg("dash.probability", 0.25, 0.05)
+    if ch:
+        out.append(f"Dash: prob {a:.2f} -> {b:.2f} ({'mais dash' if b > a else 'menos dash'})")
+    a, b, ch = fchg("dash.intent_cooldown", 0.35, 0.02)
+    if ch:
+        out.append(f"Dash: cooldown {a:.2f}s -> {b:.2f}s ({'menos dash' if b > a else 'mais dash'})")
+
+    a, b, ch = fchg("melee.range", 85.0, 5.0)
+    if ch:
+        out.append(f"Melee: range {a:.0f} -> {b:.0f} ({'tenta bater mais longe' if b > a else 'só bate mais perto'})")
+    a, b, ch = fchg("melee.intent_cooldown", 0.30, 0.02)
+    if ch:
+        out.append(f"Melee: cooldown {a:.2f}s -> {b:.2f}s ({'menos melee' if b > a else 'mais melee'})")
+
+    a, b, ch = fchg("jump.chase_dy", 140.0, 10.0)
+    if ch:
+        out.append(f"Pulo: chase_dy {a:.0f} -> {b:.0f} ({'menos pulo pra subir' if b > a else 'mais pulo pra perseguir'})")
+    a, b, ch = fchg("jump.intent_cooldown", 0.25, 0.02)
+    if ch:
+        out.append(f"Pulo: cooldown {a:.2f}s -> {b:.2f}s ({'menos pulo' if b > a else 'mais pulo'})")
+
+    a_b, b_b, chb = bchg("safety.avoid_ledges", True)
+    if chb:
+        out.append(f"Safety: avoid_ledges {a_b} -> {b_b} ({'mais conservador' if b_b else 'mais agressivo'})")
+    a_b, b_b, chb = bchg("safety.avoid_walls", True)
+    if chb:
+        out.append(f"Safety: avoid_walls {a_b} -> {b_b} ({'mais conservador' if b_b else 'mais agressivo'})")
+    a, b, ch = fchg("safety.wall_stop_distance", 14.0, 2.0)
+    if ch:
+        out.append(f"Safety: wall_stop {a:.0f} -> {b:.0f} ({'para mais cedo' if b > a else 'encosta mais'})")
+    a, b, ch = fchg("safety.max_safe_drop_distance", 85.0, 5.0)
+    if ch:
+        out.append(f"Safety: safe_drop {a:.0f} -> {b:.0f} ({'aceita quedas maiores' if b > a else 'evita quedas'})")
+
+    return out[:12]
+
 
 
 
@@ -241,10 +441,51 @@ def resolve_executable(value: str) -> str:
     candidate = value.strip().strip('"')
 
     if Path(candidate).exists():
+        p = Path(candidate)
+        if p.is_dir():
+            same_name = p / p.name
+            if same_name.exists() and same_name.is_file():
+                return str(same_name)
+            exe_files = sorted([x for x in p.glob("*.exe") if x.is_file()])
+            if exe_files:
+                return str(exe_files[0])
+            return ""
 
         return candidate
 
-    return shutil.which(candidate) or ""
+    env_override = os.environ.get("GODOT_EXE", "").strip().strip('"')
+    if env_override and Path(env_override).exists():
+        p = Path(env_override)
+        if p.is_dir():
+            same_name = p / p.name
+            if same_name.exists() and same_name.is_file():
+                return str(same_name)
+            exe_files = sorted([x for x in p.glob("*.exe") if x.is_file()])
+            if exe_files:
+                return str(exe_files[0])
+            return ""
+        return env_override
+    if env_override:
+        env_which = shutil.which(env_override)
+        if env_which:
+            return env_which
+
+    if candidate.lower().endswith("_console.exe"):
+        alt = candidate[:-len("_console.exe")] + ".exe"
+        if Path(alt).exists():
+            return alt
+        alt_which = shutil.which(alt)
+        if alt_which:
+            return alt_which
+
+    by_name = shutil.which(candidate)
+    if by_name:
+        return by_name
+    for fallback in ("godot4", "godot", "godot.exe"):
+        found = shutil.which(fallback)
+        if found:
+            return found
+    return ""
 
 
 
@@ -418,6 +659,27 @@ def ensure_dir(path: Path) -> None:
 
     path.mkdir(parents=True, exist_ok=True)
 
+def ensure_gdignore(path: Path) -> None:
+    try:
+        ensure_dir(path)
+        gdignore = path / ".gdignore"
+        if not gdignore.exists():
+            gdignore.write_text("", encoding="utf-8")
+    except Exception:
+        pass
+
+def cleanup_state_files(state_dir: Path) -> None:
+    try:
+        if not state_dir.exists():
+            return
+        for p in state_dir.rglob("genetic_log.csv"):
+            try:
+                p.rename(p.with_suffix(".log"))
+            except Exception:
+                pass
+    except Exception:
+        pass
+
 
 
 
@@ -536,13 +798,21 @@ def build_godot_cmd(
 
     extra_user_args: Optional[List[str]] = None,
 
+    watch: bool = False,
+
 ) -> List[str]:
 
     cmd = [
 
         godot_exe,
 
-        "--headless",
+    ]
+
+    if not watch:
+
+        cmd += ["--headless"]
+
+    cmd += [
 
         "--fixed-fps",
 
@@ -570,7 +840,12 @@ def build_godot_cmd(
 
         f"--port={int(port)}",
 
-        "--no-watch",
+    ]
+
+    if not watch:
+        cmd += ["--no-watch"]
+
+    cmd += [
 
         f"--time-scale={float(time_scale)}",
 
@@ -653,14 +928,19 @@ def build_trainer_cmd(
     learn_aim: bool = False,
 
     aim_bins: int = 9,
+    trainer_script: str = "",
 
 ) -> List[str]:
+
+    script_path = str(project_root / "engine" / "tools" / "training_genetic_ga.py")
+    if str(trainer_script or "").strip():
+        script_path = str(resolve_path(project_root, str(trainer_script)))
 
     cmd = [
 
         python_exe,
 
-        str(project_root / "engine" / "tools" / "training_genetic_ga.py"),
+        script_path,
         "--host",
 
         "127.0.0.1",
@@ -804,6 +1084,8 @@ def default_config(project_root: Path) -> Dict:
         "godot_exe": "godot4",
 
         "python_exe": sys.executable or "python",
+        "trainer_script": "",
+        "trainer_user_args": [],
 
         "workers": 500,
 
@@ -948,29 +1230,98 @@ def promote_best_genome(project_root: Path, cfg: Dict, summary: Dict) -> None:
 
             prev_best = float("-inf")
 
-    if not bool(cfg.get("promote_allow_regress", False)) and new_best <= prev_best:
+    color_enabled = _use_color(cfg)
+    promote_allowed = bool(cfg.get("promote_allow_regress", False)) or (new_best > prev_best)
+    prev_promoted: Dict = {}
+    if promote_path.exists():
+        prev_promoted = read_json(promote_path)
+        if not isinstance(prev_promoted, dict):
+            prev_promoted = {}
+    candidate_payload = read_json(src)
+    if not isinstance(candidate_payload, dict):
+        candidate_payload = {}
 
-        color_enabled = _use_color(cfg)
+    try:
+        best_payload = summary.get("best_payload", {}) if isinstance(summary, dict) else {}
+        if not isinstance(best_payload, dict):
+            best_payload = {}
+        individual = int(best_payload.get("individual", -1))
+        rid = int(summary.get("round", 0))
+        title_suffix = f"G{rid} N{individual}" if (individual > 0 and rid > 0) else promote_path.name
 
-        try:
+        lines: List[str] = []
+        lines.append(f"Seed: {str(top[0])}")
+        opp_tag = str(cfg.get("opponent_tag", cfg.get("opponent", "")))
+        lines.append(f"Oponente: {opp_tag}")
+        lines.append(f"Fitness: {new_best:.4f} | PrevBest: {prev_best:.4f}")
+        prev_meta_line = _meta_brief(prev_promoted)
+        cand_meta_line = _meta_brief(candidate_payload)
+        if prev_meta_line or cand_meta_line:
+            lines.append("")
+            if prev_meta_line:
+                lines.append(f"Genoma (best anterior): {prev_meta_line}")
+            if cand_meta_line:
+                lines.append(f"Genoma (candidato): {cand_meta_line}")
+            prev_sig = _genome_sig(prev_promoted)
+            cand_sig = _genome_sig(candidate_payload)
+            if prev_sig and cand_sig:
+                lines.append(f"Igual ao best anterior: {'SIM' if prev_sig == cand_sig else 'NÃO'}")
 
-            individual = int((summary.get("best_payload", {}) or {}).get("individual", -1))
+        result_path = str(best_payload.get("result_path", "") or "")
+        result_payload = read_json(Path(result_path)) if result_path else {}
+        best_stats = result_payload.get("best_stats") if isinstance(result_payload.get("best_stats"), dict) else {}
+        if isinstance(best_stats, dict) and best_stats:
+            wins = _clamp_int(best_stats.get("wins", 0))
+            losses = _clamp_int(best_stats.get("losses", 0))
+            avg_score = _clamp_float(best_stats.get("avg_score", 0.0))
+            winner = _clamp_int(best_stats.get("last_winner", 0))
+            last_round = best_stats.get("last_round") if isinstance(best_stats.get("last_round"), dict) else {}
+            rounds_p1, rounds_p2 = _read_p12_int(last_round.get("wins", {}) if isinstance(last_round, dict) else {}, 0)
+            kills_p1, kills_p2 = _read_p12_int(last_round.get("kills", {}) if isinstance(last_round, dict) else {}, 0)
+            score_p1, score_p2 = _read_p12_float(last_round.get("match_score", {}) if isinstance(last_round, dict) else {}, 0.0)
+            wp = "P1" if winner == 1 else ("P2" if winner == 2 else "?")
+            lines.append("")
+            lines.append("Partidas / Resultados:")
+            lines.append(f"  Partidas: {wins + losses} | W-L: {wins}-{losses} | Vencedor: {wp}")
+            lines.append(f"  Rounds: {rounds_p1}-{rounds_p2} | Kills (match): {kills_p1}-{kills_p2}")
+            lines.append(f"  Score: {score_p1:.2f}-{score_p2:.2f} | AvgScore(P1): {avg_score:.2f}")
+            evo = best_stats.get("evolution") if isinstance(best_stats.get("evolution"), dict) else {}
+            if isinstance(evo, dict) and evo:
+                rounds_total = _clamp_int(evo.get("rounds", 0))
+                avg_kills = evo.get("avg_kills") if isinstance(evo.get("avg_kills"), dict) else {}
+                ak1, ak2 = _read_p12_float(avg_kills, 0.0)
+                if rounds_total > 0:
+                    lines.append(f"  Kills (total match): {ak1 * float(rounds_total):.2f}-{ak2 * float(rounds_total):.2f} (média/round {ak1:.2f}-{ak2:.2f})")
 
-            rid = int(summary.get("round", 0))
+        lines.append("")
+        lines.append("Diferenças (genes) vs best anterior:")
+        diff_lines = _genes_diff(prev_promoted, candidate_payload)
+        if diff_lines:
+            for ln in diff_lines[: min(18, len(diff_lines))]:
+                lines.append("  " + ln)
+            if len(diff_lines) > 18:
+                lines.append(f"  ... +{len(diff_lines) - 18} genes")
+        else:
+            lines.append("  (sem diferenças ou schema não é ga_params_v1)")
 
-            if individual > 0 and rid > 0:
+        lines.append("")
+        lines.append("Impacto (comportamento) vs best anterior:")
+        beh_lines = _behavior_param_summary(prev_promoted, candidate_payload)
+        if beh_lines:
+            for ln in beh_lines:
+                lines.append("  " + ln)
+        else:
+            lines.append("  (sem mudanças relevantes de comportamento)")
 
-                msg = f"Não promovido: G{rid} N{individual} best={new_best:.2f} (prev_best={prev_best:.2f})"
+        print(_build_box(f"PROMOÇÃO | {title_suffix}", lines))
+        status = "PROMOVIDO" if promote_allowed else "NÃO PROMOVIDO"
+        status_color = ANSI_GREEN if promote_allowed else ANSI_YELLOW
+        print(_c(f"{status}: {title_suffix} | best={new_best:.4f} (prev_best={prev_best:.4f})", status_color, color_enabled))
+    except Exception:
+        pass
 
-                print(_c(msg, ANSI_DIM, color_enabled))
-
-        except Exception:
-
-            pass
-
+    if not promote_allowed:
         return
-
-
 
     ensure_dir(promote_path.parent)
 
@@ -1040,11 +1391,30 @@ def promote_best_genome(project_root: Path, cfg: Dict, summary: Dict) -> None:
 
     )
 
+    try:
+        promoted = read_json(promote_path)
+        if isinstance(promoted, dict) and str(promoted.get("schema_id", "")) == "ga_params_v1":
+            from ga_params_schema_v1 import handmade_from_genes
+
+            genes = promoted.get("genes", {}) if isinstance(promoted.get("genes"), dict) else {}
+            profile_dir = state_path.parent
+            handmade_path = profile_dir / "handmade.json"
+            handmade_base_path = profile_dir / "handmade_base.json"
+            if handmade_path.exists() and (not handmade_base_path.exists()):
+                try:
+                    shutil.copyfile(handmade_path, handmade_base_path)
+                except Exception:
+                    pass
+            base_handmade = read_json(handmade_path) if handmade_path.exists() else {}
+            out_handmade = handmade_from_genes(genes, base_handmade if isinstance(base_handmade, dict) else {})
+            write_json(handmade_path, out_handmade)
+    except Exception:
+        pass
+
 
 
     try:
 
-        league_cfg = str(cfg.get("league_dir", "")).strip()
 
         league_dir = Path(resolve_path(project_root, league_cfg)) if league_cfg else (promote_path.parent / "league")
 
@@ -1117,21 +1487,11 @@ def promote_best_genome(project_root: Path, cfg: Dict, summary: Dict) -> None:
         pass
 
     try:
-
         individual = int(best_payload.get("individual", -1))
-
         rid = int(summary.get("round", 0))
-
-        if individual > 0 and rid > 0:
-
-            color_enabled = _use_color(cfg)
-
-            msg = f"Promovido: G{rid} N{individual} -> {promote_path}"
-
-            print(_c(msg, ANSI_GREEN, color_enabled))
-
+        title_suffix = f"G{rid} N{individual}" if (individual > 0 and rid > 0) else promote_path.name
+        print(_c(f"PROMOVIDO: {title_suffix} -> {promote_path}", ANSI_GREEN, color_enabled))
     except Exception:
-
         pass
 
 
@@ -1662,7 +2022,7 @@ def run_round(
 
                     str(spec.out_dir / "best.json"),
 
-                    str(spec.out_dir / "genetic_log.csv"),
+                    str(spec.out_dir / "genetic_log.log"),
 
                     str(spec.out_dir / "result.json"),
 
@@ -1709,6 +2069,7 @@ def run_round(
                     bool(cfg.get("learn_aim", False)),
 
                     int(cfg.get("aim_bins", 9)),
+                    str(cfg.get("trainer_script", "")),
 
                 )
 
@@ -1737,6 +2098,10 @@ def run_round(
                         ]
 
                     )
+
+                extra_trainer_args = cfg.get("trainer_user_args")
+                if isinstance(extra_trainer_args, list):
+                    trainer_cmd.extend([str(a) for a in extra_trainer_args if str(a).strip()])
 
 
 
@@ -2724,6 +3089,9 @@ def run_islands(project_root: Path, cfg: Dict, dry_run: bool) -> int:
 
     last_summary_path = state_dir / "last_summary.json"
 
+    ensure_gdignore(state_dir)
+    cleanup_state_files(state_dir)
+
 
 
     progress_path_cfg = resolve_path(project_root, str(cfg.get("progress_path", "")))
@@ -2940,7 +3308,7 @@ def interactive_menu(project_root: Path, cfg_path: str) -> int:
 
 def main() -> int:
 
-    project_root = Path(__file__).resolve().parents[1]
+    project_root = Path(__file__).resolve().parents[2]
 
     parser = argparse.ArgumentParser(description="Orquestrador de ilhas headless para Project PVP")
 
@@ -2948,6 +3316,7 @@ def main() -> int:
 
     parser.add_argument("--config", default="BOTS/IA/config/islands.json")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--watch", action="store_true", help="Enable GUI and watch mode (workers=1)")
 
     args = parser.parse_args()
 
@@ -2960,6 +3329,12 @@ def main() -> int:
 
 
     cfg = merge_config(default_config(project_root), load_config(project_root, args.config))
+
+    if args.watch:
+        cfg["watch"] = True
+        cfg["workers"] = 1
+        cfg["concurrency"] = 1
+        cfg["time_scale"] = 1.0
 
     try:
 
@@ -2984,6 +3359,3 @@ def main() -> int:
 if __name__ == "__main__":
 
     raise SystemExit(main())
-
-
-

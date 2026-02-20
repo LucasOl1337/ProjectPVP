@@ -177,6 +177,13 @@ def write_profile_artifacts(root: Path, bot: str, profile: Dict[str, Any]) -> Di
         f"--super-reward-path={SUPER_REWARD_PATH}",
         "--match-mode",
     ]
+    trainer_script = str(cfg.get("trainer_script", "") or "")
+    if "training_ga_params.py" in trainer_script and "--training-opponent-policy=handmade" not in cfg["godot_user_args"]:
+        cfg["godot_user_args"].append("--training-opponent-policy=handmade")
+    if "training_ga_params.py" in trainer_script:
+        cfg.setdefault("trainer_user_args", [])
+        if isinstance(cfg.get("trainer_user_args"), list) and "--handmade-config-path=res://BOTS/profiles/default/handmade.json" not in cfg["trainer_user_args"]:
+            cfg["trainer_user_args"].append("--handmade-config-path=res://BOTS/profiles/default/handmade.json")
     cfg["trainer_live_rounds"] = True
     cfg["live_round_logs"] = True
     cfg["trainer_pretty_md9"] = True

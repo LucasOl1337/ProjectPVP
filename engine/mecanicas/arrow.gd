@@ -22,9 +22,10 @@ const CollisionLayersScript = preload("res://engine/scripts/modules/collision_la
 @export var profile_name := "default"
 @export var arrow_texture: Texture2D
 @export var collision_size := Vector2(96.0, 12.0)
-@export var sprite_scale := Vector2(2.0, 2.0)
+@export var sprite_scale := Vector2(1.5, 1.2)
 @export var rotate_with_velocity := true
 @export var collectable_when_stuck := true
+@export var inherit_owner_velocity_factor := 1.0
 
 # Se algum personagem quiser trocar o visual da flecha sem duplicar a cena,
 # o código pode chamar `set_texture_override(...)`.
@@ -73,11 +74,35 @@ func setup(owner: Node, dir: Vector2) -> void:
 		direction = dir.normalized()
 	forward_dir = direction
 	pending_direction = direction
-	forward_speed = config.base_speed
+	forward_speed = float(config.base_speed)
+	var inherited := _get_owner_velocity(owner) * float(_resolve_inherit_factor(owner))
+	var inherited_along := maxf(0.0, inherited.dot(forward_dir))
+	forward_speed = maxf(float(config.min_speed), forward_speed + inherited_along)
 	velocity = forward_dir * forward_speed
 	lifetime = config.max_lifetime
 	_apply_collision_size()
 	_apply_sprite_scale()
+
+
+func _resolve_inherit_factor(owner: Node) -> float:
+	if owner != null and owner.has_method("get_projectile_inherit_velocity_factor"):
+		var v: Variant = owner.call("get_projectile_inherit_velocity_factor")
+		if v is float or v is int:
+			return float(v)
+	return inherit_owner_velocity_factor
+
+
+func _get_owner_velocity(owner: Node) -> Vector2:
+	if owner == null:
+		return Vector2.ZERO
+	if owner.has_method("get_projectile_inherited_velocity"):
+		var v: Variant = owner.call("get_projectile_inherited_velocity")
+		if v is Vector2:
+			return v
+	var raw: Variant = owner.get("velocity")
+	if raw is Vector2:
+		return raw
+	return Vector2.ZERO
 
 
 func _ready() -> void:
@@ -102,13 +127,14 @@ func _physics_process(delta: float) -> void:
 		return
 	var prev_pos: Vector2 = global_position
 	var min_speed: float = float(config.min_speed)
-	if forward_speed > min_speed:
+	if absf(forward_speed) > min_speed:
 		var decay_rate: float = float(config.speed_decay)
-		if forward_dir.y < 0.0:
+		if velocity.y < 0.0:
 			decay_rate *= float(config.upward_speed_decay_multiplier)
-		forward_speed = max(forward_speed - decay_rate * delta, min_speed)
+		forward_speed = signf(forward_speed) * maxf(absf(forward_speed) - decay_rate * delta, min_speed)
 	var forward_component := forward_dir * forward_speed
-	var side_component := velocity - forward_dir * velocity.dot(forward_dir)
+	var current_along := velocity.dot(forward_dir)
+	var side_component := velocity - forward_dir * current_along
 	velocity = forward_component + side_component
 	if distance_travelled >= config.max_range() * config.gravity_delay_ratio:
 		var gravity_scale: float = float(ProjectSettings.get_setting("gameplay/global_gravity_scale", 1.0))
@@ -120,7 +146,12 @@ func _physics_process(delta: float) -> void:
 		var gravity_strength: float = float(config.gravity) * gravity_factor * gravity_scale
 		if velocity.y < 0.0:
 			gravity_strength *= float(config.upward_gravity_multiplier)
-		velocity.y += gravity_strength * delta
+		var gravity_vec := Vector2(0.0, gravity_strength)
+		var gravity_along := gravity_vec.dot(forward_dir)
+		var gravity_parallel := forward_dir * gravity_along
+		var gravity_perp := gravity_vec - gravity_parallel
+		forward_speed += gravity_along * delta
+		velocity += gravity_perp * delta
 	global_position += velocity * delta
 	if rotate_with_velocity and velocity.length() > 0.01:
 		_update_sprite_direction(velocity)

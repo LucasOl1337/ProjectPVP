@@ -36,7 +36,7 @@ action_sfx_paths = {
 "ult": "res://sfx/stormult.wav"
 }
 action_sfx_durations = {
-"dash": 0.3,
+"dash": 0.1,
 "melee": 0.3,
 "shoot": 0.3,
 "ult": 1.0
@@ -98,9 +98,11 @@ action_animation_paths = {
 }
 }
 action_sprite_scale = {
+"aim": 0.9,
 "jump_air": 0.95
 }
 collider_size = Vector2(90, 210)
 projectile_forward = 134.0
 projectile_vertical_offset = -156.0
+projectile_inherit_velocity_factor = 0.5
 projectile_texture = ExtResource("3")

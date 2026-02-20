@@ -205,10 +205,6 @@ func _on_start_button_pressed() -> void:
 
 		CharacterSelectionState.set_bot_profile(2, _selected_profile(p2_bot_policy))
 
-		CharacterSelectionState.set_bot_policy(1, "genetic" if p1_bot else "simple")
-
-		CharacterSelectionState.set_bot_policy(2, "genetic" if p2_bot else "simple")
-
 	else:
 
 		push_error("CharacterSelectionState não disponível; usando fallback padrão")
@@ -439,13 +435,16 @@ func _populate_bot_profile_options(option_button: OptionButton) -> void:
 
 func _list_bot_profiles() -> Array[Dictionary]:
 
-	var result: Array[Dictionary] = []
+	var default_policy := _detect_bot_policy("default")
+	var default_suffix := _read_promoted_suffix("default") if default_policy == "ga_params" else ""
+	var default_label := ("IA Treinada (Default)%s" % default_suffix) if default_policy == "ga_params" else "IA Handmade (Default)"
+	var result: Array[Dictionary] = [{"id": "default", "label": default_label}]
 
 	var dir := DirAccess.open(BOT_PROFILE_DIR)
 
 	if dir == null:
 
-		return [{"id": "default", "label": "IA Default"}]
+		return result
 
 	dir.list_dir_begin()
 
@@ -458,26 +457,34 @@ func _list_bot_profiles() -> Array[Dictionary]:
 			var profile_id := entry
 
 			var cfg_path := "%s/%s/handmade.json" % [BOT_PROFILE_DIR, entry]
+			var genome_path := "%s/%s/best_genome.json" % [BOT_PROFILE_DIR, entry]
 
-			if FileAccess.file_exists(cfg_path):
+			var has_handmade := FileAccess.file_exists(cfg_path)
+			var has_genome := FileAccess.file_exists(genome_path)
+			if has_handmade or has_genome:
 
-				result.append({"id": profile_id, "label": "IA %s" % profile_id.capitalize()})
+				if profile_id != "default":
+					var policy := _detect_bot_policy(profile_id)
+					var suffix := _read_promoted_suffix(profile_id) if policy == "ga_params" else ""
+					var label := (("IA Treinada %s%s" if policy == "ga_params" else "IA Handmade %s") % [profile_id.capitalize(), suffix]) if policy == "ga_params" else ("IA Handmade %s" % profile_id.capitalize())
+					result.append({"id": profile_id, "label": label})
 
 		entry = dir.get_next()
 
 	dir.list_dir_end()
 
-	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+	var sorted_tail: Array[Dictionary] = []
+	for i in range(1, result.size()):
+		sorted_tail.append(result[i])
+	sorted_tail.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 
 		return String(a.get("id", "")) < String(b.get("id", ""))
 
 	)
-
-	if result.is_empty():
-
-		result.append({"id": "default", "label": "IA Default"})
-
-	return result
+	var out: Array[Dictionary] = []
+	out.append(result[0])
+	out.append_array(sorted_tail)
+	return out
 
 
 
@@ -487,7 +494,8 @@ func _on_p1_bot_toggled(pressed: bool) -> void:
 
 		CharacterSelectionState.set_bot_enabled(1, pressed)
 
-		CharacterSelectionState.set_bot_policy(1, "handmade" if pressed else "simple")
+		var profile_id := _selected_profile(p1_bot_policy)
+		CharacterSelectionState.set_bot_policy(1, _detect_bot_policy(profile_id) if pressed else "simple")
 
 	if p1_bot_policy:
 
@@ -501,7 +509,8 @@ func _on_p2_bot_toggled(pressed: bool) -> void:
 
 		CharacterSelectionState.set_bot_enabled(2, pressed)
 
-		CharacterSelectionState.set_bot_policy(2, "handmade" if pressed else "simple")
+		var profile_id := _selected_profile(p2_bot_policy)
+		CharacterSelectionState.set_bot_policy(2, _detect_bot_policy(profile_id) if pressed else "simple")
 
 	if p2_bot_policy:
 
@@ -537,7 +546,7 @@ func _save_bot_profile(player_id: int, option_button: OptionButton, index: int) 
 
 	if CharacterSelectionState:
 
-		CharacterSelectionState.set_bot_policy(player_id, "handmade")
+		CharacterSelectionState.set_bot_policy(player_id, _detect_bot_policy(profile_id))
 
 		CharacterSelectionState.set_bot_profile(player_id, profile_id)
 
@@ -566,6 +575,32 @@ func _selected_profile(option_button: OptionButton) -> String:
 		return "default"
 
 	return String(metadata)
+
+
+func _detect_bot_policy(profile_id: String) -> String:
+	var base := "%s/%s" % [BOT_PROFILE_DIR, profile_id]
+	var genome_path := "%s/best_genome.json" % base
+	if FileAccess.file_exists(genome_path):
+		var payload: Variant = JSON.parse_string(FileAccess.get_file_as_string(genome_path))
+		if payload is Dictionary and String((payload as Dictionary).get("schema_id", "")) == "ga_params_v1":
+			return "ga_params"
+	return "handmade"
+
+
+func _read_promoted_suffix(profile_id: String) -> String:
+	var meta_path := "%s/%s/current_bot.json" % [BOT_PROFILE_DIR, profile_id]
+	if not FileAccess.file_exists(meta_path):
+		return ""
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(meta_path))
+	if not (parsed is Dictionary):
+		return ""
+	var meta := parsed as Dictionary
+	if meta.has("individual"):
+		var g := int(meta.get("generation_global", meta.get("islands_round", meta.get("round", 0))))
+		var n := int(meta.get("individual", 0))
+		if n > 0:
+			return " (G%d_N%d)" % [g, n] if g > 0 else " (N%d)" % n
+	return ""
 
 
 
@@ -600,4 +635,3 @@ func _update_subtitle_text() -> void:
 	hints.append(hitbox_hint)
 
 	subtitle_label.text = "Escolha o personagem para cada jogador (%s)" % ", ".join(hints)
-

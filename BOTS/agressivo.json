@@ -1,0 +1,10 @@
+{
+  "name": "agressivo",
+  "description": "Perfil criado via ga_launcher.py (agressivo).",
+  "rewards": {
+    "base": {},
+    "p1": {},
+    "p2": {}
+  },
+  "islands": {}
+}

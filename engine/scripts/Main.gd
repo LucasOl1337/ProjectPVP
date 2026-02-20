@@ -191,6 +191,8 @@ var headless_bot_config_p2_path := ""
 
 var headless_super_reward_path := ""
 
+var headless_training_opponent_policy := ""
+
 
 
 var auto_apply_best_genome := true
@@ -317,7 +319,10 @@ func _ready() -> void:
 
 			bot_player_one_policy = "external"
 
-			bot_player_two_policy = "external"
+			if headless_training_opponent_policy != "":
+				bot_player_two_policy = headless_training_opponent_policy
+			else:
+				bot_player_two_policy = "external"
 
 		else:
 
@@ -354,6 +359,8 @@ func _ready() -> void:
 	)
 
 	_configure_arena_definition()
+	if not _is_headless_runtime() and arena_definition != null and MusicManager != null:
+		MusicManager.play_bgm(str(arena_definition.bgm_path), float(arena_definition.bgm_volume_db), true)
 
 	_configure_net_driver()
 
@@ -482,6 +489,12 @@ func _apply_headless_user_args() -> void:
 		"bot_config_p1": null,
 
 		"bot_config_p2": null
+		,
+		"training_opponent_policy": null
+		,
+		"bot_profile_p1": null
+		,
+		"bot_profile_p2": null
 
 	}
 
@@ -552,6 +565,12 @@ func _apply_headless_user_args() -> void:
 		elif arg.begins_with("--bot-config-p2="):
 
 			overrides["bot_config_p2"] = arg.get_slice("=", 1)
+		elif arg.begins_with("--training-opponent-policy="):
+			overrides["training_opponent_policy"] = arg.get_slice("=", 1)
+		elif arg.begins_with("--bot-profile-p1="):
+			overrides["bot_profile_p1"] = arg.get_slice("=", 1)
+		elif arg.begins_with("--bot-profile-p2="):
+			overrides["bot_profile_p2"] = arg.get_slice("=", 1)
 
 
 
@@ -580,6 +599,10 @@ func _apply_headless_user_args() -> void:
 		if bool(overrides["match_mode"]):
 
 			training_match_mode = true
+		if overrides["bot_profile_p1"] != null:
+			CharacterSelectionState.set_bot_profile(1, String(overrides["bot_profile_p1"]).strip_edges())
+		if overrides["bot_profile_p2"] != null:
+			CharacterSelectionState.set_bot_profile(2, String(overrides["bot_profile_p2"]).strip_edges())
 
 	if overrides["quit_idle"] != null:
 
@@ -616,6 +639,8 @@ func _apply_headless_user_args() -> void:
 	if overrides["bot_config_p2"] != null:
 
 		headless_bot_config_p2_path = String(overrides["bot_config_p2"])
+	if overrides["training_opponent_policy"] != null:
+		headless_training_opponent_policy = String(overrides["training_opponent_policy"]).strip_edges()
 
 
 
@@ -1536,7 +1561,7 @@ func _build_bot_config(player_id: int, policy_id: String) -> Dictionary:
 
 	}
 
-	if policy_id == "genetic":
+	if policy_id == "genetic" or policy_id == "ga_params":
 
 		var path := genetic_genome_path_p1 if player_id == 1 else genetic_genome_path_p2
 
@@ -2462,6 +2487,12 @@ func _configure_training() -> void:
 	training_manager.configure(self, player_one, player_two, bot_driver_one, bot_driver_two)
 
 	training_manager.force_external_policies = _is_headless_runtime()
+	if training_manager and training_manager.has_method("set_external_control_players"):
+		var opponent := headless_training_opponent_policy
+		if _is_headless_runtime() and opponent != "" and opponent != "external":
+			training_manager.set_external_control_players([1])
+		else:
+			training_manager.set_external_control_players([1, 2])
 
 	if training_record_path != "":
 
@@ -2993,7 +3024,7 @@ func _get_bot_display_name(player_id: int) -> String:
 
 		var policy := bot_player_one_policy if player_id == 1 else bot_player_two_policy
 
-		if policy == "genetic":
+		if policy == "genetic" or policy == "ga_params":
 
 			var profile := bot_profile_p1 if player_id == 1 else bot_profile_p2
 

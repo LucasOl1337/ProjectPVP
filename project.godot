@@ -22,6 +22,7 @@ config/features=PackedStringArray("4.6")
 
 CharacterSelectionState="*res://engine/scripts/modules/character_selection_state.gd"
 DevDebug="*res://engine/scripts/modules/dev_debug.gd"
+MusicManager="*res://engine/scripts/modules/music_manager.gd"
 
 [display]
 

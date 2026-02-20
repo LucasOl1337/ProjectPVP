@@ -3,15 +3,17 @@ class_name JumpMechanic
 
 var gravity := 1200.0
 var jump_velocity := 360.0
+var max_fall_speed := 2000.0
 
 var wall_jump_horizontal_force := 450.0
 var wall_jump_vertical_force := 420.0
 var wall_slide_speed := 60.0
 var wall_gravity_scale := 0.2
 
-func configure(grav: float, jump: float) -> void:
+func configure(grav: float, jump: float, max_fall: float) -> void:
 	gravity = grav
 	jump_velocity = jump
+	max_fall_speed = max_fall
 
 func update(player: CharacterBody2D, input_axis: float, jump_pressed: bool, delta: float) -> void:
 	var is_on_wall := player.is_on_wall()
@@ -34,7 +36,10 @@ func update(player: CharacterBody2D, input_axis: float, jump_pressed: bool, delt
 		if player.velocity.y > 0.0:
 			player.velocity.y = min(player.velocity.y, wall_slide_speed)
 		player.velocity.y += gravity * wall_gravity_scale * gravity_scale * delta
+		if max_fall_speed > 0.0 and player.velocity.y > 0.0:
+			player.velocity.y = min(player.velocity.y, max_fall_speed)
 		return
 
 	player.velocity.y += gravity * gravity_scale * delta
-
+	if max_fall_speed > 0.0 and player.velocity.y > 0.0:
+		player.velocity.y = min(player.velocity.y, max_fall_speed)

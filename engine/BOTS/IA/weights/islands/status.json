@@ -1,0 +1,13 @@
+{
+  "round": 1,
+  "workers": 500,
+  "completed": 8,
+  "running": 0,
+  "queued": 492,
+  "best_so_far": null,
+  "elapsed_sec": 1.1324462890625,
+  "eta_sec": 0.0,
+  "concurrency": 8,
+  "updated_at": 1771511314,
+  "error": ""
+}

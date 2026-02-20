@@ -24,6 +24,19 @@ func try_shoot(player: Node, arrow_scene: PackedScene, aim_dir: Vector2, overrid
 	if player.has_method("get_projectile_spawn_offset"):
 		spawn_offset = player.get_projectile_spawn_offset(direction)
 	arrow.global_position = player.global_position + spawn_offset
+	var scale := 1.0
+	if player.has_method("get_projectile_scale"):
+		var s: Variant = player.call("get_projectile_scale")
+		if s is float or s is int:
+			scale = float(s)
+	if not is_equal_approx(scale, 1.0):
+		var mult := Vector2(scale, scale)
+		var ss: Variant = arrow.get("sprite_scale")
+		if ss is Vector2:
+			arrow.set("sprite_scale", ss * mult)
+		var cs: Variant = arrow.get("collision_size")
+		if cs is Vector2:
+			arrow.set("collision_size", cs * mult)
 	if arrow.has_method("set_texture_override") and override_texture != null:
 		arrow.set_texture_override(override_texture)
 	if arrow.has_method("setup"):

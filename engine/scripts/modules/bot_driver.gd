@@ -14,6 +14,8 @@ const BotPolicySimple = preload("res://engine/scripts/modules/bot_policy_simple.
 
 const BotPolicyGenetic = preload("res://engine/scripts/modules/bot_policy_genetic.gd")
 
+const BotPolicyGAParams = preload("res://engine/scripts/modules/bot_policy_ga_params.gd")
+
 const BotPolicyObjective = preload("res://engine/scripts/modules/bot_policy_objective.gd")
 
 const BotPolicyHandmade = preload("res://engine/scripts/modules/bot_policy_handmade.gd")
@@ -55,6 +57,8 @@ func configure(main_node_value: Node, player_node: Node, opponent_node: Node, po
 	opponent = opponent_node
 
 	_policy_config = config.duplicate(true) if config is Dictionary else {}
+	if observation_builder and observation_builder.has_method("configure"):
+		observation_builder.configure(_policy_config)
 
 	set_policy(policy_id)
 
@@ -83,6 +87,10 @@ func set_policy(policy_id: String) -> void:
 	elif policy_id == "genetic":
 
 		policy = BotPolicyGenetic.new()
+
+	elif policy_id == "ga_params":
+
+		policy = BotPolicyGAParams.new()
 
 	else:
 
@@ -251,4 +259,3 @@ func _set_external_frames(enabled_value: bool) -> void:
 	if reader and reader.has_method("set_use_external_frames"):
 
 		reader.set_use_external_frames(enabled_value)
-
